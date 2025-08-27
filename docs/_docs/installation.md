@@ -91,17 +91,51 @@ pip install minecraft-datapack-language
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/minecraft-pipes.git
-cd minecraft-pipes
+git clone https://github.com/aaron777collins/MinecraftPipes.git
+cd MinecraftPipes
 
 # Check syntax
 mdl check src/
 
 # Build the datapack
-mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
+mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 82
 
 # The built datapack will be in dist/minecraft_pipes/
 ```
+
+### Using the Build Script
+
+For convenience, you can also use the provided build script:
+
+```bash
+# Build with default pack format (82)
+./build.sh
+
+# Build with specific pack format
+./build.sh 48
+```
+
+## Testing
+
+The project includes comprehensive test examples to verify functionality:
+
+### Running Tests
+
+```bash
+# Run all tests
+python test_examples/run_all_tests.py
+
+# Build standalone test datapacks
+mdl build --mdl test_examples/standalone_tests/simple_pipe_test -o test_examples/dist --wrapper simple_pipe_test --pack-format 82
+mdl build --mdl test_examples/standalone_tests/advanced_pipe_test -o test_examples/dist --wrapper advanced_pipe_test --pack-format 82
+```
+
+### Test Structure
+
+- **Integrated Tests**: Part of the main datapack (`test_examples/simple_pipe.mdl`, `test_examples/advanced_pipe_test.mdl`)
+- **Standalone Tests**: Independent datapacks (`test_examples/standalone_tests/`)
+
+See the [test_examples/README.md](../test_examples/README.md) for detailed testing documentation.
 
 ## Troubleshooting Installation
 

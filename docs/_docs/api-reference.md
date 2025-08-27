@@ -503,7 +503,7 @@ execute as @e[type=item_display,tag=pipes:custom_token] run function mypack:cust
 mdl check src/
 
 # Build with debug symbols
-mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48 --debug
+mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 48 --debug
 
 # Run tests
 mdl test .</code></pre>

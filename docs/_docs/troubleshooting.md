@@ -85,7 +85,23 @@ description: Common issues and solutions for the Minecraft Pipes System. Learn h
     <ol>
       <li>Update to Minecraft 1.21+</li>
       <li>Or rebuild the datapack with an older pack format</li>
-      <li>Use <code>mdl build --pack-format 47</code> for older versions</li>
+      <li>Use <code>mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 47</code> for older versions</li>
+    </ol>
+  </div>
+  
+  <div class="alert alert-error">
+    <h4><i class="fas fa-times-circle"></i> "Duplicate pack declaration" Error</h4>
+    <p><strong>Symptoms:</strong> Build fails with duplicate pack declaration error</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>Building from root directory instead of src directory</li>
+      <li>Test files being included in main build</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Always build from the <code>src</code> directory: <code>mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 82</code></li>
+      <li>Use the provided build script: <code>./build.sh</code></li>
+      <li>Do not use <code>mdl build --mdl .</code> as this includes test files</li>
     </ol>
   </div>
   
