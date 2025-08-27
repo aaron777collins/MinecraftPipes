@@ -34,6 +34,7 @@ jobs:
       # If manually dispatched with an input version, create and push the tag here
       - name: Create and push tag from workflow_dispatch
         if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != '' }}
+        shell: bash
         run: |
           set -eux
           git config user.name "github-actions[bot]"
@@ -47,12 +48,14 @@ jobs:
           fi
 
       - name: Install MDL
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           python -m pip install minecraft-datapack-language
 
       - name: Get version
         id: version
+        shell: bash
         run: |
           if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.version }}" != "" ]; then
             echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
@@ -61,13 +64,16 @@ jobs:
           fi
 
       - name: Check syntax
+        shell: bash
         run: mdl check .
 
       - name: Build datapack
+        shell: bash
         run: |
           mdl build --mdl . -o dist --wrapper ${{ env.DATAPACK_NAME }} --pack-format ${{ env.PACK_FORMAT }}
 
       - name: Create release zip
+        shell: bash
         run: |
           cd dist
           zip -r ${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip ${{ env.DATAPACK_NAME }}/
@@ -75,6 +81,7 @@ jobs:
 
       - name: Generate release notes
         id: release_notes
+        shell: bash
         run: |
           BUILD_DATE=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
           CHANGES=$(git log --oneline $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD || echo "Initial release")
