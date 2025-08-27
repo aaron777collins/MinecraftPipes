@@ -9,7 +9,7 @@ This guide will help you install and set up the Minecraft Pipes System in your w
 
 ## Prerequisites
 
-- **Minecraft Java Edition 1.21+** (required for the datapack format)
+- **Minecraft Java Edition 1.20+** (required for pack format 82)
 - **A Minecraft world** (singleplayer or multiplayer server)
 - **Basic knowledge** of Minecraft datapacks
 
@@ -17,7 +17,7 @@ This guide will help you install and set up the Minecraft Pipes System in your w
 
 ### Step 1: Download the Datapack
 
-1. Go to the [Releases page](https://github.com/your-username/minecraft-pipes/releases)
+1. Go to the [Releases page](https://github.com/aaron777collins/MinecraftPipes/releases)
 2. Download the latest `minecraft_pipes.zip` file
 3. Extract the ZIP file to get the `minecraft_pipes` folder
 
@@ -95,10 +95,10 @@ git clone https://github.com/your-username/minecraft-pipes.git
 cd minecraft-pipes
 
 # Check syntax
-mdl check .
+mdl check src/
 
 # Build the datapack
-mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48
+mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
 
 # The built datapack will be in dist/minecraft_pipes/
 ```
@@ -116,8 +116,8 @@ mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48
 - **Check**: Make sure you have operator permissions or cheats enabled
 
 #### "Pack format not supported"
-- **Solution**: Update to Minecraft 1.21+ or rebuild with an older pack format
-- **Command**: `mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 47`
+- **Solution**: Update to Minecraft 1.20+ or rebuild with an older pack format
+- **Command**: `mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 47`
 
 #### "Permission denied"
 - **Solution**: Make sure you have write permissions to the world folder
@@ -152,5 +152,5 @@ If you encounter issues during installation:
 
 1. **Check the [Troubleshooting Guide](troubleshooting)**
 2. **Enable debug mode**: `/function pipes:toggle_debug`
-3. **Report issues** on [GitHub Issues](https://github.com/your-username/minecraft-pipes/issues)
-4. **Ask for help** in [GitHub Discussions](https://github.com/your-username/minecraft-pipes/discussions)
+3. **Report issues** on [GitHub Issues](https://github.com/aaron777collins/MinecraftPipes/issues)
+4. **Ask for help** in [GitHub Discussions](https://github.com/aaron777collins/MinecraftPipes/discussions)

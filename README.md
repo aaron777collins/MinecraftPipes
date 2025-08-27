@@ -2,13 +2,13 @@
 
 A comprehensive pipe system for Minecraft that allows item transportation between containers using MDL (Minecraft Datapack Language).
 
-[![Minecraft Version](https://img.shields.io/badge/Minecraft-1.21+-green.svg)](https://www.minecraft.net/)
-[![Pack Format](https://img.shields.io/badge/Pack%20Format-48-blue.svg)](https://minecraft.wiki/w/Data_pack)
+[![Minecraft Version](https://img.shields.io/badge/Minecraft-1.20+-green.svg)](https://www.minecraft.net/)
+[![Pack Format](https://img.shields.io/badge/Pack%20Format-82-blue.svg)](https://minecraft.wiki/w/Data_pack)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ## 🚀 Quick Start
 
-1. **Download** the latest release from [Releases](https://github.com/your-username/minecraft-pipes/releases)
+1. **Download** the latest release from [Releases](https://github.com/aaron777collins/MinecraftPipes/releases)
 2. **Extract** `minecraft_pipes.zip` to your world's `datapacks` folder
 3. **Run** `/reload` in-game
 4. **Create your first pipe**:
@@ -41,14 +41,14 @@ A comprehensive pipe system for Minecraft that allows item transportation betwee
 
 ## 📖 Documentation
 
-📚 **[Full Documentation Website](https://minecraft-pipes.github.io)** - Beautiful, comprehensive guides and tutorials
+📚 **[Full Documentation Website](https://www.aaroncollins.info/MinecraftPipes/)** - Beautiful, comprehensive guides and tutorials
 
-- [Installation Guide](https://minecraft-pipes.github.io/installation) - Step-by-step setup instructions
-- [Basic Usage](https://minecraft-pipes.github.io/basic-usage) - Get started with your first pipe
-- [Advanced Features](https://minecraft-pipes.github.io/advanced-features) - Filtering, energy, redstone control
-- [Configuration](https://minecraft-pipes.github.io/configuration) - Customize performance and behavior
-- [Troubleshooting](https://minecraft-pipes.github.io/troubleshooting) - Common issues and solutions
-- [API Reference](https://minecraft-pipes.github.io/api-reference) - Technical documentation for developers
+- [Installation Guide](https://www.aaroncollins.info/MinecraftPipes/installation) - Step-by-step setup instructions
+- [Basic Usage](https://www.aaroncollins.info/MinecraftPipes/basic-usage) - Get started with your first pipe
+- [Advanced Features](https://www.aaroncollins.info/MinecraftPipes/advanced-features) - Filtering, energy, redstone control
+- [Configuration](https://www.aaroncollins.info/MinecraftPipes/configuration) - Customize performance and behavior
+- [Troubleshooting](https://www.aaroncollins.info/MinecraftPipes/troubleshooting) - Common issues and solutions
+- [API Reference](https://www.aaroncollins.info/MinecraftPipes/api-reference) - Technical documentation for developers
 
 ## 🛠️ Commands
 
@@ -83,12 +83,12 @@ A comprehensive pipe system for Minecraft that allows item transportation betwee
 ## 🔧 Installation
 
 ### Prerequisites
-- **Minecraft Java Edition 1.21+** (required for the datapack format)
+- **Minecraft Java Edition 1.20+** (required for pack format 82)
 - **A Minecraft world** (singleplayer or multiplayer server)
 - **Basic knowledge** of Minecraft datapacks
 
 ### Quick Install
-1. Download the latest release from [Releases](https://github.com/your-username/minecraft-pipes/releases)
+1. Download the latest release from [Releases](https://github.com/aaron777collins/MinecraftPipes/releases)
 2. Extract `minecraft_pipes.zip` to your world's `datapacks` folder
 3. Run `/reload` in-game
 4. Start with `/function pipes:example_quick_start`
@@ -103,7 +103,7 @@ cd minecraft-pipes
 pip install minecraft-datapack-language
 
 # Build the datapack
-mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48
+mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
 
 # Install the built datapack
 cp -r dist/minecraft_pipes /path/to/your/world/datapacks/
@@ -113,12 +113,17 @@ cp -r dist/minecraft_pipes /path/to/your/world/datapacks/
 
 ```
 minecraft-pipes/
-├── core.mdl              # Main pack declaration and lifecycle hooks
-├── pipes.mdl             # Core pipe system functionality
-├── pipes_advanced.mdl    # Advanced features (filtering, energy, etc.)
-├── pipes_config.mdl      # Configuration system
-├── pipes_creation.mdl    # Pipe creation and management
-├── example_usage.mdl     # Example usage and tutorials
+├── src/                  # Source code directory
+│   ├── core.mdl          # Main pack declaration and lifecycle hooks
+│   ├── pipes.mdl         # Core pipe system functionality
+│   ├── pipes_advanced.mdl # Advanced features (filtering, energy, etc.)
+│   ├── pipes_config.mdl  # Configuration system
+│   ├── pipes_creation.mdl # Pipe creation and management
+│   └── example_usage.mdl # Example usage and tutorials
+├── test_examples/        # Test examples (separate datapacks)
+│   ├── advanced_pipe_test.mdl
+│   ├── simple_pipe.mdl
+│   └── run_all_tests.py
 ├── docs/                 # Documentation site (Jekyll)
 │   ├── _config.yml       # Jekyll configuration
 │   ├── _docs/            # Documentation pages
@@ -251,17 +256,17 @@ We welcome contributions! Here's how you can help:
 ### Development Setup
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/minecraft-pipes.git
-cd minecraft-pipes
+git clone https://github.com/aaron777collins/MinecraftPipes.git
+cd MinecraftPipes
 
 # Install dependencies
 pip install minecraft-datapack-language
 
 # Check syntax
-mdl check .
+mdl check src/
 
 # Build datapack
-mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48
+mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
 
 # Run documentation site locally
 cd docs
@@ -275,10 +280,10 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **📚 Documentation**: [Beautiful Documentation Website](https://minecraft-pipes.github.io)
-- **🐛 Issues**: [GitHub Issues](https://github.com/minecraft-pipes/minecraft-pipes/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/minecraft-pipes/minecraft-pipes/discussions)
-- **📖 Wiki**: [GitHub Wiki](https://github.com/minecraft-pipes/minecraft-pipes/wiki)
+- **📚 Documentation**: [Beautiful Documentation Website](https://www.aaroncollins.info/MinecraftPipes/)
+- **🐛 Issues**: [GitHub Issues](https://github.com/aaron777collins/MinecraftPipes/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/aaron777collins/MinecraftPipes/discussions)
+- **📖 Wiki**: [GitHub Wiki](https://github.com/aaron777collins/MinecraftPipes/wiki)
 - **🎮 Discord**: [Join our Community](https://discord.gg/minecraft-pipes)
 
 ## 🙏 Acknowledgments
@@ -289,16 +294,16 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📊 Statistics
 
-- **Downloads**: [![Downloads](https://img.shields.io/github/downloads/your-username/minecraft-pipes/total.svg)](https://github.com/your-username/minecraft-pipes/releases)
-- **Stars**: [![Stars](https://img.shields.io/github/stars/your-username/minecraft-pipes.svg)](https://github.com/your-username/minecraft-pipes/stargazers)
-- **Forks**: [![Forks](https://img.shields.io/github/forks/your-username/minecraft-pipes.svg)](https://github.com/your-username/minecraft-pipes/network)
-- **Issues**: [![Issues](https://img.shields.io/github/issues/your-username/minecraft-pipes.svg)](https://github.com/your-username/minecraft-pipes/issues)
+- **Downloads**: [![Downloads](https://img.shields.io/github/downloads/aaron777collins/MinecraftPipes/total.svg)](https://github.com/aaron777collins/MinecraftPipes/releases)
+- **Stars**: [![Stars](https://img.shields.io/github/stars/aaron777collins/MinecraftPipes.svg)](https://github.com/aaron777collins/MinecraftPipes/stargazers)
+- **Forks**: [![Forks](https://img.shields.io/github/forks/aaron777collins/MinecraftPipes.svg)](https://github.com/aaron777collins/MinecraftPipes/network)
+- **Issues**: [![Issues](https://img.shields.io/github/issues/aaron777collins/MinecraftPipes.svg)](https://github.com/aaron777collins/MinecraftPipes/issues)
 
 ---
 
 **Made with ❤️ for the Minecraft community**
 
-[![Documentation](https://img.shields.io/badge/Documentation-View%20Docs-green.svg)](https://minecraft-pipes.github.io)
-[![GitHub](https://img.shields.io/badge/GitHub-View%20on%20GitHub-blue.svg)](https://github.com/minecraft-pipes/minecraft-pipes)
+[![Documentation](https://img.shields.io/badge/Documentation-View%20Docs-green.svg)](https://www.aaroncollins.info/MinecraftPipes/)
+[![GitHub](https://img.shields.io/badge/GitHub-View%20on%20GitHub-blue.svg)](https://github.com/aaron777collins/MinecraftPipes)
 [![Discord](https://img.shields.io/badge/Discord-Join%20our%20Discord-7289DA.svg)](https://discord.gg/minecraft-pipes)
 [![Twitter](https://img.shields.io/badge/Twitter-Follow%20us-1DA1F2.svg)](https://twitter.com/minecraft_pipes)

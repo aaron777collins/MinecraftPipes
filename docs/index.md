@@ -34,7 +34,7 @@ description: A comprehensive pipe system for Minecraft that allows item transpor
     </div>
   </div>
   <div style="margin-top: 2rem;">
-    <a href="https://github.com/minecraft-pipes/minecraft-pipes/releases" class="btn btn-primary">
+    <a href="https://github.com/aaron777collins/MinecraftPipes/releases" class="btn btn-primary">
       <i class="fas fa-download"></i> Download Latest Release
     </a>
     <a href="/installation" class="btn btn-outline" style="margin-left: 1rem;">
