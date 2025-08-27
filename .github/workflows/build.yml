@@ -73,28 +73,39 @@ jobs:
           zip -r ${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip ${{ env.DATAPACK_NAME }}/
           cd ..
 
+      - name: Generate release notes
+        id: release_notes
+        run: |
+          BUILD_DATE=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
+          CHANGES=$(git log --oneline $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD || echo "Initial release")
+          
+          cat << EOF > release_notes.md
+          ## Minecraft Pipes System ${{ github.ref_name || inputs.version }}
+          
+          ### Installation
+          1. Download \`${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip\`
+          2. Extract to your world's \`datapacks\` folder
+          3. Run \`/reload\` in-game
+          4. Use \`/function pipes:help\` to get started
+          
+          ### Build Info
+          - Pack Format: ${{ env.PACK_FORMAT }}
+          - Minecraft Version: ${{ env.MINECRAFT_VERSION }}
+          - Build Date: $BUILD_DATE
+          - Commit: ${{ github.sha }}
+          
+          ### Changes
+          $CHANGES
+          EOF
+          
+          cat release_notes.md
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name || inputs.version }}
           name: Minecraft Pipes ${{ github.ref_name || inputs.version }}
-          body: |
-            ## Minecraft Pipes System ${{ github.ref_name || inputs.version }}
-            
-            ### Installation
-            1. Download \`${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip\`
-            2. Extract to your world's \`datapacks\` folder
-            3. Run \`/reload\` in-game
-            4. Use \`/function pipes:help\` to get started
-            
-            ### Build Info
-            - Pack Format: ${{ env.PACK_FORMAT }}
-            - Minecraft Version: ${{ env.MINECRAFT_VERSION }}
-            - Build Date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
-            - Commit: ${{ github.sha }}
-            
-            ### Changes
-            $(git log --oneline $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD)
+          body_path: release_notes.md
           files: |
             dist/${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip
         env:
