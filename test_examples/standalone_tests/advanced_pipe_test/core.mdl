@@ -1,0 +1,82 @@
+pack "Advanced Pipe Test" description "Advanced pipe system test examples" pack_format 82
+
+namespace "advanced_test"
+
+# Core lifecycle hooks
+on_load "advanced_test:init"
+on_tick "advanced_test:tick"
+
+# Function tags for vanilla integration
+tag function "minecraft:load":
+    add "advanced_test:init"
+
+tag function "minecraft:tick":
+    add "advanced_test:tick"
+
+function "init":
+    # Initialize advanced test scoreboards
+    scoreboard objectives add advanced_test_tick dummy
+    scoreboard objectives add advanced_test_energy dummy
+    scoreboard objectives add advanced_test_filter dummy
+    scoreboard objectives add advanced_test_priority dummy
+    
+    # Set initial values
+    scoreboard players set #global advanced_test_tick 0
+    scoreboard players set #global advanced_test_energy 100
+    scoreboard players set #global advanced_test_filter 0
+    scoreboard players set #global advanced_test_priority 1
+    
+    tellraw @a [{"text":"[ADVANCED TEST] Advanced pipe test loaded!","color":"green"}]
+
+function "tick":
+    # Increment tick counter
+    scoreboard players add #global advanced_test_tick 1
+    
+    # Test advanced functionality every 200 ticks
+    execute if score #global advanced_test_tick matches 200.. run function advanced_test:test_advanced
+
+function "test_advanced":
+    # Test advanced pipe features
+    tellraw @a [{"text":"[ADVANCED TEST] Running advanced pipe test...","color":"yellow"}]
+    
+    # Test energy system
+    execute if score #global advanced_test_energy > 0 run function advanced_test:test_energy
+    
+    # Test filtering system
+    execute if score #global advanced_test_filter > 0 run function advanced_test:test_filtering
+    
+    # Test priority system
+    execute if score #global advanced_test_priority > 0 run function advanced_test:test_priority
+    
+    tellraw @a [{"text":"[ADVANCED TEST] Advanced pipe test completed!","color":"green"}]
+
+function "test_energy":
+    # Test energy consumption
+    scoreboard players remove #global advanced_test_energy 1
+    tellraw @a [{"text":"[ADVANCED TEST] Energy consumed: ","color":"aqua"},{"score":{"name":"#global","objective":"advanced_test_energy"},"color":"yellow"}]
+
+function "test_filtering":
+    # Test item filtering
+    tellraw @a [{"text":"[ADVANCED TEST] Testing item filtering...","color":"aqua"}]
+    
+    # Create filtered source
+    summon marker ~ ~ ~ {Tags:["advanced_test.filtered_source"],CustomName:'{"text":"Filtered Source","italic":false}'}
+
+function "test_priority":
+    # Test priority system
+    tellraw @a [{"text":"[ADVANCED TEST] Testing priority system...","color":"aqua"}]
+    
+    # Create priority sink
+    summon marker ~ ~5 ~ {Tags:["advanced_test.priority_sink"],CustomName:'{"text":"Priority Sink","italic":false}'}
+
+function "cleanup":
+    # Clean up advanced test entities
+    kill @e[type=marker,tag=advanced_test.filtered_source]
+    kill @e[type=marker,tag=advanced_test.priority_sink]
+    
+    # Reset test values
+    scoreboard players set #global advanced_test_energy 100
+    scoreboard players set #global advanced_test_filter 0
+    scoreboard players set #global advanced_test_priority 1
+    
+    tellraw @a [{"text":"[ADVANCED TEST] Advanced test cleanup completed!","color":"aqua"}]

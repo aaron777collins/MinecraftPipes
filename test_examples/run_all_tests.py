@@ -68,18 +68,39 @@ def test_mdl_syntax_check():
                     print(f"❌ {file} has errors: {e}")
                     return False
     
-    # Check test examples (these should have pack declarations)
-    test_dir = Path("test_examples")
-    if test_dir.exists():
-        for mdl_file in test_dir.glob("*.mdl"):
-            print(f"Checking {mdl_file}...")
-            success, output = run_command(["mdl", "check", str(mdl_file)])
-            if success:
-                print(f"✅ {mdl_file} syntax is valid")
-            else:
-                print(f"❌ {mdl_file} has syntax errors")
-                print(f"Error: {output}")
+    # Check integrated test files (these are part of the main datapack, no pack declaration)
+    integrated_test_files = ["test_examples/simple_pipe.mdl", "test_examples/advanced_pipe_test.mdl"]
+    for file in integrated_test_files:
+        if os.path.exists(file):
+            print(f"Checking integrated test {file}...")
+            # These files should NOT have pack declarations since they're part of main datapack
+            try:
+                with open(file, 'r') as f:
+                    content = f.read()
+                if 'pack' not in content and 'namespace' in content:
+                    print(f"✅ {file} structure is valid (integrated test)")
+                else:
+                    print(f"❌ {file} should not have pack declaration (integrated test)")
+                    return False
+            except Exception as e:
+                print(f"❌ {file} has errors: {e}")
                 return False
+    
+    # Check standalone test files (these should have pack declarations)
+    standalone_test_dir = Path("test_examples/standalone_tests")
+    if standalone_test_dir.exists():
+        for test_folder in standalone_test_dir.iterdir():
+            if test_folder.is_dir():
+                core_file = test_folder / "core.mdl"
+                if core_file.exists():
+                    print(f"Checking standalone test {core_file}...")
+                    success, output = run_command(["mdl", "check", str(core_file)])
+                    if success:
+                        print(f"✅ {core_file} syntax is valid")
+                    else:
+                        print(f"❌ {core_file} has syntax errors")
+                        print(f"Error: {output}")
+                        return False
     
     return True
 
@@ -90,20 +111,15 @@ def test_mdl_build():
     # Create dist directory
     os.makedirs("test_examples/dist", exist_ok=True)
     
-    # Create temporary directory for main project files
-    import tempfile
-    import shutil
-    
-    with tempfile.TemporaryDirectory() as temp_dir:
-        # Build main project from src directory
-        print("Building main project...")
-        success, output = run_command([
-            "mdl", "build", 
-            "--mdl", "src", 
-            "-o", "test_examples/dist", 
-            "--wrapper", "minecraft_pipes", 
-            "--pack-format", "82"
-        ])
+    # Build main project from src directory (includes integrated tests)
+    print("Building main project (with integrated tests)...")
+    success, output = run_command([
+        "mdl", "build", 
+        "--mdl", "src", 
+        "-o", "test_examples/dist", 
+        "--wrapper", "minecraft_pipes", 
+        "--pack-format", "82"
+    ])
     
     if success:
         print("✅ Main project built successfully")
@@ -112,22 +128,25 @@ def test_mdl_build():
         print(f"Error: {output}")
         return False
     
-    # Build test examples
-    test_dir = Path("test_examples")
-    if test_dir.exists():
-        for mdl_file in test_dir.glob("*.mdl"):
-            print(f"Building {mdl_file}...")
-            success, output = run_command([
-                "mdl", "build", 
-                "--mdl", str(mdl_file), 
-                "-o", "test_examples/dist"
-            ])
-            if success:
-                print(f"✅ {mdl_file} built successfully")
-            else:
-                print(f"❌ {mdl_file} build failed")
-                print(f"Error: {output}")
-                return False
+    # Build standalone test examples
+    standalone_test_dir = Path("test_examples/standalone_tests")
+    if standalone_test_dir.exists():
+        for test_folder in standalone_test_dir.iterdir():
+            if test_folder.is_dir():
+                print(f"Building standalone test {test_folder.name}...")
+                success, output = run_command([
+                    "mdl", "build", 
+                    "--mdl", str(test_folder), 
+                    "-o", "test_examples/dist",
+                    "--wrapper", test_folder.name,
+                    "--pack-format", "82"
+                ])
+                if success:
+                    print(f"✅ {test_folder.name} built successfully")
+                else:
+                    print(f"❌ {test_folder.name} build failed")
+                    print(f"Error: {output}")
+                    return False
     
     return True
 
