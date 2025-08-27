@@ -1,0 +1,12 @@
+pack "Minecraft Pipes System" description "Advanced pipe system for item transportation between containers" pack_format 48
+
+# Core lifecycle hooks
+on_load "pipes:init"
+on_tick "pipes:tick_main"
+
+# Function tags for vanilla integration
+tag function "minecraft:load":
+    add "pipes:init"
+
+tag function "minecraft:tick":
+    add "pipes:tick_main"

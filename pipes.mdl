@@ -1,0 +1,212 @@
+namespace "pipes"
+
+# ===== INITIALIZATION =====
+function "init":
+    # Initialize scoreboards
+    scoreboard objectives add pipes_tick dummy
+    scoreboard objectives add pipes_steps dummy
+    scoreboard objectives add pipes_spawn dummy
+    scoreboard objectives add pipes_tmp dummy
+    scoreboard objectives add pipes_flow_rate dummy
+    scoreboard objectives add pipes_connection_id dummy
+    scoreboard objectives add pipes_item_count dummy
+    
+    # Initialize global variables
+    scoreboard players set #global pipes_tick 0
+    scoreboard players set #global pipes_spawn 0
+    scoreboard players set #global pipes_flow_rate 20
+    scoreboard players set #global pipes_connection_id 0
+    
+    # Initialize configuration system
+    function pipes:init_config
+    
+    # Clear any existing pipe entities
+    kill @e[type=marker,tag=pipes.controller]
+    kill @e[type=item_display,tag=pipes.token]
+    
+    tellraw @a [{"text":"[PIPES] Advanced pipe system loaded!","color":"green"}]
+    tellraw @a [{"text":"[PIPES] Use /function pipes:help for commands","color":"aqua"}]
+
+# ===== MAIN TICK FUNCTION =====
+function "tick_main":
+    # Increment global tick counter
+    scoreboard players add #global pipes_tick 1
+    
+    # Spawn items from sources every flow_rate ticks
+    scoreboard players add #global pipes_spawn 1
+    execute if score #global pipes_spawn >= #global pipes_flow_rate run function pipes:spawn_from_sources
+    execute if score #global pipes_spawn >= #global pipes_flow_rate run scoreboard players set #global pipes_spawn 0
+    
+    # Move all pipe tokens
+    function pipes:move_all_tokens
+    
+    # Process pipe connections
+    function pipes:process_connections
+    
+    # Clean up expired tokens
+    function pipes:cleanup_tokens
+
+# ===== PIPE TOKEN MANAGEMENT =====
+function "spawn_from_sources":
+    # Spawn tokens from all source controllers that have containers below them
+    execute as @e[type=marker,tag=pipes.source] at @s if block ~ ~-1 ~ minecraft:chest run function pipes:spawn_one_token
+    execute as @e[type=marker,tag=pipes.source] at @s if block ~ ~-1 ~ minecraft:barrel run function pipes:spawn_one_token
+    execute as @e[type=marker,tag=pipes.source] at @s if block ~ ~-1 ~ minecraft:hopper run function pipes:spawn_one_token
+    execute as @e[type=marker,tag=pipes.source] at @s if block ~ ~-1 ~ minecraft:dropper run function pipes:spawn_one_token
+    execute as @e[type=marker,tag=pipes.source] at @s if block ~ ~-1 ~ minecraft:dispenser run function pipes:spawn_one_token
+
+function "spawn_one_token":
+    # Create a new pipe token at the source location
+    summon item_display ~ ~1 ~ {Tags:["pipes.token","pipes.flow"],item:{id:"minecraft:iron_ingot",count:1b},transformation:{translation:[0.0f,0.0f,0.0f],left_rotation:[0.0f,0.0f,0.0f,1.0f],right_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[0.3f,0.3f,0.3f]},billboard:"fixed"}
+    
+    # Set initial properties for the new token
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_steps 0
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_item_count 1
+
+function "move_all_tokens":
+    # Move all pipe tokens along their path
+    execute as @e[type=item_display,tag=pipes.flow] run function pipes:move_token_step
+
+function "move_token_step":
+    # Increment step counter and move token
+    scoreboard players add @s pipes_steps 1
+    tp @s ~0.1 ~ ~
+    
+    # Check for destination (sink) and process item transfer
+    execute at @s if entity @e[type=marker,tag=pipes.sink,distance=..1] run function pipes:process_item_transfer
+    
+    # Despawn token if it has traveled too far
+    execute if score @s pipes_steps matches 500.. run kill @s
+
+function "process_item_transfer":
+    # Transfer item from token to nearby container
+    execute at @s if block ~ ~-1 ~ minecraft:chest run function pipes:transfer_to_chest
+    execute at @s if block ~ ~-1 ~ minecraft:barrel run function pipes:transfer_to_barrel
+    execute at @s if block ~ ~-1 ~ minecraft:hopper run function pipes:transfer_to_hopper
+    execute at @s if block ~ ~-1 ~ minecraft:dropper run function pipes:transfer_to_dropper
+    execute at @s if block ~ ~-1 ~ minecraft:dispenser run function pipes:transfer_to_dispenser
+    
+    # Kill the token after transfer
+    kill @s
+
+function "transfer_to_chest":
+    # Transfer item to chest
+    execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[].Count
+    execute if score #temp pipes_tmp < 64 run function pipes:add_item_to_container
+
+function "transfer_to_barrel":
+    # Transfer item to barrel
+    execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[].Count
+    execute if score #temp pipes_tmp < 64 run function pipes:add_item_to_container
+
+function "transfer_to_hopper":
+    # Transfer item to hopper
+    execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[].Count
+    execute if score #temp pipes_tmp < 5 run function pipes:add_item_to_container
+
+function "transfer_to_dropper":
+    # Transfer item to dropper
+    execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[].Count
+    execute if score #temp pipes_tmp < 9 run function pipes:add_item_to_container
+
+function "transfer_to_dispenser":
+    # Transfer item to dispenser
+    execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[].Count
+    execute if score #temp pipes_tmp < 9 run function pipes:add_item_to_container
+
+function "add_item_to_container":
+    # Add iron ingot to the container below
+    data modify block ~ ~-1 ~ Items append value {Slot:0b,id:"minecraft:iron_ingot",Count:1b}
+    tellraw @a [{"text":"[PIPES] Item transferred to container","color":"green"}]
+
+function "cleanup_tokens":
+    # Remove tokens that are too old or stuck
+    kill @e[type=item_display,tag=pipes.flow,nbt={Age:6000}]
+
+# ===== PIPE CONNECTION MANAGEMENT =====
+function "process_connections":
+    # Process all pipe connections and update routing
+    execute as @e[type=marker,tag=pipes.controller] run function pipes:update_connection_status
+
+function "update_connection_status":
+    # Update connection status for all controllers
+    execute if entity @s[tag=pipes.source] run function pipes:check_source_connection
+    execute if entity @s[tag=pipes.sink] run function pipes:check_sink_connection
+
+function "check_source_connection":
+    # Check if source has valid connection to sink
+    execute unless entity @e[type=marker,tag=pipes.sink,distance=..50] run tellraw @a [{"text":"[PIPES] Warning: Source has no nearby sink","color":"yellow"}]
+
+function "check_sink_connection":
+    # Check if sink has valid connection to source
+    execute unless entity @e[type=marker,tag=pipes.source,distance=..50] run tellraw @a [{"text":"[PIPES] Warning: Sink has no nearby source","color":"yellow"}]
+
+# ===== USER COMMANDS =====
+function "help":
+    tellraw @s [{"text":"=== PIPE SYSTEM COMMANDS ===","color":"gold"}]
+    tellraw @s [{"text":"/function pipes:create_source - Create pipe source","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:create_sink - Create pipe sink","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:set_flow_rate <ticks> - Set item flow rate","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:list_connections - List all connections","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:clear_all - Remove all pipes","color":"red"}]
+    tellraw @s [{"text":"/function pipes:demo_mode - Toggle demo mode","color":"yellow"}]
+
+function "create_source":
+    # Create a pipe source at player location
+    summon marker ~ ~-1 ~ {Tags:["pipes.controller","pipes.source"],CustomName:'{"text":"Pipe Source","italic":false}'}
+    scoreboard players add #global pipes_connection_id 1
+    execute as @e[type=marker,tag=pipes.source,limit=1,sort=nearest] run scoreboard players set @s pipes_connection_id #global pipes_connection_id
+    tellraw @s [{"text":"[PIPES] Source created with ID: ","color":"green"},{"score":{"name":"#global","objective":"pipes_connection_id"},"color":"gold"}]
+    tellraw @s [{"text":"[PIPES] Place a container (chest, barrel, etc.) below the marker","color":"aqua"}]
+
+function "create_sink":
+    # Create a pipe sink at player location
+    summon marker ~ ~-1 ~ {Tags:["pipes.controller","pipes.sink"],CustomName:'{"text":"Pipe Sink","italic":false}'}
+    scoreboard players add #global pipes_connection_id 1
+    execute as @e[type=marker,tag=pipes.sink,limit=1,sort=nearest] run scoreboard players set @s pipes_connection_id #global pipes_connection_id
+    tellraw @s [{"text":"[PIPES] Sink created with ID: ","color":"green"},{"score":{"name":"#global","objective":"pipes_connection_id"},"color":"gold"}]
+    tellraw @s [{"text":"[PIPES] Place a container (chest, barrel, etc.) below the marker","color":"aqua"}]
+
+function "set_flow_rate":
+    # Set the flow rate (how often items spawn)
+    scoreboard players set #global pipes_flow_rate 20
+    tellraw @s [{"text":"[PIPES] Flow rate set to 20 ticks (1 second)","color":"aqua"}]
+
+function "list_connections":
+    # List all pipe connections
+    execute store result score #sources pipes_tmp run execute if entity @e[type=marker,tag=pipes.source]
+    execute store result score #sinks pipes_tmp run execute if entity @e[type=marker,tag=pipes.sink]
+    tellraw @s [{"text":"[PIPES] Active connections: ","color":"aqua"},{"score":{"name":"#sources","objective":"pipes_tmp"},"color":"green"},{"text":" sources, ","color":"aqua"},{"score":{"name":"#sinks","objective":"pipes_tmp"},"color":"green"},{"text":" sinks","color":"aqua"}]
+    execute if score #sources pipes_tmp > 0 run tellraw @s [{"text":"[PIPES] Sources found - place containers below them","color":"yellow"}]
+    execute if score #sinks pipes_tmp > 0 run tellraw @s [{"text":"[PIPES] Sinks found - place containers below them","color":"yellow"}]
+
+function "clear_all":
+    # Remove all pipe entities
+    kill @e[type=marker,tag=pipes.controller]
+    kill @e[type=item_display,tag=pipes.token]
+    tellraw @s [{"text":"[PIPES] All pipes cleared","color":"red"}]
+
+function "demo_mode":
+    # Toggle demo mode with visible tokens
+    tellraw @s [{"text":"[PIPES] Demo mode: Tokens are visible and move slowly","color":"yellow"}]
+    scoreboard players set #global pipes_flow_rate 40
+
+# ===== LEGACY COMPATIBILITY =====
+function "source_here":
+    # Legacy function - redirect to new command
+    function pipes:create_source
+
+function "sink_here":
+    # Legacy function - redirect to new command
+    function pipes:create_sink
+
+function "give_wrench":
+    # Give the pipe wrench tool
+    give @s minecraft:carrot_on_a_stick 1
+    execute if entity @s[nbt={SelectedItem:{id:"minecraft:carrot_on_a_stick"}}] run data modify entity @s SelectedItem.tag.display.Name set value '{"text":"Pipe Wrench","italic":false,"color":"aqua"}'
+    execute if entity @s[nbt={SelectedItem:{id:"minecraft:carrot_on_a_stick"}}] run data modify entity @s SelectedItem.tag.Pipes set value 1b
+    tellraw @s [{"text":"[PIPES] Pipe wrench given!","color":"aqua"}]
+
+function "ping":
+    # Simple ping function for testing
+    tellraw @s [{"text":"[PIPES] pong — namespace active","color":"gold"}]

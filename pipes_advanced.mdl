@@ -1,0 +1,136 @@
+namespace "pipes"
+
+# ===== ADVANCED PIPE FEATURES =====
+function "init_advanced":
+    # Initialize advanced pipe features
+    scoreboard objectives add pipes_filter_type dummy
+    scoreboard objectives add pipes_priority dummy
+    scoreboard objectives add pipes_energy dummy
+    scoreboard objectives add pipes_redstone dummy
+    
+    # Set default values
+    scoreboard players set #global pipes_energy 100
+    scoreboard players set #global pipes_priority 0
+
+# ===== ITEM FILTERING SYSTEM =====
+function "set_source_filter":
+    # Set filter for a source (what items to extract)
+    execute as @e[type=marker,tag=pipes.source,distance=..3,limit=1] run scoreboard players set @s pipes_filter_type 1
+    tellraw @s [{"text":"[PIPES] Source filter set to iron items","color":"aqua"}]
+
+function "set_sink_filter":
+    # Set filter for a sink (what items to accept)
+    execute as @e[type=marker,tag=pipes.sink,distance=..3,limit=1] run scoreboard players set @s pipes_filter_type 1
+    tellraw @s [{"text":"[PIPES] Sink filter set to iron items","color":"aqua"}]
+
+function "extract_from_chest":
+    # Extract items from chest based on filter
+    execute at @s if block ~ ~1 ~ minecraft:chest run function pipes:extract_filtered_items
+
+function "extract_filtered_items":
+    # Extract items matching the filter from container
+    execute store result score #temp pipes_tmp run data get block ~ ~1 ~ Items[{id:"minecraft:iron_ingot"}].Count
+    execute if score #temp pipes_tmp > 0 run function pipes:remove_item_from_container
+
+function "remove_item_from_container":
+    # Remove one item from the container
+    data remove block ~ ~1 ~ Items[{id:"minecraft:iron_ingot"}]
+    data modify block ~ ~1 ~ Items[{id:"minecraft:iron_ingot"}].Count set from score #temp pipes_tmp
+    scoreboard players remove #temp pipes_tmp 1
+
+# ===== ENERGY SYSTEM =====
+function "consume_energy":
+    # Consume energy for pipe operations
+    scoreboard players remove #global pipes_energy 1
+    execute if score #global pipes_energy <= 0 run function pipes:disable_pipes
+
+function "disable_pipes":
+    # Disable pipes when out of energy
+    tellraw @a [{"text":"[PIPES] Warning: Low energy! Pipes may stop working","color":"red"}]
+
+function "recharge_energy":
+    # Recharge energy system
+    scoreboard players add #global pipes_energy 10
+    execute if score #global pipes_energy > 100 run scoreboard players set #global pipes_energy 100
+
+# ===== REDSTONE CONTROL =====
+function "set_redstone_control":
+    # Enable redstone control for pipes
+    execute as @e[type=marker,tag=pipes.controller,distance=..3,limit=1] run scoreboard players set @s pipes_redstone 1
+    tellraw @s [{"text":"[PIPES] Redstone control enabled","color":"aqua"}]
+
+function "check_redstone":
+    # Check redstone signal for pipe control
+    execute if block ~ ~-1 ~ minecraft:redstone_block run function pipes:enable_pipe
+    execute unless block ~ ~-1 ~ minecraft:redstone_block run function pipes:disable_pipe
+
+function "enable_pipe":
+    # Enable pipe when redstone signal is present
+    execute if entity @s[tag=pipes.source] run tag @s add pipes.active
+
+function "disable_pipe":
+    # Disable pipe when no redstone signal
+    execute if entity @s[tag=pipes.source] run tag @s remove pipes.active
+
+# ===== PRIORITY SYSTEM =====
+function "set_priority":
+    # Set priority for pipe connections (higher = more important)
+    execute as @e[type=marker,tag=pipes.controller,distance=..3,limit=1] run scoreboard players set @s pipes_priority 5
+    tellraw @s [{"text":"[PIPES] Priority set to 5","color":"aqua"}]
+
+function "process_priority":
+    # Process pipes based on priority
+    execute as @e[type=marker,tag=pipes.source] run function pipes:check_priority_order
+
+function "check_priority_order":
+    # Check if this source has higher priority than others
+    execute unless entity @e[type=marker,tag=pipes.source,scores={pipes_priority=6..}] run function pipes:spawn_one_token
+
+# ===== DIFFERENT ITEM TYPES =====
+function "spawn_diamond_token":
+    # Spawn a diamond token instead of iron
+    summon item_display ~ ~1 ~ {Tags:["pipes.token","pipes.flow"],item:{id:"minecraft:diamond",count:1b},transformation:{translation:[0.0f,0.0f,0.0f],left_rotation:[0.0f,0.0f,0.0f,1.0f],right_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[0.3f,0.3f,0.3f]},billboard:"fixed"}
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_steps 0
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_item_count 1
+
+function "spawn_gold_token":
+    # Spawn a gold token
+    summon item_display ~ ~1 ~ {Tags:["pipes.token","pipes.flow"],item:{id:"minecraft:gold_ingot",count:1b},transformation:{translation:[0.0f,0.0f,0.0f],left_rotation:[0.0f,0.0f,0.0f,1.0f],right_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[0.3f,0.3f,0.3f]},billboard:"fixed"}
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_steps 0
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_item_count 1
+
+# ===== ADVANCED TRANSFER FUNCTIONS =====
+function "transfer_diamond_to_container":
+    # Transfer diamond to container
+    data modify block ~ ~-1 ~ Items append value {Slot:0b,id:"minecraft:diamond",Count:1b}
+
+function "transfer_gold_to_container":
+    # Transfer gold to container
+    data modify block ~ ~-1 ~ Items append value {Slot:0b,id:"minecraft:gold_ingot",Count:1b}
+
+# ===== ADVANCED COMMANDS =====
+function "advanced_help":
+    tellraw @s [{"text":"=== ADVANCED PIPE COMMANDS ===","color":"gold"}]
+    tellraw @s [{"text":"/function pipes:set_source_filter - Set item filter for source","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:set_sink_filter - Set item filter for sink","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:set_redstone_control - Enable redstone control","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:set_priority <1-10> - Set pipe priority","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:recharge_energy - Recharge energy system","color":"aqua"}]
+    tellraw @s [{"text":"/function pipes:spawn_diamond_token - Spawn diamond token","color":"yellow"}]
+    tellraw @s [{"text":"/function pipes:spawn_gold_token - Spawn gold token","color":"yellow"}]
+
+function "create_smart_source":
+    # Create a smart source with filtering
+    summon marker ~ ~-1 ~ {Tags:["pipes.controller","pipes.source","pipes.smart"],CustomName:'{"text":"Smart Pipe Source","italic":false}'}
+    scoreboard players add #global pipes_connection_id 1
+    execute as @e[type=marker,tag=pipes.smart,limit=1,sort=nearest] run scoreboard players set @s pipes_connection_id #global pipes_connection_id
+    execute as @e[type=marker,tag=pipes.smart,limit=1,sort=nearest] run scoreboard players set @s pipes_filter_type 1
+    tellraw @s [{"text":"[PIPES] Smart source created with filtering","color":"green"}]
+
+function "create_smart_sink":
+    # Create a smart sink with filtering
+    summon marker ~ ~-1 ~ {Tags:["pipes.controller","pipes.sink","pipes.smart"],CustomName:'{"text":"Smart Pipe Sink","italic":false}'}
+    scoreboard players add #global pipes_connection_id 1
+    execute as @e[type=marker,tag=pipes.smart,limit=1,sort=nearest] run scoreboard players set @s pipes_connection_id #global pipes_connection_id
+    execute as @e[type=marker,tag=pipes.smart,limit=1,sort=nearest] run scoreboard players set @s pipes_filter_type 1
+    tellraw @s [{"text":"[PIPES] Smart sink created with filtering","color":"green"}]

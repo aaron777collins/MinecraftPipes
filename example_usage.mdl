@@ -1,0 +1,84 @@
+namespace "pipes"
+
+# ===== EXAMPLE USAGE FUNCTIONS =====
+function "example_setup":
+    # Example setup for a basic pipe system
+    tellraw @s [{"text":"=== PIPE SYSTEM EXAMPLE SETUP ===","color":"gold"}]
+    tellraw @s [{"text":"1. Place a chest with items","color":"aqua"}]
+    tellraw @s [{"text":"2. Run: /function pipes:create_source","color":"yellow"}]
+    tellraw @s [{"text":"3. Place another chest for receiving","color":"aqua"}]
+    tellraw @s [{"text":"4. Run: /function pipes:create_sink","color":"yellow"}]
+    tellraw @s [{"text":"5. Watch items flow through pipes!","color":"green"}]
+
+function "example_advanced_setup":
+    # Example setup for advanced features
+    tellraw @s [{"text":"=== ADVANCED PIPE SETUP ===","color":"gold"}]
+    tellraw @s [{"text":"1. Create smart source: /function pipes:create_smart_source","color":"aqua"}]
+    tellraw @s [{"text":"2. Create smart sink: /function pipes:create_smart_sink","color":"aqua"}]
+    tellraw @s [{"text":"3. Set filters: /function pipes:set_source_filter","color":"yellow"}]
+    tellraw @s [{"text":"4. Enable redstone: /function pipes:set_redstone_control","color":"yellow"}]
+    tellraw @s [{"text":"5. Set priority: /function pipes:set_priority","color":"yellow"}]
+
+function "example_chest_to_chest":
+    # Complete example: chest to chest transfer
+    tellraw @s [{"text":"=== CHEST TO CHEST EXAMPLE ===","color":"gold"}]
+    tellraw @s [{"text":"Step 1: Place source chest with iron ingots","color":"aqua"}]
+    tellraw @s [{"text":"Step 2: Stand on the chest and run:","color":"aqua"}]
+    tellraw @s [{"text":"  /function pipes:create_source","color":"yellow"}]
+    tellraw @s [{"text":"Step 3: Place destination chest 10 blocks away","color":"aqua"}]
+    tellraw @s [{"text":"Step 4: Stand on destination chest and run:","color":"aqua"}]
+    tellraw @s [{"text":"  /function pipes:create_sink","color":"yellow"}]
+    tellraw @s [{"text":"Step 5: Watch iron ingots flow through the air!","color":"green"}]
+
+function "example_multi_container":
+    # Example with multiple container types
+    tellraw @s [{"text":"=== MULTI-CONTAINER EXAMPLE ===","color":"gold"}]
+    tellraw @s [{"text":"Supported containers:","color":"aqua"}]
+    tellraw @s [{"text":"- Chests (64 items/slot)","color":"white"}]
+    tellraw @s [{"text":"- Barrels (64 items/slot)","color":"white"}]
+    tellraw @s [{"text":"- Hoppers (5 items/slot)","color":"white"}]
+    tellraw @s [{"text":"- Droppers (9 items/slot)","color":"white"}]
+    tellraw @s [{"text":"- Dispensers (9 items/slot)","color":"white"}]
+    tellraw @s [{"text":"Place any of these and create source/sink on top!","color":"green"}]
+
+function "example_configuration":
+    # Example configuration setup
+    tellraw @s [{"text":"=== CONFIGURATION EXAMPLE ===","color":"gold"}]
+    tellraw @s [{"text":"Fast flow (every 10 ticks):","color":"aqua"}]
+    tellraw @s [{"text":"  /function pipes:set_flow_rate","color":"yellow"}]
+    tellraw @s [{"text":"Slow movement (0.05 blocks/tick):","color":"aqua"}]
+    tellraw @s [{"text":"  /function pipes:set_token_speed","color":"yellow"}]
+    tellraw @s [{"text":"Enable debug mode:","color":"aqua"}]
+    tellraw @s [{"text":"  /function pipes:toggle_debug","color":"yellow"}]
+    tellraw @s [{"text":"Show current config:","color":"aqua"}]
+    tellraw @s [{"text":"  /function pipes:show_config","color":"yellow"}]
+
+function "example_troubleshooting":
+    # Example troubleshooting steps
+    tellraw @s [{"text":"=== TROUBLESHOOTING EXAMPLE ===","color":"gold"}]
+    tellraw @s [{"text":"If pipes aren't working:","color":"aqua"}]
+    tellraw @s [{"text":"1. Check connections: /function pipes:list_connections","color":"white"}]
+    tellraw @s [{"text":"2. Enable debug: /function pipes:toggle_debug","color":"white"}]
+    tellraw @s [{"text":"3. Clear all: /function pipes:clear_all","color":"white"}]
+    tellraw @s [{"text":"4. Recreate: /function pipes:example_setup","color":"white"}]
+    tellraw @s [{"text":"5. Check performance: /function pipes:optimize_performance","color":"white"}]
+
+function "example_performance":
+    # Example performance optimization
+    tellraw @s [{"text":"=== PERFORMANCE OPTIMIZATION ===","color":"gold"}]
+    tellraw @s [{"text":"For better FPS:","color":"aqua"}]
+    tellraw @s [{"text":"1. Optimize: /function pipes:optimize_performance","color":"yellow"}]
+    tellraw @s [{"text":"2. High performance: /function pipes:high_performance","color":"yellow"}]
+    tellraw @s [{"text":"3. Reduce flow rate: /function pipes:set_flow_rate","color":"yellow"}]
+    tellraw @s [{"text":"4. Limit active pipes: /function pipes:clear_all","color":"yellow"}]
+
+function "example_quick_start":
+    # Quick start guide
+    tellraw @s [{"text":"=== QUICK START GUIDE ===","color":"gold"}]
+    tellraw @s [{"text":"1. Get pipe wrench: /function pipes:give_wrench","color":"aqua"}]
+    tellraw @s [{"text":"2. Place chest with items","color":"aqua"}]
+    tellraw @s [{"text":"3. Create source: /function pipes:create_source","color":"yellow"}]
+    tellraw @s [{"text":"4. Place destination chest","color":"aqua"}]
+    tellraw @s [{"text":"5. Create sink: /function pipes:create_sink","color":"yellow"}]
+    tellraw @s [{"text":"6. Done! Items will flow automatically","color":"green"}]
+    tellraw @s [{"text":"For help: /function pipes:help","color":"blue"}]

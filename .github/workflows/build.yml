@@ -1,0 +1,101 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version (e.g., v0.1.0). If provided, this workflow will create and push the tag first."
+        required: false
+
+permissions:
+  contents: write  # required to create releases and push tags with GITHUB_TOKEN
+
+env:
+  PACK_FORMAT: 48
+  DATAPACK_NAME: minecraft_pipes
+  MINECRAFT_VERSION: "1.21+"
+
+jobs:
+  build-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # If manually dispatched with an input version, create and push the tag here
+      - name: Create and push tag from workflow_dispatch
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.version != '' }}
+        run: |
+          set -eux
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          # If tag already exists locally or remotely, skip creation
+          if git rev-parse "${{ inputs.version }}" >/dev/null 2>&1; then
+            echo "Tag ${{ inputs.version }} already exists locally"
+          else
+            git tag "${{ inputs.version }}"
+            git push origin "${{ inputs.version }}"
+          fi
+
+      - name: Install MDL
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install minecraft-datapack-language
+
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.version }}" != "" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Check syntax
+        run: mdl check .
+
+      - name: Build datapack
+        run: |
+          mdl build --mdl . -o dist --wrapper ${{ env.DATAPACK_NAME }} --pack-format ${{ env.PACK_FORMAT }}
+
+      - name: Create release zip
+        run: |
+          cd dist
+          zip -r ${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip ${{ env.DATAPACK_NAME }}/
+          cd ..
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name || inputs.version }}
+          name: Minecraft Pipes ${{ github.ref_name || inputs.version }}
+          body: |
+            ## Minecraft Pipes System ${{ github.ref_name || inputs.version }}
+            
+            ### Installation
+            1. Download \`${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip\`
+            2. Extract to your world's \`datapacks\` folder
+            3. Run \`/reload\` in-game
+            4. Use \`/function pipes:help\` to get started
+            
+            ### Build Info
+            - Pack Format: ${{ env.PACK_FORMAT }}
+            - Minecraft Version: ${{ env.MINECRAFT_VERSION }}
+            - Build Date: $(date -u +'%Y-%m-%d %H:%M:%S UTC')
+            - Commit: ${{ github.sha }}
+            
+            ### Changes
+            $(git log --oneline $(git describe --tags --abbrev=0 2>/dev/null || git rev-list --max-parents=0 HEAD)..HEAD)
+          files: |
+            dist/${{ env.DATAPACK_NAME }}-${{ steps.version.outputs.version }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
