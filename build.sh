@@ -5,7 +5,10 @@
 set -euo pipefail
 
 PACK_FORMAT="${1:-82}"
-VERSION="${2:-$(git describe --tags --abbrev=0 2>/dev/null || echo "dev")}"
+VERSION="${2:-}"
+if [[ -z "$VERSION" ]]; then
+    VERSION=$(git describe --tags --abbrev=0 2>/dev/null || echo "dev")
+fi
 BUILD_DATE=$(date -u +'%Y-%m-%d %H:%M:%S UTC')
 
 echo "Building Minecraft Pipes datapack..."
