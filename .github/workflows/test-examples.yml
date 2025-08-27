@@ -52,13 +52,11 @@ jobs:
       run: |
         echo "Testing individual MDL files..."
         
-        # Test each MDL file individually (excluding example files that aren't standalone)
-        for file in *.mdl; do
-          if [[ -f "$file" ]] && [[ "$file" != "example_usage.mdl" ]]; then
-            echo "Testing $file"
-            mdl check "$file"
-          fi
-        done
+        # Only test core.mdl individually (it's the only file with pack declaration)
+        if [[ -f "core.mdl" ]]; then
+          echo "Testing core.mdl"
+          mdl check "core.mdl"
+        fi
         
         echo "Individual MDL files test complete!"
         
