@@ -31,10 +31,6 @@ plugins:
   - jekyll-sitemap
   - jekyll-feed
   - jekyll-paginate
-  - jekyll-remote-theme
-
-# Theme settings - using a modern, clean theme
-remote_theme: pages-themes/minimal@v0.2.0
 
 # Site settings
 author:

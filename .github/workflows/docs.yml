@@ -3,10 +3,10 @@ name: Deploy Documentation
 on:
   push:
     branches: [ master ]
-    paths: [ 'docs/**' ]
+    paths: [ 'docs/**', 'src/**', 'scripts/**' ]
   pull_request:
     branches: [ master ]
-    paths: [ 'docs/**' ]
+    paths: [ 'docs/**', 'src/**', 'scripts/**' ]
 
 jobs:
   build-and-deploy:
@@ -16,6 +16,11 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
       
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.9'
+        
     - name: Setup Ruby
       uses: ruby/setup-ruby@v1
       with:
@@ -27,7 +32,15 @@ jobs:
       with:
         node-version: '18'
         
-    - name: Install dependencies
+    - name: Install Python dependencies
+      run: |
+        pip install frontmatter
+        
+    - name: Generate documentation from source
+      run: |
+        python scripts/generate_docs.py
+        
+    - name: Install Jekyll dependencies
       run: |
         cd docs
         bundle install
