@@ -41,14 +41,14 @@ A comprehensive pipe system for Minecraft that allows item transportation betwee
 
 ## 📖 Documentation
 
-📚 **[Full Documentation](https://minecraft-pipes.github.io)** - Complete guides and tutorials
+📚 **[Full Documentation Website](https://minecraft-pipes.github.io)** - Beautiful, comprehensive guides and tutorials
 
-- [Installation Guide](https://minecraft-pipes.github.io/installation)
-- [Basic Usage](https://minecraft-pipes.github.io/basic-usage)
-- [Advanced Features](https://minecraft-pipes.github.io/advanced-features)
-- [Configuration](https://minecraft-pipes.github.io/configuration)
-- [Troubleshooting](https://minecraft-pipes.github.io/troubleshooting)
-- [API Reference](https://minecraft-pipes.github.io/api-reference)
+- [Installation Guide](https://minecraft-pipes.github.io/installation) - Step-by-step setup instructions
+- [Basic Usage](https://minecraft-pipes.github.io/basic-usage) - Get started with your first pipe
+- [Advanced Features](https://minecraft-pipes.github.io/advanced-features) - Filtering, energy, redstone control
+- [Configuration](https://minecraft-pipes.github.io/configuration) - Customize performance and behavior
+- [Troubleshooting](https://minecraft-pipes.github.io/troubleshooting) - Common issues and solutions
+- [API Reference](https://minecraft-pipes.github.io/api-reference) - Technical documentation for developers
 
 ## 🛠️ Commands
 
@@ -275,10 +275,11 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🆘 Support
 
-- **Documentation**: [Full Documentation](https://minecraft-pipes.github.io)
-- **Issues**: [GitHub Issues](https://github.com/your-username/minecraft-pipes/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/your-username/minecraft-pipes/discussions)
-- **Wiki**: [GitHub Wiki](https://github.com/your-username/minecraft-pipes/wiki)
+- **📚 Documentation**: [Beautiful Documentation Website](https://minecraft-pipes.github.io)
+- **🐛 Issues**: [GitHub Issues](https://github.com/minecraft-pipes/minecraft-pipes/issues)
+- **💬 Discussions**: [GitHub Discussions](https://github.com/minecraft-pipes/minecraft-pipes/discussions)
+- **📖 Wiki**: [GitHub Wiki](https://github.com/minecraft-pipes/minecraft-pipes/wiki)
+- **🎮 Discord**: [Join our Community](https://discord.gg/minecraft-pipes)
 
 ## 🙏 Acknowledgments
 
@@ -297,6 +298,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Made with ❤️ for the Minecraft community**
 
-[![GitHub](https://img.shields.io/badge/GitHub-View%20on%20GitHub-blue.svg)](https://github.com/your-username/minecraft-pipes)
-[![Discord](https://img.shields.io/badge/Discord-Join%20our%20Discord-7289DA.svg)](https://discord.gg/your-discord)
-[![Twitter](https://img.shields.io/badge/Twitter-Follow%20us-1DA1F2.svg)](https://twitter.com/your-twitter)
+[![Documentation](https://img.shields.io/badge/Documentation-View%20Docs-green.svg)](https://minecraft-pipes.github.io)
+[![GitHub](https://img.shields.io/badge/GitHub-View%20on%20GitHub-blue.svg)](https://github.com/minecraft-pipes/minecraft-pipes)
+[![Discord](https://img.shields.io/badge/Discord-Join%20our%20Discord-7289DA.svg)](https://discord.gg/minecraft-pipes)
+[![Twitter](https://img.shields.io/badge/Twitter-Follow%20us-1DA1F2.svg)](https://twitter.com/minecraft_pipes)

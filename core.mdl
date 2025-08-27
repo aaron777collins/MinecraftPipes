@@ -1,4 +1,4 @@
-pack "Minecraft Pipes System" description "Advanced pipe system for item transportation between containers" pack_format 48
+pack "Minecraft Pipes System" description "Advanced pipe system for item transportation between containers" pack_format 82
 
 # Core lifecycle hooks
 on_load "pipes:init"

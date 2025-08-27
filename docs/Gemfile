@@ -1,14 +1,11 @@
 source "https://rubygems.org"
 
 gem "jekyll", "~> 4.3.0"
-gem "jekyll-theme-cayman", "~> 0.2.0"
+gem "jekyll-remote-theme", "~> 0.4.3"
 gem "jekyll-seo-tag", "~> 2.8.0"
 gem "jekyll-sitemap", "~> 1.4.0"
-
-# If you have any plugins, put them here!
-group :jekyll_plugins do
-  gem "jekyll-feed", "~> 0.12"
-end
+gem "jekyll-feed", "~> 0.17.0"
+gem "jekyll-paginate", "~> 1.1.0"
 
 # Windows and JRuby does not include zoneinfo files, so bundle the tzinfo-data gem
 # and associated library.
@@ -23,3 +20,12 @@ gem "wdm", "~> 0.1.1", :platforms => [:mingw, :x64_mingw, :mswin]
 # Lock `http_parser.rb` gem to `v0.6.x` on JRuby builds since newer versions of the gem
 # do not have a Java counterpart.
 gem "http_parser.rb", "~> 0.6.0", :platforms => [:jruby]
+
+# Use `libldns` gem for JRuby builds since newer versions of `unbound` gem do not work for JRuby builds due to binary compatibility.
+gem "libldns", :platforms => [:jruby]
+
+# Use `nokogiri` gem for JRuby builds since newer versions of `html-proofer` gem do not work for JRuby builds due to binary compatibility.
+gem "nokogiri", "~> 1.13.0", :platforms => [:jruby]
+
+# Use `webrick` gem for JRuby builds since newer versions of `jekyll` gem do not work for JRuby builds due to binary compatibility.
+gem "webrick", "~> 1.7", :platforms => [:jruby]

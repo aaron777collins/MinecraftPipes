@@ -14,7 +14,7 @@ permissions:
   contents: write  # required to create releases and push tags with GITHUB_TOKEN
 
 env:
-  PACK_FORMAT: 48
+  PACK_FORMAT: 82
   DATAPACK_NAME: minecraft_pipes
   MINECRAFT_VERSION: "1.21+"
 
