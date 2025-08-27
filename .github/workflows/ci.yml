@@ -39,8 +39,7 @@ jobs:
       - name: Build datapack
         shell: bash
         run: |
-          chmod +x build.sh
-          ./build.sh 48
+          mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 48
 
       - name: Verify build output
         shell: bash

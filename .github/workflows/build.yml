@@ -70,8 +70,7 @@ jobs:
       - name: Build datapack
         shell: bash
         run: |
-          chmod +x build.sh
-          ./build.sh ${{ env.PACK_FORMAT }} ${{ steps.version.outputs.version }}
+          mdl build --mdl src/ -o dist --wrapper ${{ env.DATAPACK_NAME }} --pack-format ${{ env.PACK_FORMAT }}
 
       - name: Create release zip
         shell: bash
