@@ -1,5 +1,3 @@
-pack "Minecraft Pipes System" description "Advanced pipe system for item transportation between containers" pack_format 82
-
 namespace "pipes"
 
 # ===== INITIALIZATION =====
