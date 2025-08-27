@@ -2,10 +2,10 @@ name: Test Examples
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master, main ]
     paths: [ 'test_examples/**', '.github/workflows/test-examples.yml', '*.mdl' ]
   pull_request:
-    branches: [ main ]
+    branches: [ master, main ]
     paths: [ 'test_examples/**', '.github/workflows/test-examples.yml', '*.mdl' ]
 
 jobs:
