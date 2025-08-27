@@ -1,5 +1,3 @@
-pack "Advanced Pipe Test" description "Advanced pipe system test examples" pack_format 82
-
 namespace "advanced_test"
 
 # Core lifecycle hooks
