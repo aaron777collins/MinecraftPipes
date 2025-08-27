@@ -156,7 +156,7 @@ jobs:
         echo "Testing pipe functionality..."
         
         # Build the main datapack
-        mdl build --mdl . -o test_examples/dist --wrapper minecraft_pipes --pack-format 48
+        mdl build --mdl src -o test_examples/dist --wrapper minecraft_pipes --pack-format 48
         
         # Check for required functions
         if [[ -f "test_examples/dist/minecraft_pipes/data/pipes/function/init.mcfunction" ]]; then
