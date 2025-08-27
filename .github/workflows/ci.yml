@@ -26,19 +26,23 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Upgrade pip & install MDL
+        shell: bash
         run: |
           python -m pip install --upgrade pip
           python -m pip install minecraft-datapack-language
 
       - name: Check syntax
+        shell: bash
         run: |
           mdl check .
 
       - name: Build datapack
+        shell: bash
         run: |
           mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48
 
       - name: Verify build output
+        shell: bash
         run: |
           echo "Checking build output..."
           ls -la dist/
