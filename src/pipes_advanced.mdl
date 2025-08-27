@@ -25,12 +25,14 @@ function "set_sink_filter":
 
 function "extract_from_chest":
     # Extract items from chest based on filter
-    execute at @s if block ~ ~1 ~ minecraft:chest run function pipes:extract_filtered_items
+    if "block ~ ~1 ~ minecraft:chest":
+        function pipes:extract_filtered_items
 
 function "extract_filtered_items":
     # Extract items matching the filter from container
     execute store result score #temp pipes_tmp run data get block ~ ~1 ~ Items[{id:"minecraft:iron_ingot"}].Count
-    execute if score #temp pipes_tmp > 0 run function pipes:remove_item_from_container
+    if "score #temp pipes_tmp > 0":
+        function pipes:remove_item_from_container
 
 function "remove_item_from_container":
     # Remove one item from the container
@@ -42,7 +44,8 @@ function "remove_item_from_container":
 function "consume_energy":
     # Consume energy for pipe operations
     scoreboard players remove #global pipes_energy 1
-    execute if score #global pipes_energy <= 0 run function pipes:disable_pipes
+    if "score #global pipes_energy <= 0":
+        function pipes:disable_pipes
 
 function "disable_pipes":
     # Disable pipes when out of energy
@@ -51,7 +54,8 @@ function "disable_pipes":
 function "recharge_energy":
     # Recharge energy system
     scoreboard players add #global pipes_energy 10
-    execute if score #global pipes_energy > 100 run scoreboard players set #global pipes_energy 100
+    if "score #global pipes_energy > 100":
+        scoreboard players set #global pipes_energy 100
 
 # ===== REDSTONE CONTROL =====
 function "set_redstone_control":
@@ -61,16 +65,20 @@ function "set_redstone_control":
 
 function "check_redstone":
     # Check redstone signal for pipe control
-    execute if block ~ ~-1 ~ minecraft:redstone_block run function pipes:enable_pipe
-    execute unless block ~ ~-1 ~ minecraft:redstone_block run function pipes:disable_pipe
+    if "block ~ ~-1 ~ minecraft:redstone_block":
+        function pipes:enable_pipe
+    else:
+        function pipes:disable_pipe
 
 function "enable_pipe":
     # Enable pipe when redstone signal is present
-    execute if entity @s[tag=pipes.source] run tag @s add pipes.active
+    if "entity @s[tag=pipes.source]":
+        tag @s add pipes.active
 
 function "disable_pipe":
     # Disable pipe when no redstone signal
-    execute if entity @s[tag=pipes.source] run tag @s remove pipes.active
+    if "entity @s[tag=pipes.source]":
+        tag @s remove pipes.active
 
 # ===== PRIORITY SYSTEM =====
 function "set_priority":
@@ -84,7 +92,13 @@ function "process_priority":
 
 function "check_priority_order":
     # Check if this source has higher priority than others
-    execute unless entity @e[type=marker,tag=pipes.source,scores={pipes_priority=6..}] run function pipes:spawn_one_token
+    if "entity @e[type=marker,tag=pipes.source,scores={pipes_priority=6..}]":
+        # Higher priority source exists, don't spawn
+        if "score #global pipes_debug = 1":
+            tellraw @a [{"text":"[PIPES DEBUG] Higher priority source exists","color":"yellow"}]
+    else:
+        # No higher priority source, spawn token
+        function pipes:spawn_one_token
 
 # ===== DIFFERENT ITEM TYPES =====
 function "spawn_diamond_token":
@@ -99,6 +113,12 @@ function "spawn_gold_token":
     execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_steps 0
     execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_item_count 1
 
+function "spawn_emerald_token":
+    # Spawn an emerald token
+    summon item_display ~ ~1 ~ {Tags:["pipes.token","pipes.flow"],item:{id:"minecraft:emerald",count:1b},transformation:{translation:[0.0f,0.0f,0.0f],left_rotation:[0.0f,0.0f,0.0f,1.0f],right_rotation:[0.0f,0.0f,0.0f,1.0f],scale:[0.3f,0.3f,0.3f]},billboard:"fixed"}
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_steps 0
+    execute as @e[type=item_display,tag=pipes.flow,limit=1,sort=nearest] run scoreboard players set @s pipes_item_count 1
+
 # ===== ADVANCED TRANSFER FUNCTIONS =====
 function "transfer_diamond_to_container":
     # Transfer diamond to container
@@ -107,6 +127,10 @@ function "transfer_diamond_to_container":
 function "transfer_gold_to_container":
     # Transfer gold to container
     data modify block ~ ~-1 ~ Items append value {Slot:0b,id:"minecraft:gold_ingot",Count:1b}
+
+function "transfer_emerald_to_container":
+    # Transfer emerald to container
+    data modify block ~ ~-1 ~ Items append value {Slot:0b,id:"minecraft:emerald",Count:1b}
 
 # ===== ADVANCED COMMANDS =====
 function "advanced_help":
@@ -118,6 +142,7 @@ function "advanced_help":
     tellraw @s [{"text":"/function pipes:recharge_energy - Recharge energy system","color":"aqua"}]
     tellraw @s [{"text":"/function pipes:spawn_diamond_token - Spawn diamond token","color":"yellow"}]
     tellraw @s [{"text":"/function pipes:spawn_gold_token - Spawn gold token","color":"yellow"}]
+    tellraw @s [{"text":"/function pipes:spawn_emerald_token - Spawn emerald token","color":"yellow"}]
 
 function "create_smart_source":
     # Create a smart source with filtering
@@ -134,3 +159,67 @@ function "create_smart_sink":
     execute as @e[type=marker,tag=pipes.smart,limit=1,sort=nearest] run scoreboard players set @s pipes_connection_id #global pipes_connection_id
     execute as @e[type=marker,tag=pipes.smart,limit=1,sort=nearest] run scoreboard players set @s pipes_filter_type 1
     tellraw @s [{"text":"[PIPES] Smart sink created with filtering","color":"green"}]
+
+# ===== SMART ITEM DETECTION =====
+function "detect_item_type":
+    # Detect what type of item is in the source container
+    if "block ~ ~-1 ~ minecraft:chest":
+        execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[{id:"minecraft:diamond"}].Count
+        if "score #temp pipes_tmp > 0":
+            function pipes:spawn_diamond_token
+            return
+        
+        execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[{id:"minecraft:gold_ingot"}].Count
+        if "score #temp pipes_tmp > 0":
+            function pipes:spawn_gold_token
+            return
+        
+        execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[{id:"minecraft:emerald"}].Count
+        if "score #temp pipes_tmp > 0":
+            function pipes:spawn_emerald_token
+            return
+        
+        execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[{id:"minecraft:iron_ingot"}].Count
+        if "score #temp pipes_tmp > 0":
+            function pipes:create_token
+            return
+    
+    # Default to iron if no specific items found
+    function pipes:create_token
+
+# ===== SMART TRANSFER SYSTEM =====
+function "smart_transfer":
+    # Transfer items based on their type
+    if "block ~ ~-1 ~ minecraft:chest":
+        # Check what type of item the token represents
+        if "entity @s[nbt={item:{id:\"minecraft:diamond\"}}]":
+            function pipes:transfer_diamond_to_container
+        else if "entity @s[nbt={item:{id:\"minecraft:gold_ingot\"}}]":
+            function pipes:transfer_gold_to_container
+        else if "entity @s[nbt={item:{id:\"minecraft:emerald\"}}]":
+            function pipes:transfer_emerald_to_container
+        else:
+            function pipes:add_item_to_container
+    else:
+        # Default transfer
+        function pipes:add_item_to_container
+
+# ===== ENERGY MANAGEMENT =====
+function "check_energy_level":
+    # Check current energy level and provide feedback
+    if "score #global pipes_energy >= 80":
+        tellraw @a [{"text":"[PIPES] Energy level: High","color":"green"}]
+    else if "score #global pipes_energy >= 50":
+        tellraw @a [{"text":"[PIPES] Energy level: Medium","color":"yellow"}]
+    else if "score #global pipes_energy >= 20":
+        tellraw @a [{"text":"[PIPES] Energy level: Low","color":"orange"}]
+    else:
+        tellraw @a [{"text":"[PIPES] Energy level: Critical!","color":"red"}]
+
+function "auto_recharge":
+    # Automatically recharge energy from nearby redstone blocks
+    if "block ~ ~-1 ~ minecraft:redstone_block":
+        if "score #global pipes_energy < 100":
+            scoreboard players add #global pipes_energy 1
+            if "score #global pipes_debug = 1":
+                tellraw @a [{"text":"[PIPES DEBUG] Auto-recharging energy","color":"green"}]

@@ -42,38 +42,48 @@ function "set_max_distance":
 
 function "toggle_auto_extract":
     # Toggle automatic item extraction from containers
-    execute if score #config pipes_auto_extract = 1 run scoreboard players set #config pipes_auto_extract 0
-    execute if score #config pipes_auto_extract = 0 run scoreboard players set #config pipes_auto_extract 1
-    execute if score #config pipes_auto_extract = 1 run tellraw @s [{"text":"[PIPES] Auto-extract enabled","color":"green"}]
-    execute if score #config pipes_auto_extract = 0 run tellraw @s [{"text":"[PIPES] Auto-extract disabled","color":"red"}]
+    if "score #config pipes_auto_extract = 1":
+        scoreboard players set #config pipes_auto_extract 0
+        tellraw @s [{"text":"[PIPES] Auto-extract disabled","color":"red"}]
+    else:
+        scoreboard players set #config pipes_auto_extract 1
+        tellraw @s [{"text":"[PIPES] Auto-extract enabled","color":"green"}]
 
 function "toggle_debug":
     # Toggle debug mode for detailed logging
-    execute if score #config pipes_debug = 1 run scoreboard players set #config pipes_debug 0
-    execute if score #config pipes_debug = 0 run scoreboard players set #config pipes_debug 1
-    execute if score #config pipes_debug = 1 run tellraw @s [{"text":"[PIPES] Debug mode enabled","color":"yellow"}]
-    execute if score #config pipes_debug = 0 run tellraw @s [{"text":"[PIPES] Debug mode disabled","color":"yellow"}]
+    if "score #config pipes_debug = 1":
+        scoreboard players set #config pipes_debug 0
+        tellraw @s [{"text":"[PIPES] Debug mode disabled","color":"yellow"}]
+    else:
+        scoreboard players set #config pipes_debug 1
+        tellraw @s [{"text":"[PIPES] Debug mode enabled","color":"yellow"}]
 
 function "toggle_energy":
     # Toggle energy system
-    execute if score #config pipes_energy_enabled = 1 run scoreboard players set #config pipes_energy_enabled 0
-    execute if score #config pipes_energy_enabled = 0 run scoreboard players set #config pipes_energy_enabled 1
-    execute if score #config pipes_energy_enabled = 1 run tellraw @s [{"text":"[PIPES] Energy system enabled","color":"green"}]
-    execute if score #config pipes_energy_enabled = 0 run tellraw @s [{"text":"[PIPES] Energy system disabled","color":"red"}]
+    if "score #config pipes_energy_enabled = 1":
+        scoreboard players set #config pipes_energy_enabled 0
+        tellraw @s [{"text":"[PIPES] Energy system disabled","color":"red"}]
+    else:
+        scoreboard players set #config pipes_energy_enabled 1
+        tellraw @s [{"text":"[PIPES] Energy system enabled","color":"green"}]
 
 function "toggle_redstone":
     # Toggle redstone control system
-    execute if score #config pipes_redstone_enabled = 1 run scoreboard players set #config pipes_redstone_enabled 0
-    execute if score #config pipes_redstone_enabled = 0 run scoreboard players set #config pipes_redstone_enabled 1
-    execute if score #config pipes_redstone_enabled = 1 run tellraw @s [{"text":"[PIPES] Redstone control enabled","color":"green"}]
-    execute if score #config pipes_redstone_enabled = 0 run tellraw @s [{"text":"[PIPES] Redstone control disabled","color":"red"}]
+    if "score #config pipes_redstone_enabled = 1":
+        scoreboard players set #config pipes_redstone_enabled 0
+        tellraw @s [{"text":"[PIPES] Redstone control disabled","color":"red"}]
+    else:
+        scoreboard players set #config pipes_redstone_enabled 1
+        tellraw @s [{"text":"[PIPES] Redstone control enabled","color":"green"}]
 
 function "toggle_priority":
     # Toggle priority system
-    execute if score #config pipes_priority_enabled = 1 run scoreboard players set #config pipes_priority_enabled 0
-    execute if score #config pipes_priority_enabled = 0 run scoreboard players set #config pipes_priority_enabled 1
-    execute if score #config pipes_priority_enabled = 1 run tellraw @s [{"text":"[PIPES] Priority system enabled","color":"green"}]
-    execute if score #config pipes_priority_enabled = 0 run tellraw @s [{"text":"[PIPES] Priority system disabled","color":"red"}]
+    if "score #config pipes_priority_enabled = 1":
+        scoreboard players set #config pipes_priority_enabled 0
+        tellraw @s [{"text":"[PIPES] Priority system disabled","color":"red"}]
+    else:
+        scoreboard players set #config pipes_priority_enabled 1
+        tellraw @s [{"text":"[PIPES] Priority system enabled","color":"green"}]
 
 function "show_config":
     # Display current configuration
@@ -81,22 +91,39 @@ function "show_config":
     tellraw @s [{"text":"Flow Rate: ","color":"aqua"},{"score":{"name":"#config","objective":"pipes_flow_rate"},"color":"white"},{"text":" ticks","color":"aqua"}]
     tellraw @s [{"text":"Token Speed: ","color":"aqua"},{"score":{"name":"#config","objective":"pipes_token_speed"},"color":"white"},{"text":" blocks/tick","color":"aqua"}]
     tellraw @s [{"text":"Max Distance: ","color":"aqua"},{"score":{"name":"#config","objective":"pipes_max_distance"},"color":"white"},{"text":" blocks","color":"aqua"}]
-    execute if score #config pipes_auto_extract = 1 run tellraw @s [{"text":"Auto-extract: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
-    execute if score #config pipes_auto_extract = 0 run tellraw @s [{"text":"Auto-extract: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
-    execute if score #config pipes_debug = 1 run tellraw @s [{"text":"Debug Mode: ","color":"aqua"},{"text":"ENABLED","color":"yellow"}]
-    execute if score #config pipes_debug = 0 run tellraw @s [{"text":"Debug Mode: ","color":"aqua"},{"text":"DISABLED","color":"yellow"}]
-    execute if score #config pipes_energy_enabled = 1 run tellraw @s [{"text":"Energy System: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
-    execute if score #config pipes_energy_enabled = 0 run tellraw @s [{"text":"Energy System: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
-    execute if score #config pipes_redstone_enabled = 1 run tellraw @s [{"text":"Redstone Control: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
-    execute if score #config pipes_redstone_enabled = 0 run tellraw @s [{"text":"Redstone Control: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
-    execute if score #config pipes_priority_enabled = 1 run tellraw @s [{"text":"Priority System: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
-    execute if score #config pipes_priority_enabled = 0 run tellraw @s [{"text":"Priority System: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
+    
+    if "score #config pipes_auto_extract = 1":
+        tellraw @s [{"text":"Auto-extract: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
+    else:
+        tellraw @s [{"text":"Auto-extract: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
+    
+    if "score #config pipes_debug = 1":
+        tellraw @s [{"text":"Debug Mode: ","color":"aqua"},{"text":"ENABLED","color":"yellow"}]
+    else:
+        tellraw @s [{"text":"Debug Mode: ","color":"aqua"},{"text":"DISABLED","color":"yellow"}]
+    
+    if "score #config pipes_energy_enabled = 1":
+        tellraw @s [{"text":"Energy System: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
+    else:
+        tellraw @s [{"text":"Energy System: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
+    
+    if "score #config pipes_redstone_enabled = 1":
+        tellraw @s [{"text":"Redstone Control: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
+    else:
+        tellraw @s [{"text":"Redstone Control: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
+    
+    if "score #config pipes_priority_enabled = 1":
+        tellraw @s [{"text":"Priority System: ","color":"aqua"},{"text":"ENABLED","color":"green"}]
+    else:
+        tellraw @s [{"text":"Priority System: ","color":"aqua"},{"text":"DISABLED","color":"red"}]
 
 # ===== CONFIGURATION APPLY FUNCTIONS =====
 function "apply_config":
     # Apply configuration to running system
-    execute if score #config pipes_energy_enabled = 1 run function pipes:init_advanced
-    execute if score #config pipes_debug = 1 run tellraw @a [{"text":"[PIPES] Configuration applied","color":"green"}]
+    if "score #config pipes_energy_enabled = 1":
+        function pipes:init_advanced
+    if "score #config pipes_debug = 1":
+        tellraw @a [{"text":"[PIPES] Configuration applied","color":"green"}]
 
 function "reset_config":
     # Reset configuration to defaults
@@ -106,12 +133,14 @@ function "reset_config":
 # ===== DEBUG FUNCTIONS =====
 function "debug_log":
     # Log debug information if debug mode is enabled
-    execute if score #config pipes_debug = 1 run tellraw @a [{"text":"[PIPES DEBUG] ","color":"gray"},{"text":"Debug message","color":"white"}]
+    if "score #config pipes_debug = 1":
+        tellraw @a [{"text":"[PIPES DEBUG] ","color":"gray"},{"text":"Debug message","color":"white"}]
 
 function "debug_show_entities":
     # Show all pipe entities for debugging
-    execute if score #config pipes_debug = 1 run function pipes:list_connections
-    execute if score #config pipes_debug = 1 run tellraw @s [{"text":"[PIPES DEBUG] Showing all pipe entities","color":"gray"}]
+    if "score #config pipes_debug = 1":
+        function pipes:list_connections
+        tellraw @s [{"text":"[PIPES DEBUG] Showing all pipe entities","color":"gray"}]
 
 # ===== PERFORMANCE OPTIMIZATION =====
 function "optimize_performance":
@@ -127,3 +156,10 @@ function "high_performance":
     scoreboard players set #config pipes_token_speed 0.3
     scoreboard players set #config pipes_max_distance 100
     tellraw @s [{"text":"[PIPES] High performance mode enabled","color":"green"}]
+
+function "low_performance":
+    # Set low performance mode for older computers
+    scoreboard players set #config pipes_flow_rate 80
+    scoreboard players set #config pipes_token_speed 0.05
+    scoreboard players set #config pipes_max_distance 50
+    tellraw @s [{"text":"[PIPES] Low performance mode enabled","color":"yellow"}]

@@ -1,310 +1,235 @@
-# Minecraft Pipes
+# Minecraft Pipes System
 
-Advanced pipe system for item transportation between containers in Minecraft.
+An advanced pipe system for item transportation between containers in Minecraft, built using the [Minecraft Datapack Language (MDL)](https://www.aaroncollins.info/MinecraftDatapackLanguage/docs/language-reference/) with support for conditional logic.
+
+## Features
+
+### 🚀 Core Features
+- **Item Transportation**: Automatically move items between containers
+- **Multiple Container Support**: Works with chests, barrels, hoppers, droppers, dispensers, and shulker boxes
+- **Visual Tokens**: See items flowing through the air as visible tokens
+- **Smart Item Detection**: Automatically detects and transports different item types
+
+### 🔧 Advanced Features
+- **Conditional Logic**: Uses MDL's new `if`/`else if`/`else` syntax for complex decision making
+- **Energy System**: Pipes consume energy and can be recharged
+- **Redstone Control**: Enable/disable pipes with redstone signals
+- **Priority System**: Set priorities for multiple pipe sources
+- **Item Filtering**: Filter specific items for extraction and insertion
+- **Performance Modes**: Optimize for different computer capabilities
+
+### 🎮 User-Friendly
+- **Debug Mode**: Detailed logging and troubleshooting
+- **Demo System**: Built-in demonstrations for all features
+- **Configuration System**: Easy-to-use settings management
+- **Help System**: Comprehensive command documentation
+
+## New Conditional Syntax
+
+This datapack showcases MDL's new conditional syntax, making complex logic much cleaner and more readable:
+
+### Basic Conditionals
+```mdl
+function "example":
+    if "entity @s[type=minecraft:player]":
+        say Player detected!
+        effect give @s minecraft:glowing 5 1
+    else if "entity @s[type=minecraft:zombie]":
+        say Zombie detected!
+        effect give @s minecraft:poison 5 1
+    else:
+        say Unknown entity
+        effect give @s minecraft:slowness 5 1
+```
+
+### Complex Conditionals
+```mdl
+function "smart_item_detection":
+    if "block ~ ~-1 ~ minecraft:chest":
+        execute store result score #temp pipes_tmp run data get block ~ ~-1 ~ Items[{id:"minecraft:diamond"}].Count
+        if "score #temp pipes_tmp > 0":
+            function pipes:spawn_diamond_token
+            return
+        else if "score #temp pipes_tmp = 0":
+            function pipes:spawn_iron_token
+    else:
+        say No container found
+```
+
+## Installation
+
+1. **Download the datapack**: Clone or download this repository
+2. **Compile with MDL**: Use the MDL compiler to generate the datapack
+   ```bash
+   mdl build src/ dist/minecraft_pipes/
+   ```
+3. **Install in Minecraft**: Copy the generated datapack to your world's `datapacks` folder
+4. **Load the datapack**: In-game, run `/reload` or `/datapack enable minecraft_pipes`
 
 ## Quick Start
 
-### Building the Datapack
+1. **Initialize the system**:
+   ```
+   /function pipes:init
+   ```
 
-**Important**: Always build from the `src` directory to avoid including test files:
+2. **Create a pipe source**:
+   ```
+   /function pipes:create_source
+   ```
+   Then place a chest below the marker and add items.
 
-```bash
-# Correct way (recommended)
-mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 82
+3. **Create a pipe sink**:
+   ```
+   /function pipes:create_sink
+   ```
+   Then place a chest below the marker.
 
-# Alternative with pack format 48 (older Minecraft versions)
-mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 48
-```
+4. **Watch items flow!** Items will automatically move from source to sink.
 
-**Note**: Do not use `mdl build --mdl .` as this will include test files and cause duplicate pack declaration errors.
-
-## ✨ Features
-
-### Core System
-- **Item Transportation**: Move items between chests, barrels, hoppers, droppers, and dispensers
-- **Visual Tokens**: See items moving through pipes as visible tokens
-- **Automatic Transfer**: Items automatically transfer when tokens reach destination containers
-- **Multiple Container Support**: Works with all vanilla storage blocks
-
-### Advanced Features
-- **Item Filtering**: Filter specific items for extraction and insertion
-- **Energy System**: Optional energy consumption for pipe operations
-- **Redstone Control**: Enable/disable pipes with redstone signals
-- **Priority System**: Set priorities for pipe connections
-- **Different Item Types**: Support for iron, diamond, gold, and other items
-
-### Configuration
-- **Flow Rate Control**: Adjust how often items spawn
-- **Token Speed**: Control movement speed of pipe tokens
-- **Distance Limits**: Set maximum pipe connection distances
-- **Debug Mode**: Detailed logging for troubleshooting
-- **Performance Optimization**: Built-in performance modes
-
-## 📖 Documentation
-
-📚 **[Full Documentation Website](https://www.aaroncollins.info/MinecraftPipes/)** - Beautiful, comprehensive guides and tutorials
-
-- [Installation Guide](https://www.aaroncollins.info/MinecraftPipes/installation) - Step-by-step setup instructions
-- [Basic Usage](https://www.aaroncollins.info/MinecraftPipes/basic-usage) - Get started with your first pipe
-- [Advanced Features](https://www.aaroncollins.info/MinecraftPipes/advanced-features) - Filtering, energy, redstone control
-- [Configuration](https://www.aaroncollins.info/MinecraftPipes/configuration) - Customize performance and behavior
-- [Troubleshooting](https://www.aaroncollins.info/MinecraftPipes/troubleshooting) - Common issues and solutions
-- [API Reference](https://www.aaroncollins.info/MinecraftPipes/api-reference) - Technical documentation for developers
-
-## 🛠️ Commands
+## Commands
 
 ### Basic Commands
-| Command | Description |
-|---------|-------------|
-| `/function pipes:help` | Show all available commands |
-| `/function pipes:create_source` | Create a pipe source at your location |
-| `/function pipes:create_sink` | Create a pipe sink at your location |
-| `/function pipes:list_connections` | List all active pipe connections |
-| `/function pipes:clear_all` | Remove all pipes |
-
-### Advanced Commands
-| Command | Description |
-|---------|-------------|
-| `/function pipes:advanced_help` | Show advanced features |
-| `/function pipes:create_smart_source` | Create source with filtering |
-| `/function pipes:create_smart_sink` | Create sink with filtering |
-| `/function pipes:set_source_filter` | Set item filter for source |
-| `/function pipes:set_sink_filter` | Set item filter for sink |
+- `/function pipes:help` - Show all available commands
+- `/function pipes:create_source` - Create a pipe source
+- `/function pipes:create_sink` - Create a pipe sink
+- `/function pipes:list_connections` - List all active connections
+- `/function pipes:clear_all` - Remove all pipes
 
 ### Configuration Commands
-| Command | Description |
-|---------|-------------|
-| `/function pipes:config_help` | Show configuration options |
-| `/function pipes:show_config` | Display current settings |
-| `/function pipes:set_flow_rate` | Set item spawn rate |
-| `/function pipes:set_token_speed` | Set token movement speed |
-| `/function pipes:toggle_debug` | Enable/disable debug mode |
-| `/function pipes:optimize_performance` | Optimize for better FPS |
+- `/function pipes:config_help` - Configuration commands
+- `/function pipes:toggle_debug` - Enable/disable debug mode
+- `/function pipes:show_config` - Show current settings
+- `/function pipes:optimize_performance` - Optimize for better FPS
 
-## 🔧 Installation
+### Advanced Commands
+- `/function pipes:advanced_help` - Advanced features
+- `/function pipes:create_smart_source` - Create source with filtering
+- `/function pipes:create_smart_sink` - Create sink with filtering
+- `/function pipes:set_redstone_control` - Enable redstone control
+- `/function pipes:set_priority` - Set pipe priority
 
-### Prerequisites
-- **Minecraft Java Edition 1.20+** (required for pack format 82)
-- **A Minecraft world** (singleplayer or multiplayer server)
-- **Basic knowledge** of Minecraft datapacks
+### Demo Commands
+- `/function pipes:demo_help` - Show all demos
+- `/function pipes:demo_basic_pipe` - Basic pipe demonstration
+- `/function pipes:demo_advanced_pipe` - Advanced features demo
+- `/function pipes:demo_redstone_control` - Redstone control demo
+- `/function pipes:quick_start` - Quick start guide
 
-### Quick Install
-1. Download the latest release from [Releases](https://github.com/aaron777collins/MinecraftPipes/releases)
-2. Extract `minecraft_pipes.zip` to your world's `datapacks` folder
-3. Run `/reload` in-game
-4. Start with `/function pipes:example_quick_start`
-
-### Build from Source
-```bash
-# Clone the repository
-git clone https://github.com/your-username/minecraft-pipes.git
-cd minecraft-pipes
-
-# Install MDL (Minecraft Datapack Language)
-pip install minecraft-datapack-language
-
-# Build the datapack
-mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
-
-# Install the built datapack
-cp -r dist/minecraft_pipes /path/to/your/world/datapacks/
-```
-
-## 📁 Project Structure
+## File Structure
 
 ```
-minecraft-pipes/
-├── src/                  # Source code directory
-│   ├── core.mdl          # Main pack declaration and lifecycle hooks
-│   ├── pipes.mdl         # Core pipe system functionality
-│   ├── pipes_advanced.mdl # Advanced features (filtering, energy, etc.)
-│   ├── pipes_config.mdl  # Configuration system
-│   ├── pipes_creation.mdl # Pipe creation and management
-│   └── example_usage.mdl # Example usage and tutorials
-├── test_examples/        # Test examples (separate datapacks)
-│   ├── advanced_pipe_test.mdl
-│   ├── simple_pipe.mdl
-│   └── run_all_tests.py
-├── docs/                 # Documentation site (Jekyll)
-│   ├── _config.yml       # Jekyll configuration
-│   ├── _docs/            # Documentation pages
-│   ├── index.md          # Main documentation page
-│   └── Gemfile           # Jekyll dependencies
-├── dist/                 # Built datapack (generated)
-│   └── minecraft_pipes/  # Final datapack
-└── README.md            # This file
+src/
+├── core.mdl              # Main datapack configuration and tags
+├── pipes.mdl             # Core pipe system with conditionals
+├── pipes_config.mdl      # Configuration system
+├── pipes_advanced.mdl    # Advanced features (energy, redstone, etc.)
+└── example_usage.mdl     # Demo and example functions
 ```
 
-## 🎮 How It Works
+## Conditional Logic Examples
 
-### Pipe Components
-1. **Source**: Extracts items from containers and creates tokens
-2. **Sink**: Receives tokens and transfers items to containers
-3. **Tokens**: Visual representations of items moving through pipes
-4. **Controllers**: Marker entities that manage pipe behavior
-
-### Item Flow
-1. **Extraction**: Source extracts items from containers (chests, barrels, etc.)
-2. **Token Creation**: Creates visible tokens representing the items
-3. **Movement**: Tokens move along the pipe path at configurable speed
-4. **Transfer**: When tokens reach a sink, items are transferred to destination containers
-5. **Cleanup**: Tokens are removed after successful transfer
-
-### Container Support
-The system supports all vanilla storage blocks:
-- **Chests**: 64 items per slot
-- **Barrels**: 64 items per slot  
-- **Hoppers**: 5 items per slot
-- **Droppers**: 9 items per slot
-- **Dispensers**: 9 items per slot
-
-## 🚀 Usage Examples
-
-### Simple Storage Transfer
-```bash
-# Create source and sink
-/function pipes:create_source
-/function pipes:create_sink
-
-# Place containers below markers
-# Add items to source container
-# Watch items flow automatically!
+### Energy Management
+```mdl
+function "tick_main":
+    if "score #global pipes_energy > 0":
+        # Normal operation
+        function pipes:spawn_from_sources
+        function pipes:move_all_tokens
+    else:
+        # Low energy warning
+        if "score #global pipes_tick % 200 = 0":
+            tellraw @a [{"text":"[PIPES] Warning: System low on energy!","color":"red"}]
 ```
 
-### Advanced Setup with Filtering
-```bash
-# Create smart source with filtering
-/function pipes:create_smart_source
-
-# Create smart sink with filtering
-/function pipes:create_smart_sink
-
-# Set filters for specific items
-/function pipes:set_source_filter
-/function pipes:set_sink_filter
+### Smart Container Detection
+```mdl
+function "process_item_transfer":
+    if "block ~ ~-1 ~ minecraft:chest":
+        function pipes:transfer_to_chest
+    else if "block ~ ~-1 ~ minecraft:barrel":
+        function pipes:transfer_to_barrel
+    else if "block ~ ~-1 ~ minecraft:hopper":
+        function pipes:transfer_to_hopper
+    else:
+        if "score #global pipes_debug = 1":
+            tellraw @a [{"text":"[PIPES DEBUG] No container found at sink","color":"yellow"}]
 ```
 
-### Performance Optimization
-```bash
-# Optimize for better performance
-/function pipes:optimize_performance
-
-# Enable debug mode for troubleshooting
-/function pipes:toggle_debug
-
-# Check system status
-/function pipes:check_pipe_status
+### Priority System
+```mdl
+function "check_priority_order":
+    if "entity @e[type=marker,tag=pipes.source,scores={pipes_priority=6..}]":
+        # Higher priority source exists, don't spawn
+        if "score #global pipes_debug = 1":
+            tellraw @a [{"text":"[PIPES DEBUG] Higher priority source exists","color":"yellow"}]
+    else:
+        # No higher priority source, spawn token
+        function pipes:spawn_one_token
 ```
 
-## 🔧 Configuration
+## Performance Optimization
 
-### Default Settings
-- **Flow Rate**: 20 ticks (1 second)
-- **Token Speed**: 0.1 blocks per tick
-- **Max Distance**: 500 blocks
-- **Auto-extract**: Enabled
-- **Debug Mode**: Disabled
-- **Energy System**: Disabled
-- **Redstone Control**: Disabled
-- **Priority System**: Disabled
+The system includes three performance modes:
 
-### Performance Modes
-- **Normal**: Balanced performance and functionality
-- **Optimized**: Better FPS, reduced features
-- **High Performance**: Maximum FPS, minimal features
+- **High Performance**: Fast flow rate, high token speed
+- **Optimized**: Balanced for most computers
+- **Low Performance**: Slow flow rate, low token speed for older computers
 
-## 🐛 Troubleshooting
+Run `/function pipes:high_performance`, `/function pipes:optimize_performance`, or `/function pipes:low_performance` to switch modes.
+
+## Troubleshooting
 
 ### Common Issues
 
-#### Pipes not working
-- Check if containers are properly placed
-- Ensure source and sink are within distance limits
-- Verify the datapack is loaded (`/reload`)
-
-#### Items not transferring
-- Check container capacity
-- Verify item filters are set correctly
-- Ensure energy system is not depleted
-
-#### Performance issues
-- Use `/function pipes:optimize_performance`
-- Reduce flow rate and token speed
-- Limit number of active pipes
+1. **Items not flowing**: Check if containers are placed below markers
+2. **System not working**: Run `/function pipes:init`
+3. **No debug messages**: Run `/function pipes:toggle_debug`
+4. **Low performance**: Run `/function pipes:low_performance`
 
 ### Debug Mode
-Enable debug mode for detailed logging:
-```bash
+
+Enable debug mode for detailed information:
+```
 /function pipes:toggle_debug
+/function pipes:debug_show_entities
 ```
 
-This will show:
-- Pipe connection status
-- Item transfer attempts
-- Error messages
-- Performance metrics
+## Technical Details
 
-## 🤝 Contributing
+### Scoreboard Objectives
+- `pipes_tick` - Global tick counter
+- `pipes_steps` - Token movement steps
+- `pipes_energy` - Energy system
+- `pipes_priority` - Priority system
+- `pipes_debug` - Debug mode toggle
 
-We welcome contributions! Here's how you can help:
+### Entity Tags
+- `pipes.controller` - All pipe controllers
+- `pipes.source` - Pipe sources
+- `pipes.sink` - Pipe sinks
+- `pipes.token` - Item tokens
+- `pipes.flow` - Flowing tokens
 
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add some amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+### Supported Items
+- Iron Ingots (default)
+- Diamonds
+- Gold Ingots
+- Emeralds
 
-### Development Setup
-```bash
-# Clone the repository
-git clone https://github.com/aaron777collins/MinecraftPipes.git
-cd MinecraftPipes
+## Contributing
 
-# Install dependencies
-pip install minecraft-datapack-language
+This project demonstrates the power of MDL's conditional syntax. Feel free to:
 
-# Check syntax
-mdl check src/
+1. Add new conditional logic examples
+2. Improve the pipe system features
+3. Add support for more item types
+4. Create additional demo functions
 
-# Build datapack
-mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
+## License
 
-# Run documentation site locally
-cd docs
-bundle install
-bundle exec jekyll serve
-```
+This project is open source. See the LICENSE file for details.
 
-## 📄 License
+## Credits
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🆘 Support
-
-- **📚 Documentation**: [Beautiful Documentation Website](https://www.aaroncollins.info/MinecraftPipes/)
-- **🐛 Issues**: [GitHub Issues](https://github.com/aaron777collins/MinecraftPipes/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/aaron777collins/MinecraftPipes/discussions)
-- **📖 Wiki**: [GitHub Wiki](https://github.com/aaron777collins/MinecraftPipes/wiki)
-- **🎮 Discord**: [Join our Community](https://discord.gg/minecraft-pipes)
-
-## 🙏 Acknowledgments
-
-- **Minecraft Community** - For inspiration and feedback
-- **MDL Team** - For the amazing Minecraft Datapack Language
-- **Contributors** - Everyone who has helped improve this project
-
-## 📊 Statistics
-
-- **Downloads**: [![Downloads](https://img.shields.io/github/downloads/aaron777collins/MinecraftPipes/total.svg)](https://github.com/aaron777collins/MinecraftPipes/releases)
-- **Stars**: [![Stars](https://img.shields.io/github/stars/aaron777collins/MinecraftPipes.svg)](https://github.com/aaron777collins/MinecraftPipes/stargazers)
-- **Forks**: [![Forks](https://img.shields.io/github/forks/aaron777collins/MinecraftPipes.svg)](https://github.com/aaron777collins/MinecraftPipes/network)
-- **Issues**: [![Issues](https://img.shields.io/github/issues/aaron777collins/MinecraftPipes.svg)](https://github.com/aaron777collins/MinecraftPipes/issues)
-
----
-
-**Made with ❤️ for the Minecraft community**
-
-[![Documentation](https://img.shields.io/badge/Documentation-View%20Docs-green.svg)](https://www.aaroncollins.info/MinecraftPipes/)
-[![GitHub](https://img.shields.io/badge/GitHub-View%20on%20GitHub-blue.svg)](https://github.com/aaron777collins/MinecraftPipes)
-[![Discord](https://img.shields.io/badge/Discord-Join%20our%20Discord-7289DA.svg)](https://discord.gg/minecraft-pipes)
-[![Twitter](https://img.shields.io/badge/Twitter-Follow%20us-1DA1F2.svg)](https://twitter.com/minecraft_pipes)
+Built with the [Minecraft Datapack Language (MDL)](https://www.aaroncollins.info/MinecraftDatapackLanguage/docs/language-reference/) by Aaron Collins, showcasing the new conditional syntax for cleaner, more readable datapack code.
