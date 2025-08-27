@@ -1,21 +1,22 @@
-# Minecraft Pipes System
+# Minecraft Pipes
 
-A comprehensive pipe system for Minecraft that allows item transportation between containers using MDL (Minecraft Datapack Language).
+Advanced pipe system for item transportation between containers in Minecraft.
 
-[![Minecraft Version](https://img.shields.io/badge/Minecraft-1.20+-green.svg)](https://www.minecraft.net/)
-[![Pack Format](https://img.shields.io/badge/Pack%20Format-82-blue.svg)](https://minecraft.wiki/w/Data_pack)
-[![License](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+## Quick Start
 
-## 🚀 Quick Start
+### Building the Datapack
 
-1. **Download** the latest release from [Releases](https://github.com/aaron777collins/MinecraftPipes/releases)
-2. **Extract** `minecraft_pipes.zip` to your world's `datapacks` folder
-3. **Run** `/reload` in-game
-4. **Create your first pipe**:
-   ```bash
-   /function pipes:create_source
-   /function pipes:create_sink
-   ```
+**Important**: Always build from the `src` directory to avoid including test files:
+
+```bash
+# Correct way (recommended)
+mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 82
+
+# Alternative with pack format 48 (older Minecraft versions)
+mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 48
+```
+
+**Note**: Do not use `mdl build --mdl .` as this will include test files and cause duplicate pack declaration errors.
 
 ## ✨ Features
 
