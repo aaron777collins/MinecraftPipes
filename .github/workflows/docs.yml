@@ -2,10 +2,10 @@ name: Deploy Documentation
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
     paths: [ 'docs/**' ]
   pull_request:
-    branches: [ main ]
+    branches: [ master ]
     paths: [ 'docs/**' ]
 
 jobs:
@@ -38,7 +38,7 @@ jobs:
         bundle exec jekyll build
         
     - name: Deploy to GitHub Pages
-      if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/master'
       uses: peaceiris/actions-gh-pages@v3
       with:
         github_token: ${{ secrets.GITHUB_TOKEN }}
