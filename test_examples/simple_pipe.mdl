@@ -1,7 +1,5 @@
 namespace "test"
 
-pack "Simple Pipe Test" description "A simple test for pipe functionality" pack_format 48
-
 # Core lifecycle hooks
 on_load "test:init"
 on_tick "test:tick"

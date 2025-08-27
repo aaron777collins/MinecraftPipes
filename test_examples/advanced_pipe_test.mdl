@@ -1,7 +1,5 @@
 namespace "advanced_test"
 
-pack "Advanced Pipe Test" description "Advanced test for pipe functionality with filtering and energy" pack_format 48
-
 # Core lifecycle hooks
 on_load "advanced_test:init"
 on_tick "advanced_test:tick"
