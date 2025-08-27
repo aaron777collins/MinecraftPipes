@@ -1,3 +1,5 @@
+pack "Simple Pipe Test" description "Simple pipe system test examples" pack_format 82
+
 namespace "test"
 
 # Core lifecycle hooks
