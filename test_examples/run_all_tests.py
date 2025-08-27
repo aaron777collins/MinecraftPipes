@@ -40,13 +40,13 @@ def test_mdl_syntax_check():
     print("\nTesting MDL syntax check...")
     
     # Check main project files (only core.mdl should have pack declaration)
-    main_files = ["core.mdl", "pipes.mdl", "pipes_advanced.mdl", "pipes_config.mdl", "pipes_creation.mdl"]
+    main_files = ["src/core.mdl", "src/pipes.mdl", "src/pipes_advanced.mdl", "src/pipes_config.mdl", "src/pipes_creation.mdl"]
     
     for file in main_files:
         if os.path.exists(file):
             print(f"Checking {file}...")
             # For module files (not core.mdl), we need to check them in context
-            if file == "core.mdl":
+            if file == "src/core.mdl":
                 success, output = run_command(["mdl", "check", file])
                 if success:
                     print(f"✅ {file} syntax is valid")
@@ -95,17 +95,11 @@ def test_mdl_build():
     import shutil
     
     with tempfile.TemporaryDirectory() as temp_dir:
-        # Copy main project files (excluding test_examples)
-        main_files = ["core.mdl", "pipes.mdl", "pipes_advanced.mdl", "pipes_config.mdl", "pipes_creation.mdl"]
-        for file in main_files:
-            if os.path.exists(file):
-                shutil.copy2(file, temp_dir)
-        
-        # Build main project from temporary directory
+        # Build main project from src directory
         print("Building main project...")
         success, output = run_command([
             "mdl", "build", 
-            "--mdl", temp_dir, 
+            "--mdl", "src", 
             "-o", "test_examples/dist", 
             "--wrapper", "minecraft_pipes", 
             "--pack-format", "82"

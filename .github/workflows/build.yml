@@ -65,12 +65,12 @@ jobs:
 
       - name: Check syntax
         shell: bash
-        run: mdl check .
+        run: mdl check src/
 
       - name: Build datapack
         shell: bash
         run: |
-          mdl build --mdl . -o dist --wrapper ${{ env.DATAPACK_NAME }} --pack-format ${{ env.PACK_FORMAT }}
+          mdl build --mdl src/ -o dist --wrapper ${{ env.DATAPACK_NAME }} --pack-format ${{ env.PACK_FORMAT }}
 
       - name: Create release zip
         shell: bash
