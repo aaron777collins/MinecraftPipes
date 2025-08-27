@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# release.sh — tag-driven release for Minecraft Pipes datapack
+# release.sh — tag-driven release (setuptools-scm). No editing pyproject.toml.
 # Usage:
 #   ./scripts/release.sh v1.2.3 "Notes..."
 #   ./scripts/release.sh patch   "Notes..."
@@ -83,21 +83,11 @@ fi
 if command -v gh >/dev/null 2>&1; then
   if gh release view "$NEW_TAG" >/dev/null 2>&1; then
     echo "GitHub Release $NEW_TAG exists — uploading local assets (if any)..."
-    if ls dist/* >/dev/null 2>&1; then 
-      # Create zip file for release
-      cd dist
-      zip -r "minecraft_pipes-${NEW_TAG#v}.zip" minecraft_pipes/
-      cd ..
-      gh release upload "$NEW_TAG" "dist/minecraft_pipes-${NEW_TAG#v}.zip" --clobber
-    fi
+    if ls dist/* >/dev/null 2>&1; then gh release upload "$NEW_TAG" dist/* --clobber; fi
   else
     [ -z "$NOTES" ] && NOTES="Automated release $NEW_TAG"
     if ls dist/* >/dev/null 2>&1; then
-      # Create zip file for release
-      cd dist
-      zip -r "minecraft_pipes-${NEW_TAG#v}.zip" minecraft_pipes/
-      cd ..
-      gh release create "$NEW_TAG" "dist/minecraft_pipes-${NEW_TAG#v}.zip" --notes "$NOTES"
+      gh release create "$NEW_TAG" dist/* --notes "$NOTES"
     else
       gh release create "$NEW_TAG" --notes "$NOTES"
     fi
