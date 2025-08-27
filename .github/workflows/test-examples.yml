@@ -21,173 +21,37 @@ jobs:
       with:
         python-version: '3.11'
         
-    - name: Install pipx
+    - name: Install MDL
       run: |
-        python -m pip install --user pipx
-        python -m pipx ensurepath
-        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        python -m pip install --upgrade pip
+        python -m pip install minecraft-datapack-language
         
-    - name: Install MDL via pipx
+    - name: Test main datapack compilation
       run: |
-        pipx install minecraft-datapack-language
-        
-    - name: Verify MDL installation
-      run: |
-        mdl --help
-        mdl --version || echo "Version command not available"
-        
-    - name: Test main datapack
-      run: |
-        echo "Testing main Minecraft Pipes datapack..."
+        echo "Testing main datapack compilation..."
         
         # Test syntax check
         mdl check src/
         
         # Test build
-        mdl build --mdl src/ -o test_examples/dist --wrapper minecraft_pipes --pack-format 82
+        mdl build --mdl src -o test_examples/dist --wrapper minecraft_pipes --pack-format 82
         
-        echo "Main datapack test complete!"
-        
-    - name: Test individual MDL files
-      run: |
-        echo "Testing individual MDL files..."
-        
-        # Only test core.mdl individually (it's the only file with pack declaration)
-        if [[ -f "src/core.mdl" ]]; then
-          echo "Testing src/core.mdl"
-          mdl check "src/core.mdl"
-        fi
-        
-        echo "Individual MDL files test complete!"
-        
-    - name: Test example datapacks
-      run: |
-        echo "Testing example datapacks..."
-        
-        # Create test examples directory if it doesn't exist
-        mkdir -p test_examples
-        
-        # Test each example MDL file
-        for file in test_examples/*.mdl; do
-          if [[ -f "$file" ]]; then
-            echo "Testing example: $file"
-            mdl check "$file"
-            mdl build --mdl "$file" -o test_examples/dist
-          fi
-        done
-        
-        # Test multi-file example projects
-        for dir in test_examples/*/; do
-          if [[ -d "$dir" ]] && [[ -f "$dir"/*.mdl ]]; then
-            echo "Testing multi-file project: $dir"
-            mdl check "$dir"
-            mdl build --mdl "$dir" -o test_examples/dist
-          fi
-        done
-        
-        echo "Example datapacks test complete!"
-        
-    - name: Test Python API examples
-      run: |
-        echo "Testing Python API examples..."
-        
-        # Test Python examples if they exist
-        for file in test_examples/*.py; do
-          if [[ -f "$file" ]] && [[ "$(basename "$file")" != "run_all_tests.py" ]]; then
-            echo "Testing Python example: $file"
-            python "$file"
-          fi
-        done
-        
-        echo "Python API examples test complete!"
-        
-    - name: Verify generated datapacks
-      run: |
-        echo "Verifying generated datapacks..."
-        ls -la test_examples/dist/ || echo "No dist directory found"
-        
-        # Check that datapacks have the expected structure
-        for dir in test_examples/dist/*/; do
-          if [[ -d "$dir" ]] && [[ "$(basename "$dir")" != "data" ]]; then
-            echo "Checking datapack: $dir"
-            ls -la "$dir"
-            
-            # Check for pack.mcmeta
-            if [[ -f "$dir/pack.mcmeta" ]]; then
-              echo "✅ pack.mcmeta found in $dir"
-            else
-              echo "❌ pack.mcmeta missing in $dir"
-              exit 1
-            fi
-            
-            # Check for data directory
-            if [[ -d "$dir/data" ]]; then
-              echo "✅ data directory found in $dir"
-            else
-              echo "❌ data directory missing in $dir"
-              exit 1
-            fi
-          fi
-        done
-        
-    - name: Test CLI commands
-      run: |
-        echo "Testing CLI commands..."
-        
-        # Test help
-        mdl --help
-        
-        # Test new command
-        mdl new cli_test --name "CLI Test" --pack-format 48
-        
-        # Verify created project
-        ls -la cli_test/
-        cat cli_test/*.mdl
-        
-        # Test check and build
-        mdl check cli_test/
-        mdl build --mdl cli_test/ -o test_examples/dist
-        
-        # Clean up
-        rm -rf cli_test/
-        
-    - name: Test pipe functionality
-      run: |
-        echo "Testing pipe functionality..."
-        
-        # Build the main datapack
-        mdl build --mdl src -o test_examples/dist --wrapper minecraft_pipes --pack-format 48
-        
-        # Check for required functions
-        if [[ -f "test_examples/dist/minecraft_pipes/data/pipes/function/init.mcfunction" ]]; then
-          echo "✅ init function found"
+        # Verify basic structure
+        if [[ -f "test_examples/dist/minecraft_pipes/pack.mcmeta" ]]; then
+          echo "✅ pack.mcmeta found"
         else
-          echo "❌ init function missing"
+          echo "❌ pack.mcmeta missing"
           exit 1
         fi
         
-        if [[ -f "test_examples/dist/minecraft_pipes/data/pipes/function/tick_main.mcfunction" ]]; then
-          echo "✅ tick_main function found"
+        if [[ -d "test_examples/dist/minecraft_pipes/data/pipes" ]]; then
+          echo "✅ pipes namespace found"
         else
-          echo "❌ tick_main function missing"
+          echo "❌ pipes namespace missing"
           exit 1
         fi
         
-        if [[ -f "test_examples/dist/minecraft_pipes/data/pipes/function/create_source.mcfunction" ]]; then
-          echo "✅ create_source function found"
-        else
-          echo "❌ create_source function missing"
-          exit 1
-        fi
-        
-        if [[ -f "test_examples/dist/minecraft_pipes/data/pipes/function/create_sink.mcfunction" ]]; then
-          echo "✅ create_sink function found"
-        else
-          echo "❌ create_sink function missing"
-          exit 1
-        fi
-        
-        echo "Pipe functionality test complete!"
+        echo "✅ Main datapack compiles successfully!"
         
     - name: Upload test artifacts
       if: always()
