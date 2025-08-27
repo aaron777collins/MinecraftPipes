@@ -33,8 +33,8 @@ description: A comprehensive pipe system for Minecraft that allows item transpor
       <p>Build your first pipe system</p>
     </div>
   </div>
-  <div style="margin-top: 2rem;">
-    <a href="https://github.com/aaron777collins/MinecraftPipes/releases" class="btn btn-primary">
+     <div style="margin-top: 2rem;">
+     <a href="https://github.com/aaron777collins/MinecraftPipes/releases" class="btn btn-primary">
       <i class="fas fa-download"></i> Download Latest Release
     </a>
     <a href="/installation" class="btn btn-outline" style="margin-left: 1rem;">
@@ -210,7 +210,7 @@ description: A comprehensive pipe system for Minecraft that allows item transpor
       <i class="fab fa-github" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1rem;"></i>
       <h3>GitHub</h3>
       <p>View source code, report issues, and contribute to the project.</p>
-      <a href="https://github.com/minecraft-pipes/minecraft-pipes" class="btn btn-primary">
+             <a href="https://github.com/aaron777collins/MinecraftPipes" class="btn btn-primary">
         <i class="fab fa-github"></i> View on GitHub
       </a>
     </div>

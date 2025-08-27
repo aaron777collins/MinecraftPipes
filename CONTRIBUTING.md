@@ -44,7 +44,7 @@ Thank you for your interest in contributing to Minecraft Pipes! This document pr
 2. **Test your changes**:
    ```bash
    # Check syntax
-   mdl check .
+mdl check src/
    
    # Build the datapack
    mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48
@@ -72,8 +72,8 @@ Thank you for your interest in contributing to Minecraft Pipes! This document pr
 ### Testing
 
 #### Before Submitting
-- [ ] **Syntax check passes**: `mdl check .`
-- [ ] **Build succeeds**: `mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48`
+- [ ] **Syntax check passes**: `mdl check src/`
+- [ ] **Build succeeds**: `mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82`
 - [ ] **Tested in Minecraft**: Functionality works as expected
 - [ ] **Documentation updated**: README and docs reflect changes
 - [ ] **No breaking changes**: Unless explicitly intended

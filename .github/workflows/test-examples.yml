@@ -41,10 +41,10 @@ jobs:
         echo "Testing main Minecraft Pipes datapack..."
         
         # Test syntax check
-        mdl check .
+        mdl check src/
         
         # Test build
-        mdl build --mdl . -o test_examples/dist --wrapper minecraft_pipes --pack-format 48
+        mdl build --mdl src/ -o test_examples/dist --wrapper minecraft_pipes --pack-format 82
         
         echo "Main datapack test complete!"
         
@@ -53,9 +53,9 @@ jobs:
         echo "Testing individual MDL files..."
         
         # Only test core.mdl individually (it's the only file with pack declaration)
-        if [[ -f "core.mdl" ]]; then
-          echo "Testing core.mdl"
-          mdl check "core.mdl"
+        if [[ -f "src/core.mdl" ]]; then
+          echo "Testing src/core.mdl"
+          mdl check "src/core.mdl"
         fi
         
         echo "Individual MDL files test complete!"

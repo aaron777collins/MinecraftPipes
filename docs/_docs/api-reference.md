@@ -500,7 +500,7 @@ execute as @e[type=item_display,tag=pipes:custom_token] run function mypack:cust
   
   <h4>MDL Development</h4>
   <pre><code class="language-bash"># Check syntax
-mdl check .
+mdl check src/
 
 # Build with debug symbols
 mdl build --mdl . -o dist --wrapper minecraft_pipes --pack-format 48 --debug
