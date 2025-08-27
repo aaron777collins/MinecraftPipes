@@ -1,0 +1,284 @@
+<h1 id="basic-usage-guide">Basic Usage Guide</h1>
+
+<p>Learn how to create and use pipes to transport items between containers in Minecraft.</p>
+
+<h2 id="getting-started">Getting Started</h2>
+
+<h3 id="prerequisites">Prerequisites</h3>
+<ul>
+  <li>Minecraft Pipes System installed and loaded</li>
+  <li>Basic understanding of Minecraft commands</li>
+  <li>Some containers (chests, barrels, etc.) and items to transport</li>
+</ul>
+
+<h3 id="quick-setup">Quick Setup</h3>
+<ol>
+  <li><strong>Get the pipe wrench</strong>: <code class="language-plaintext highlighter-rouge">/function pipes:give_wrench</code></li>
+  <li><strong>Create a source</strong>: <code class="language-plaintext highlighter-rouge">/function pipes:create_source</code></li>
+  <li><strong>Create a sink</strong>: <code class="language-plaintext highlighter-rouge">/function pipes:create_sink</code></li>
+  <li><strong>Place containers</strong>: Put chests below the markers</li>
+  <li><strong>Add items</strong>: Put items in the source chest</li>
+  <li><strong>Watch the magic</strong>: Items will flow through the air!</li>
+</ol>
+
+<h2 id="creating-your-first-pipe">Creating Your First Pipe</h2>
+
+<h3 id="step-1-create-a-source">Step 1: Create a Source</h3>
+
+<ol>
+  <li><strong>Stand where you want the source</strong> (where items will come from)</li>
+  <li><strong>Run the command</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/function pipes:create_source
+</code></pre></div>    </div>
+  </li>
+  <li><strong>You’ll see</strong>: A marker appears with the message “Source created with ID: X”</li>
+  <li><strong>Place a container</strong>: Put a chest, barrel, hopper, dropper, or dispenser below the marker</li>
+</ol>
+
+<h3 id="step-2-create-a-sink">Step 2: Create a Sink</h3>
+
+<ol>
+  <li><strong>Move to where you want the sink</strong> (where items will go to)</li>
+  <li><strong>Run the command</strong>:
+    <div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code>/function pipes:create_sink
+</code></pre></div>    </div>
+  </li>
+  <li><strong>You’ll see</strong>: A marker appears with the message “Sink created with ID: X”</li>
+  <li><strong>Place a container</strong>: Put a chest, barrel, hopper, dropper, or dispenser below the marker</li>
+</ol>
+
+<h3 id="step-3-add-items-and-watch">Step 3: Add Items and Watch</h3>
+
+<ol>
+  <li><strong>Add items to the source container</strong> (the one below the source marker)</li>
+  <li><strong>Wait a moment</strong> - items will start flowing as visible tokens</li>
+  <li><strong>Watch the transfer</strong> - tokens move through the air to the sink</li>
+  <li><strong>Check the destination</strong> - items appear in the sink container</li>
+</ol>
+
+<h2 id="basic-commands">Basic Commands</h2>
+
+<h3 id="essential-commands">Essential Commands</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:help</code></td>
+      <td>Show all available commands</td>
+      <td>Always available</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:create_source</code></td>
+      <td>Create a pipe source</td>
+      <td>Stand where you want the source</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:create_sink</code></td>
+      <td>Create a pipe sink</td>
+      <td>Stand where you want the sink</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:list_connections</code></td>
+      <td>List all active pipes</td>
+      <td>Check your setup</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:clear_all</code></td>
+      <td>Remove all pipes</td>
+      <td>Clean slate</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="management-commands">Management Commands</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>Command</th>
+      <th>Description</th>
+      <th>Usage</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:check_pipe_status</code></td>
+      <td>Check system status</td>
+      <td>Debug issues</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:debug_pipes</code></td>
+      <td>Show debug information</td>
+      <td>Troubleshooting</td>
+    </tr>
+    <tr>
+      <td><code class="language-plaintext highlighter-rouge">/function pipes:remove_pipe</code></td>
+      <td>Remove nearby pipe</td>
+      <td>Stand near the pipe to remove</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="container-types">Container Types</h2>
+
+<p>The pipe system supports all vanilla storage blocks:</p>
+
+<h3 id="full-size-containers-64-items-per-slot">Full-Size Containers (64 items per slot)</h3>
+<ul>
+  <li><strong>Chests</strong> - Most common, good for large storage</li>
+  <li><strong>Barrels</strong> - Compact, good for automation</li>
+</ul>
+
+<h3 id="small-containers">Small Containers</h3>
+<ul>
+  <li><strong>Hoppers</strong> - 5 items per slot, good for automation</li>
+  <li><strong>Droppers</strong> - 9 items per slot, good for redstone</li>
+  <li><strong>Dispensers</strong> - 9 items per slot, good for redstone</li>
+</ul>
+
+<h3 id="container-placement">Container Placement</h3>
+<ul>
+  <li><strong>Place containers directly below</strong> the source/sink markers</li>
+  <li><strong>One container per marker</strong> - the system checks the block below each marker</li>
+  <li><strong>Containers must be accessible</strong> - don’t place them inside walls or underground</li>
+</ul>
+
+<h2 id="how-it-works">How It Works</h2>
+
+<h3 id="the-pipe-system-process">The Pipe System Process</h3>
+
+<ol>
+  <li><strong>Source Detection</strong>: The system checks for containers below source markers</li>
+  <li><strong>Token Creation</strong>: Items are converted into visible tokens (item displays)</li>
+  <li><strong>Token Movement</strong>: Tokens move through the air at a configurable speed</li>
+  <li><strong>Destination Detection</strong>: When tokens reach sink markers, they check for containers</li>
+  <li><strong>Item Transfer</strong>: Items are transferred from tokens to destination containers</li>
+  <li><strong>Cleanup</strong>: Tokens are removed after successful transfer</li>
+</ol>
+
+<h3 id="visual-indicators">Visual Indicators</h3>
+
+<ul>
+  <li><strong>Source Markers</strong>: Invisible markers that extract items</li>
+  <li><strong>Sink Markers</strong>: Invisible markers that receive items</li>
+  <li><strong>Tokens</strong>: Visible item displays that show items moving through the air</li>
+  <li><strong>Messages</strong>: Chat messages confirm successful operations</li>
+</ul>
+
+<h2 id="common-use-cases">Common Use Cases</h2>
+
+<h3 id="simple-storage-transfer">Simple Storage Transfer</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Source Chest → Pipe → Destination Chest
+</code></pre></div></div>
+<ul>
+  <li>Good for moving items between storage areas</li>
+  <li>Works with any container type</li>
+</ul>
+
+<h3 id="automated-sorting">Automated Sorting</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Multiple Sources → Pipes → Different Sinks
+</code></pre></div></div>
+<ul>
+  <li>Use different containers for different item types</li>
+  <li>Create organized storage systems</li>
+</ul>
+
+<h3 id="resource-collection">Resource Collection</h3>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>Farms → Pipes → Storage
+</code></pre></div></div>
+<ul>
+  <li>Connect farms to central storage</li>
+  <li>Automate resource collection</li>
+</ul>
+
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<h3 id="common-issues">Common Issues</h3>
+
+<h4 id="no-items-are-flowing">“No items are flowing”</h4>
+<ul>
+  <li><strong>Check</strong>: Are there items in the source container?</li>
+  <li><strong>Check</strong>: Is the source container below the source marker?</li>
+  <li><strong>Check</strong>: Is the sink container below the sink marker?</li>
+  <li><strong>Solution</strong>: Run <code class="language-plaintext highlighter-rouge">/function pipes:list_connections</code> to verify setup</li>
+</ul>
+
+<h4 id="items-are-stuck">“Items are stuck”</h4>
+<ul>
+  <li><strong>Check</strong>: Are containers full?</li>
+  <li><strong>Check</strong>: Is the sink container accessible?</li>
+  <li><strong>Solution</strong>: Clear some space in the destination container</li>
+</ul>
+
+<h4 id="no-markers-visible">“No markers visible”</h4>
+<ul>
+  <li><strong>Check</strong>: Did the commands complete successfully?</li>
+  <li><strong>Check</strong>: Do you have operator permissions?</li>
+  <li><strong>Solution</strong>: Run <code class="language-plaintext highlighter-rouge">/function pipes:create_source</code> again</li>
+</ul>
+
+<h4 id="system-not-responding">“System not responding”</h4>
+<ul>
+  <li><strong>Check</strong>: Is the datapack loaded?</li>
+  <li><strong>Solution</strong>: Run <code class="language-plaintext highlighter-rouge">/reload</code> and try again</li>
+  <li><strong>Check</strong>: Run <code class="language-plaintext highlighter-rouge">/function pipes:ping</code> to test the system</li>
+</ul>
+
+<h3 id="debug-commands">Debug Commands</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check if system is working</span>
+/function pipes:ping
+
+<span class="c"># List all connections</span>
+/function pipes:list_connections
+
+<span class="c"># Show system status</span>
+/function pipes:check_pipe_status
+
+<span class="c"># Enable debug mode</span>
+/function pipes:toggle_debug
+
+<span class="c"># Show debug information</span>
+/function pipes:debug_pipes
+</code></pre></div></div>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>Once you’re comfortable with basic pipes:</p>
+
+<ol>
+  <li><strong>Learn about <a href="advanced-features">Advanced Features</a></strong> like filtering and redstone control</li>
+  <li><strong>Explore <a href="configuration">Configuration Options</a></strong> to customize the system</li>
+  <li><strong>Check out <a href="configuration#performance-optimization">Performance Optimization</a></strong> for large setups</li>
+  <li><strong>Read the <a href="api-reference">API Reference</a></strong> for technical details</li>
+</ol>
+
+<h2 id="tips-and-best-practices">Tips and Best Practices</h2>
+
+<h3 id="performance">Performance</h3>
+<ul>
+  <li><strong>Limit the number of active pipes</strong> in large worlds</li>
+  <li><strong>Use appropriate flow rates</strong> for your setup</li>
+  <li><strong>Clean up unused pipes</strong> with <code class="language-plaintext highlighter-rouge">/function pipes:clear_all</code></li>
+</ul>
+
+<h3 id="organization">Organization</h3>
+<ul>
+  <li><strong>Use descriptive names</strong> for your pipe setups</li>
+  <li><strong>Group related pipes</strong> together</li>
+  <li><strong>Document your setups</strong> for future reference</li>
+</ul>
+
+<h3 id="safety">Safety</h3>
+<ul>
+  <li><strong>Backup your world</strong> before making major changes</li>
+  <li><strong>Test in creative mode</strong> before using in survival</li>
+  <li><strong>Start small</strong> and expand gradually</li>
+</ul>

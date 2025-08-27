@@ -1,0 +1,215 @@
+<h1 id="installation-guide">Installation Guide</h1>
+
+<p>This guide will help you install and set up the Minecraft Pipes System in your world.</p>
+
+<h2 id="prerequisites">Prerequisites</h2>
+
+<ul>
+  <li><strong>Minecraft Java Edition 1.20+</strong> (required for pack format 82)</li>
+  <li><strong>A Minecraft world</strong> (singleplayer or multiplayer server)</li>
+  <li><strong>Basic knowledge</strong> of Minecraft datapacks</li>
+</ul>
+
+<h2 id="quick-installation">Quick Installation</h2>
+
+<h3 id="step-1-download-the-datapack">Step 1: Download the Datapack</h3>
+
+<ol>
+  <li>Go to the <a href="https://github.com/aaron777collins/MinecraftPipes/releases">Releases page</a></li>
+  <li>Download the latest <code class="language-plaintext highlighter-rouge">minecraft_pipes.zip</code> file</li>
+  <li>Extract the ZIP file to get the <code class="language-plaintext highlighter-rouge">minecraft_pipes</code> folder</li>
+</ol>
+
+<h3 id="step-2-install-in-your-world">Step 2: Install in Your World</h3>
+
+<ol>
+  <li><strong>Locate your world folder</strong>:
+    <ul>
+      <li><strong>Singleplayer</strong>: <code class="language-plaintext highlighter-rouge">%appdata%/.minecraft/saves/[WorldName]/</code></li>
+      <li><strong>Multiplayer</strong>: Ask your server administrator for the world folder location</li>
+    </ul>
+  </li>
+  <li><strong>Copy the datapack</strong>:
+    <ul>
+      <li>Copy the <code class="language-plaintext highlighter-rouge">minecraft_pipes</code> folder to the <code class="language-plaintext highlighter-rouge">datapacks</code> directory in your world</li>
+      <li>If the <code class="language-plaintext highlighter-rouge">datapacks</code> folder doesn’t exist, create it</li>
+    </ul>
+  </li>
+  <li><strong>File structure should look like</strong>:
+    <div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[WorldName]/
+├── datapacks/
+│   └── minecraft_pipes/
+│       ├── data/
+│       │   ├── minecraft/
+│       │   │   └── tags/
+│       │   │       └── function/
+│       │   │           ├── load.json
+│       │   │           └── tick.json
+│       │   └── pipes/
+│       │       └── function/
+│       │           ├── init.mcfunction
+│       │           ├── tick_main.mcfunction
+│       │           └── [other functions...]
+│       └── pack.mcmeta
+└── [other world files...]
+</code></pre></div>    </div>
+  </li>
+</ol>
+
+<h3 id="step-3-enable-the-datapack">Step 3: Enable the Datapack</h3>
+
+<ol>
+  <li><strong>Start or load your world</strong></li>
+  <li><strong>Open the world settings</strong>:
+    <ul>
+      <li>Press <code class="language-plaintext highlighter-rouge">Esc</code> → <code class="language-plaintext highlighter-rouge">Open to LAN</code> → <code class="language-plaintext highlighter-rouge">Allow Cheats: ON</code></li>
+      <li>Or use <code class="language-plaintext highlighter-rouge">/reload</code> if you have operator permissions</li>
+    </ul>
+  </li>
+  <li><strong>Reload datapacks</strong>:
+    <ul>
+      <li>Type <code class="language-plaintext highlighter-rouge">/reload</code> in the chat</li>
+      <li>You should see: <code class="language-plaintext highlighter-rouge">[PIPES] Advanced pipe system loaded!</code></li>
+    </ul>
+  </li>
+  <li><strong>Verify installation</strong>:
+    <ul>
+      <li>Type <code class="language-plaintext highlighter-rouge">/function pipes:help</code> to see available commands</li>
+      <li>You should see a list of pipe system commands</li>
+    </ul>
+  </li>
+</ol>
+
+<h2 id="building-from-source">Building from Source</h2>
+
+<p>If you want to build the datapack from source or modify it:</p>
+
+<h3 id="prerequisites-for-building">Prerequisites for Building</h3>
+
+<ul>
+  <li><strong>Python 3.7+</strong></li>
+  <li><strong>MDL (Minecraft Datapack Language)</strong></li>
+</ul>
+
+<h3 id="install-mdl">Install MDL</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Using pipx (recommended)</span>
+python3 <span class="nt">-m</span> pip <span class="nb">install</span> <span class="nt">--user</span> pipx
+python3 <span class="nt">-m</span> pipx ensurepath
+pipx <span class="nb">install </span>minecraft-datapack-language
+
+<span class="c"># Or using pip</span>
+pip <span class="nb">install </span>minecraft-datapack-language
+</code></pre></div></div>
+
+<h3 id="build-the-datapack">Build the Datapack</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Clone the repository</span>
+git clone https://github.com/aaron777collins/MinecraftPipes.git
+<span class="nb">cd </span>MinecraftPipes
+
+<span class="c"># Check syntax</span>
+mdl check src/
+
+<span class="c"># Build the datapack</span>
+mdl build <span class="nt">--mdl</span> src <span class="nt">-o</span> dist <span class="nt">--wrapper</span> minecraft_pipes <span class="nt">--pack-format</span> 82
+
+<span class="c"># The built datapack will be in dist/minecraft_pipes/</span>
+</code></pre></div></div>
+
+<h3 id="using-the-build-script">Using the Build Script</h3>
+
+<p>For convenience, you can also use the provided build script:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Build with default pack format (82)</span>
+./build.sh
+
+<span class="c"># Build with specific pack format</span>
+./build.sh 48
+</code></pre></div></div>
+
+<h2 id="testing">Testing</h2>
+
+<p>The project includes comprehensive test examples to verify functionality:</p>
+
+<h3 id="running-tests">Running Tests</h3>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Run all tests</span>
+python test_examples/run_all_tests.py
+
+<span class="c"># Build standalone test datapacks</span>
+mdl build <span class="nt">--mdl</span> test_examples/standalone_tests/simple_pipe_test <span class="nt">-o</span> test_examples/dist <span class="nt">--wrapper</span> simple_pipe_test <span class="nt">--pack-format</span> 82
+mdl build <span class="nt">--mdl</span> test_examples/standalone_tests/advanced_pipe_test <span class="nt">-o</span> test_examples/dist <span class="nt">--wrapper</span> advanced_pipe_test <span class="nt">--pack-format</span> 82
+</code></pre></div></div>
+
+<h3 id="test-structure">Test Structure</h3>
+
+<ul>
+  <li><strong>Integrated Tests</strong>: Part of the main datapack (<code class="language-plaintext highlighter-rouge">test_examples/simple_pipe.mdl</code>, <code class="language-plaintext highlighter-rouge">test_examples/advanced_pipe_test.mdl</code>)</li>
+  <li><strong>Standalone Tests</strong>: Independent datapacks (<code class="language-plaintext highlighter-rouge">test_examples/standalone_tests/</code>)</li>
+</ul>
+
+<p>See the <a href="../test_examples/README.md">test_examples/README.md</a> for detailed testing documentation.</p>
+
+<h2 id="troubleshooting-installation">Troubleshooting Installation</h2>
+
+<h3 id="common-issues">Common Issues</h3>
+
+<h4 id="datapack-not-found">“Datapack not found”</h4>
+<ul>
+  <li><strong>Solution</strong>: Make sure the <code class="language-plaintext highlighter-rouge">minecraft_pipes</code> folder is directly inside the <code class="language-plaintext highlighter-rouge">datapacks</code> folder</li>
+  <li><strong>Check</strong>: The path should be <code class="language-plaintext highlighter-rouge">[WorldName]/datapacks/minecraft_pipes/</code></li>
+</ul>
+
+<h4 id="function-not-found">“Function not found”</h4>
+<ul>
+  <li><strong>Solution</strong>: Run <code class="language-plaintext highlighter-rouge">/reload</code> after installing the datapack</li>
+  <li><strong>Check</strong>: Make sure you have operator permissions or cheats enabled</li>
+</ul>
+
+<h4 id="pack-format-not-supported">“Pack format not supported”</h4>
+<ul>
+  <li><strong>Solution</strong>: Update to Minecraft 1.20+ or rebuild with an older pack format</li>
+  <li><strong>Command</strong>: <code class="language-plaintext highlighter-rouge">mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 47</code></li>
+</ul>
+
+<h4 id="permission-denied">“Permission denied”</h4>
+<ul>
+  <li><strong>Solution</strong>: Make sure you have write permissions to the world folder</li>
+  <li><strong>Check</strong>: Try running Minecraft as administrator (Windows) or with proper permissions (Linux/Mac)</li>
+</ul>
+
+<h3 id="verification-commands">Verification Commands</h3>
+
+<p>After installation, run these commands to verify everything is working:</p>
+
+<div class="language-bash highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c"># Check if the system loaded</span>
+/function pipes:ping
+
+<span class="c"># Show available commands</span>
+/function pipes:help
+
+<span class="c"># Check system status</span>
+/function pipes:check_pipe_status
+</code></pre></div></div>
+
+<h2 id="next-steps">Next Steps</h2>
+
+<p>Once installation is complete:</p>
+
+<ol>
+  <li><strong>Read the <a href="basic-usage">Basic Usage Guide</a></strong> to learn how to create your first pipe</li>
+  <li><strong>Check the <a href="configuration">Configuration Guide</a></strong> to customize the system</li>
+  <li><strong>Explore <a href="advanced-features">Advanced Features</a></strong> for more complex setups</li>
+</ol>
+
+<h2 id="support">Support</h2>
+
+<p>If you encounter issues during installation:</p>
+
+<ol>
+  <li><strong>Check the <a href="troubleshooting">Troubleshooting Guide</a></strong></li>
+  <li><strong>Enable debug mode</strong>: <code class="language-plaintext highlighter-rouge">/function pipes:toggle_debug</code></li>
+  <li><strong>Report issues</strong> on <a href="https://github.com/aaron777collins/MinecraftPipes/issues">GitHub Issues</a></li>
+  <li><strong>Ask for help</strong> in <a href="https://github.com/aaron777collins/MinecraftPipes/discussions">GitHub Discussions</a></li>
+</ol>

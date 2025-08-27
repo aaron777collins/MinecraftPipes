@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Troubleshooting - Minecraft Pipes</title>
+    <meta name="description" content="Common issues and solutions for the Minecraft Pipes System. Learn how to diagnose and fix problems.">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="/assets/images/favicon.ico">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Troubleshooting">
+    <meta property="og:description" content="Common issues and solutions for the Minecraft Pipes System. Learn how to diagnose and fix problems.">
+    <meta property="og:url" content="https://minecraft-pipes.github.io/docs/troubleshooting/">
+    <meta property="og:type" content="website">
+    
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Troubleshooting">
+    <meta name="twitter:description" content="Common issues and solutions for the Minecraft Pipes System. Learn how to diagnose and fix problems.">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    
+    <link rel="stylesheet" href="/assets/css/custom.css">
+    
+    
+    <!-- Head Scripts -->
+    
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <h1><i class="fas fa-stream"></i> Minecraft Pipes</h1>
+            <p>Advanced pipe system for item transportation between containers in Minecraft</p>
+            <div class="header-buttons">
+                <a href="https://github.com/aaron777collins/MinecraftPipes/releases" class="btn btn-primary">
+                    <i class="fas fa-download"></i> Download Latest
+                </a>
+                <a href="/installation" class="btn btn-outline">
+                    <i class="fas fa-book"></i> Get Started
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-container">
+            <a href="/" class="nav-logo">
+                <i class="fas fa-stream"></i>
+                <span>Minecraft Pipes</span>
+            </a>
+            <ul class="nav-menu" id="nav-menu">
+                
+                <li>
+                    <a href="/" >
+                        Home
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/installation/" >
+                        Installation
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/basic-usage/" >
+                        Basic Usage
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/advanced-features/" >
+                        Advanced Features
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/configuration/" >
+                        Configuration
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/api-reference/" >
+                        API Reference
+                    </a>
+                </li>
+                
+                <li>
+                    <a href="/troubleshooting/" >
+                        Troubleshooting
+                    </a>
+                </li>
+                
+            </ul>
+            <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="page-header">
+  <h1><i class="fas fa-question-circle"></i> Troubleshooting</h1>
+  <p>Common issues and solutions for the Minecraft Pipes System. Learn how to diagnose and fix problems quickly.</p>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">
+      <i class="fas fa-search"></i>
+    </div>
+    <h2 class="card-title">Diagnostic Commands</h2>
+  </div>
+  
+  <p>Use these commands to diagnose issues with your pipe system:</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:ping</span>
+  </div>
+  <p>Test if the pipe system is responding</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:check_pipe_status</span>
+  </div>
+  <p>Check the overall status of all pipes</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:list_connections</span>
+  </div>
+  <p>List all active pipe connections</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:debug_pipes</span>
+  </div>
+  <p>Show detailed debug information</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:performance_report</span>
+  </div>
+  <p>Generate a performance report</p>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">
+      <i class="fas fa-exclamation-triangle"></i>
+    </div>
+    <h2 class="card-title">Common Issues</h2>
+  </div>
+  
+  <h3>Installation Issues</h3>
+  
+  <div class="alert alert-error">
+    <h4><i class="fas fa-times-circle"></i> "Datapack not found" Error</h4>
+    <p><strong>Symptoms:</strong> The system doesn't load or commands return "function not found"</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>Datapack not properly installed in the datapacks folder</li>
+      <li>Incorrect folder structure</li>
+      <li>Missing pack.mcmeta file</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Verify the datapack is in <code>[WorldName]/datapacks/minecraft_pipes/</code></li>
+      <li>Check that the folder contains <code>data/</code> and <code>pack.mcmeta</code></li>
+      <li>Run <code>/reload</code> in-game</li>
+      <li>Check the chat for any error messages</li>
+    </ol>
+  </div>
+  
+  <div class="alert alert-error">
+    <h4><i class="fas fa-times-circle"></i> "Pack format not supported" Error</h4>
+    <p><strong>Symptoms:</strong> Datapack loads but shows format error</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>Minecraft version too old for the datapack format</li>
+      <li>Datapack built for newer Minecraft version</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Update to Minecraft 1.21+</li>
+      <li>Or rebuild the datapack with an older pack format</li>
+      <li>Use <code>mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 47</code> for older versions</li>
+    </ol>
+  </div>
+  
+  <div class="alert alert-error">
+    <h4><i class="fas fa-times-circle"></i> "Duplicate pack declaration" Error</h4>
+    <p><strong>Symptoms:</strong> Build fails with duplicate pack declaration error</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>Building from root directory instead of src directory</li>
+      <li>Test files being included in main build</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Always build from the <code>src</code> directory: <code>mdl build --mdl src -o dist --wrapper minecraft_pipes --pack-format 82</code></li>
+      <li>Use the provided build script: <code>./build.sh</code></li>
+      <li>Do not use <code>mdl build --mdl .</code> as this includes test files</li>
+    </ol>
+  </div>
+  
+  <h3>Pipe Operation Issues</h3>
+  
+  <div class="alert alert-warning">
+    <h4><i class="fas fa-exclamation-triangle"></i> "No items are flowing"</h4>
+    <p><strong>Symptoms:</strong> Pipes are set up but no items move between containers</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>No items in source container</li>
+      <li>Source or sink container not properly placed</li>
+      <li>Containers are full</li>
+      <li>Pipes are disabled by redstone</li>
+      <li>Energy system is depleted</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Check that source container has items</li>
+      <li>Verify containers are directly below markers</li>
+      <li>Ensure destination container has space</li>
+      <li>Check redstone signals if using redstone control</li>
+      <li>Check energy levels if using energy system</li>
+      <li>Run <code>/function pipes:list_connections</code> to verify setup</li>
+    </ol>
+  </div>
+  
+  <div class="alert alert-warning">
+    <h4><i class="fas fa-exclamation-triangle"></i> "Items are stuck"</h4>
+    <p><strong>Symptoms:</strong> Tokens appear but don't move or reach destination</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>Destination container is full</li>
+      <li>Token speed is too slow</li>
+      <li>Distance is too far</li>
+      <li>Performance issues causing lag</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Clear space in destination container</li>
+      <li>Increase token speed: <code>/function pipes:set_token_speed 0.2</code></li>
+      <li>Check if distance is within limits</li>
+      <li>Optimize performance settings</li>
+    </ol>
+  </div>
+  
+  <div class="alert alert-warning">
+    <h4><i class="fas fa-exclamation-triangle"></i> "No markers visible"</h4>
+    <p><strong>Symptoms:</strong> Commands complete but no visual markers appear</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>Commands didn't complete successfully</li>
+      <li>No operator permissions</li>
+      <li>Visual effects disabled</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Check chat for success messages</li>
+      <li>Ensure you have operator permissions</li>
+      <li>Enable cheats in world settings</li>
+      <li>Check if visual effects are enabled</li>
+    </ol>
+  </div>
+  
+  <h3>Performance Issues</h3>
+  
+  <div class="alert alert-error">
+    <h4><i class="fas fa-times-circle"></i> "Lag or low FPS"</h4>
+    <p><strong>Symptoms:</strong> Game becomes slow or unresponsive</p>
+    <p><strong>Causes:</strong></p>
+    <ul>
+      <li>Too many active pipes</li>
+      <li>High flow rates</li>
+      <li>Large token render distances</li>
+      <li>Particle effects enabled</li>
+      <li>Complex filtering systems</li>
+    </ul>
+    <p><strong>Solutions:</strong></p>
+    <ol>
+      <li>Reduce number of active pipes</li>
+      <li>Lower flow rates: <code>/function pipes:set_flow_rate 40</code></li>
+      <li>Reduce token render distance</li>
+      <li>Disable particle effects</li>
+      <li>Use performance mode: <code>/function pipes:optimize_performance</code></li>
+    </ol>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">
+      <i class="fas fa-tools"></i>
+    </div>
+    <h2 class="card-title">Advanced Troubleshooting</h2>
+  </div>
+  
+  <h3>Debug Mode</h3>
+  <p>Enable debug mode for detailed logging and troubleshooting:</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:toggle_debug</span>
+  </div>
+  <p>Enable debug mode for detailed logging</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:toggle_verbose</span>
+  </div>
+  <p>Enable verbose logging for more details</p>
+  
+  <h3>Network Diagnostics</h3>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:network_status</span>
+  </div>
+  <p>Display network topology and connection status</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:show_network</span>
+  </div>
+  <p>Visualize the pipe network structure</p>
+  
+  <h3>Performance Monitoring</h3>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:performance_monitor</span>
+  </div>
+  <p>Start/stop performance monitoring</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:performance_report</span>
+  </div>
+  <p>Generate a detailed performance report</p>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">
+      <i class="fas fa-cog"></i>
+    </div>
+    <h2 class="card-title">Configuration Issues</h2>
+  </div>
+  
+  <h3>Reset Configuration</h3>
+  <p>If you've made configuration changes that are causing issues:</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:reset_config</span>
+  </div>
+  <p>Reset all settings to default values</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:show_config</span>
+  </div>
+  <p>Display current configuration settings</p>
+  
+  <h3>Load Safe Configuration</h3>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:set_performance_mode</span>
+  </div>
+  <p>Set performance mode for better stability</p>
+  
+  <div class="command-example">
+    <span class="prompt">$</span> <span class="command">/function pipes:optimize_performance</span>
+  </div>
+  <p>Automatically optimize settings for better performance</p>
+</div>
+
+<div class="card">
+  <div class="card-header">
+    <div class="card-icon">
+      <i class="fas fa-life-ring"></i>
+    </div>
+    <h2 class="card-title">Getting Help</h2>
+  </div>
+  
+  <p>If you're still experiencing issues after trying these solutions:</p>
+  
+  <div class="feature-grid">
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fab fa-github"></i>
+      </div>
+      <h3 class="feature-title">GitHub Issues</h3>
+      <p class="feature-description">Report bugs and request features on GitHub</p>
+      <a href="https://github.com/minecraft-pipes/minecraft-pipes/issues" class="btn btn-primary">
+        <i class="fab fa-github"></i> Report Issue
+      </a>
+    </div>
+    
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fab fa-discord"></i>
+      </div>
+      <h3 class="feature-title">Discord Community</h3>
+      <p class="feature-description">Get help from the community on Discord</p>
+      <a href="https://discord.gg/minecraft-pipes" class="btn btn-secondary">
+        <i class="fab fa-discord"></i> Join Discord
+      </a>
+    </div>
+    
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-book"></i>
+      </div>
+      <h3 class="feature-title">Documentation</h3>
+      <p class="feature-description">Check the full documentation for more details</p>
+      <a href="/" class="btn btn-outline">
+        <i class="fas fa-book"></i> View Docs
+      </a>
+    </div>
+    
+    <div class="feature-card">
+      <div class="feature-icon">
+        <i class="fas fa-wiki"></i>
+      </div>
+      <h3 class="feature-title">Wiki</h3>
+      <p class="feature-description">Community-maintained wiki with tips and tricks</p>
+      <a href="https://github.com/minecraft-pipes/minecraft-pipes/wiki" class="btn btn-outline">
+        <i class="fas fa-wiki"></i> View Wiki
+      </a>
+    </div>
+  </div>
+  
+  <h3>When Reporting Issues</h3>
+  <p>When reporting an issue, please include:</p>
+  
+  <ul>
+    <li><strong>Minecraft Version:</strong> The version you're running</li>
+    <li><strong>Datapack Version:</strong> The version of the pipe system</li>
+    <li><strong>Steps to Reproduce:</strong> How to recreate the issue</li>
+    <li><strong>Expected Behavior:</strong> What should happen</li>
+    <li><strong>Actual Behavior:</strong> What actually happens</li>
+    <li><strong>Error Messages:</strong> Any error messages from chat or logs</li>
+    <li><strong>Debug Output:</strong> Output from debug commands</li>
+    <li><strong>Screenshots/Videos:</strong> Visual evidence of the issue</li>
+  </ul>
+</div>
+
+<div class="alert alert-info">
+  <h3><i class="fas fa-lightbulb"></i> Pro Tips</h3>
+  <ul>
+    <li><strong>Always backup your world</strong> before making major changes</li>
+    <li><strong>Test in creative mode</strong> before using in survival</li>
+    <li><strong>Start small</strong> and expand gradually</li>
+    <li><strong>Use debug mode</strong> when troubleshooting complex issues</li>
+    <li><strong>Check performance</strong> regularly in large setups</li>
+    <li><strong>Keep documentation handy</strong> for reference</li>
+  </ul>
+</div>
+
+<div class="alert alert-success">
+  <h3><i class="fas fa-graduation-cap"></i> Next Steps</h3>
+  <p>If you've resolved your issue, consider exploring the <a href="/advanced-features">Advanced Features</a> to enhance your pipe system, or check out the <a href="/configuration">Configuration Guide</a> to optimize your setup.</p>
+</div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-stream"></i> Minecraft Pipes</h3>
+                <p>A comprehensive pipe system for Minecraft that allows item transportation between containers using MDL (Minecraft Datapack Language).</p>
+                <div class="social-links">
+                    <a href="https://github.com/aaron777collins/MinecraftPipes" class="social-link" title="GitHub">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="https://discord.gg/minecraft-pipes" class="social-link" title="Discord">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                    <a href="https://twitter.com/minecraft_pipes" class="social-link" title="Twitter">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="footer-section">
+                <h3>Documentation</h3>
+                
+                <a href="/">Home</a>
+                
+                <a href="/installation/">Installation</a>
+                
+                <a href="/basic-usage/">Basic Usage</a>
+                
+                <a href="/advanced-features/">Advanced Features</a>
+                
+                <a href="/configuration/">Configuration</a>
+                
+                <a href="/api-reference/">API Reference</a>
+                
+                <a href="/troubleshooting/">Troubleshooting</a>
+                
+            </div>
+            
+            <div class="footer-section">
+                <h3>Resources</h3>
+                
+                <a href="https://github.com/aaron777collins/MinecraftPipes">GitHub</a>
+                
+                <a href="https://github.com/aaron777collins/MinecraftPipes/issues">Issues</a>
+                
+                <a href="https://github.com/aaron777collins/MinecraftPipes/discussions">Discussions</a>
+                
+                <a href="https://github.com/aaron777collins/MinecraftPipes/releases">Releases</a>
+                
+            </div>
+            
+            <div class="footer-section">
+                <h3>Community</h3>
+                <a href="https://github.com/aaron777collins/MinecraftPipes/issues">Report Issues</a>
+                <a href="https://github.com/aaron777collins/MinecraftPipes/discussions">Discussions</a>
+                <a href="https://github.com/aaron777collins/MinecraftPipes/blob/main/CONTRIBUTING.md">Contribute</a>
+                <a href="https://github.com/aaron777collins/MinecraftPipes/blob/main/LICENSE">License</a>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2024 Minecraft Pipes Team. Built with <i class="fas fa-heart" style="color: #ef4444;"></i> for the Minecraft community.</p>
+        </div>
+    </footer>
+
+    <!-- Mobile Navigation Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const navToggle = document.getElementById('nav-toggle');
+            const navMenu = document.getElementById('nav-menu');
+            
+            navToggle.addEventListener('click', function() {
+                navMenu.classList.toggle('active');
+            });
+            
+            // Close mobile menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!navToggle.contains(event.target) && !navMenu.contains(event.target)) {
+                    navMenu.classList.remove('active');
+                }
+            });
+            
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+            
+            // Add fade-in animation to elements as they come into view
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in-up');
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe cards and feature cards
+            document.querySelectorAll('.card, .feature-card, .step').forEach(el => {
+                observer.observe(el);
+            });
+        });
+    </script>
+</body>
+</html>
