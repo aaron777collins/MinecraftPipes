@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting",
+  "pattern": [
+    " H ",
+    "GIG",
+    " G "
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "H": {
+      "item": "minecraft:hopper"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "result": {
+    "item": "minecraft:blue_stained_glass",
+    "count": 1,
+    "nbt": "{CustomModelData:1003,display:{Name:'{\"text\":\"Outlet Pipe\",\"color\":\"blue\",\"italic\":false}'}}"
+  }
+}

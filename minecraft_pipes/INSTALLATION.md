@@ -1,28 +1,16 @@
----
-layout: docs
-title: "Installation Guide"
-description: "Step-by-step installation instructions for Minecraft Pipes datapack"
-permalink: /docs/installation/
----
+# Installation Guide - Minecraft Pipes Datapack
 
-# Installation Guide
+## Quick Start
 
-Welcome to Minecraft Pipes! This guide will walk you through installing the datapack on both single-player worlds and servers.
-
-## Prerequisites
-
-Before installing Minecraft Pipes, ensure you have:
-
+### Prerequisites
 - **Minecraft Version**: 1.21+ (Pack Format 82)
+- **MDL Compiler**: Required for building from source
 - **World Access**: Ability to install datapacks
-- **MDL Compiler**: Required for building from source (optional)
-
-## Quick Installation
 
 ### Option 1: Use Pre-built Datapack (Recommended)
 
 1. **Download the Datapack**:
-   - Download `dist.zip` from the [latest release](https://github.com/minecraft-pipes/releases)
+   - Download `dist.zip` from the releases
    - Or use the built datapack from the `dist` folder
 
 2. **Install in Your World**:
@@ -51,8 +39,8 @@ Before installing Minecraft Pipes, ensure you have:
 
 2. **Clone/Download the Project**:
    ```bash
-   git clone https://github.com/minecraft-pipes/minecraft-pipes.git
-   cd minecraft-pipes
+   git clone <repository-url>
+   cd minecraft_pipes
    ```
 
 3. **Build the Datapack**:
@@ -75,25 +63,6 @@ For enhanced visual experience:
 2. **Enable Resource Pack**:
    - In-game: Settings → Resource Packs → Enable `minecraft_pipes`
    - Or globally in Minecraft launcher settings
-
-## Server Installation
-
-### Single Player
-1. Follow the Quick Installation steps above
-2. The datapack will work immediately after `/reload`
-
-### Multiplayer Server
-1. **Install on Server**:
-   - Copy datapack to server's world datapacks folder
-   - Restart server or use `/reload`
-
-2. **Client Setup**:
-   - Resource pack is optional for clients
-   - Datapack functions work server-side
-
-3. **Permissions**:
-   - Ensure players have permission to use functions
-   - May need to adjust server permissions
 
 ## Verification
 
@@ -151,6 +120,26 @@ For enhanced visual experience:
 /scoreboard players list @e[type=minecraft:marker]
 ```
 
+## Multiplayer Setup
+
+### Server Installation
+1. **Install on Server**:
+   - Copy datapack to server's world datapacks folder
+   - Restart server or use `/reload`
+
+2. **Client Setup**:
+   - Resource pack is optional for clients
+   - Datapack functions work server-side
+
+3. **Permissions**:
+   - Ensure players have permission to use functions
+   - May need to adjust server permissions
+
+### Synchronization
+- Pipe states sync automatically
+- Item movement may have slight delays
+- Redstone signals work normally
+
 ## Configuration
 
 ### Performance Settings
@@ -195,19 +184,11 @@ var num item_movement_speed = 2;     // Movement speed
 - Clear any remaining pipe entities
 - Reset affected areas
 
-## Version Compatibility
-
-| Minecraft Version | Pack Format | Status |
-|------------------|-------------|---------|
-| 1.21+ | 82 | ✅ Supported |
-| 1.20.x | 15 | ❌ Not Supported |
-| 1.19.x | 9 | ❌ Not Supported |
-
 ## Support
 
 ### Getting Help
-- Check the [README.md](/docs/) for detailed documentation
-- Review [FEATURES.md](/docs/features/) for feature explanations
+- Check the README.md for detailed documentation
+- Review FEATURES.md for feature explanations
 - Use debug commands to troubleshoot
 
 ### Reporting Issues
@@ -222,15 +203,14 @@ var num item_movement_speed = 2;     // Movement speed
 - Test thoroughly
 - Submit a pull request
 
-## Next Steps
+## Version Compatibility
 
-After successful installation:
+| Minecraft Version | Pack Format | Status |
+|------------------|-------------|---------|
+| 1.21+ | 82 | ✅ Supported |
+| 1.20.x | 15 | ❌ Not Supported |
+| 1.19.x | 9 | ❌ Not Supported |
 
-1. **Read the [Quick Start Guide](/docs/quick-start/)** to learn basic usage
-2. **Explore [Features](/docs/features/)** to understand all capabilities
-3. **Check [Examples](/docs/examples/)** for inspiration
-4. **Join the [Community](/docs/support/)** for help and discussions
+## License
 
----
-
-**Need help?** Check out our [Support Guide](/docs/support/) or join our [Discord server](https://discord.gg/minecraft-pipes)!
+This project is licensed under the MIT License. See LICENSE file for details.

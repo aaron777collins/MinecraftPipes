@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting",
+  "pattern": [
+    "IRI",
+    "RGR",
+    "IRI"
+  ],
+  "key": {
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "I": {
+      "item": "minecraft:iron_block"
+    }
+  },
+  "result": {
+    "item": "minecraft:purple_stained_glass",
+    "count": 1,
+    "nbt": "{CustomModelData:1005,display:{Name:'{\"text\":\"Advanced Pipe\",\"color\":\"purple\",\"italic\":false}'}}"
+  }
+}

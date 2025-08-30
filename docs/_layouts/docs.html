@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="{{ site.lang | default: 'en' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if page.title %}{{ page.title }} - {% endif %}{{ site.title }}</title>
+    <meta name="description" content="{{ page.description | default: site.description }}">
+    
+    <!-- SEO -->
+    <meta name="keywords" content="{{ site.theme_settings.meta.keywords }}">
+    <meta name="author" content="{{ site.author.name }}">
+    <meta property="og:title" content="{% if page.title %}{{ page.title }}{% else %}{{ site.title }}{% endif %}">
+    <meta property="og:description" content="{{ page.description | default: site.description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ site.url }}{{ page.url }}">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="{{ '/assets/images/favicon.svg' | relative_url }}">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Prism.js for syntax highlighting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/themes/prism-tomorrow.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ '/assets/css/custom.css' | relative_url }}">
+    
+    <!-- Additional CSS for docs layout -->
+    <style>
+        /* Documentation Layout Styles */
+        .docs-container {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .docs-sidebar {
+            width: 280px;
+            background: var(--gray-50);
+            border-right: 1px solid var(--gray-200);
+            padding: var(--space-xl);
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .docs-main {
+            flex: 1;
+            padding: var(--space-2xl);
+            max-width: calc(100vw - 280px);
+        }
+        
+        .docs-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        /* Sidebar Navigation */
+        .sidebar-nav {
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .sidebar-nav h3 {
+            color: var(--gray-700);
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: var(--space-md);
+            padding-bottom: var(--space-sm);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .sidebar-nav ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .sidebar-nav li {
+            margin-bottom: var(--space-xs);
+        }
+        
+        .sidebar-nav a {
+            display: block;
+            padding: var(--space-sm) var(--space-md);
+            color: var(--gray-600);
+            text-decoration: none;
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+            font-size: var(--font-size-sm);
+        }
+        
+        .sidebar-nav a:hover {
+            background: var(--gray-100);
+            color: var(--primary);
+        }
+        
+        .sidebar-nav a.active {
+            background: var(--primary);
+            color: var(--white);
+        }
+        
+        /* Breadcrumbs */
+        .breadcrumbs {
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-xl);
+            font-size: var(--font-size-sm);
+            color: var(--gray-600);
+        }
+        
+        .breadcrumbs a {
+            color: var(--gray-600);
+            text-decoration: none;
+        }
+        
+        .breadcrumbs a:hover {
+            color: var(--primary);
+        }
+        
+        .breadcrumbs .separator {
+            color: var(--gray-400);
+        }
+        
+        /* Page Header */
+        .page-header {
+            margin-bottom: var(--space-2xl);
+            padding-bottom: var(--space-xl);
+            border-bottom: 1px solid var(--gray-200);
+        }
+        
+        .page-header h1 {
+            font-size: var(--font-size-4xl);
+            font-weight: 700;
+            color: var(--gray-900);
+            margin-bottom: var(--space-md);
+        }
+        
+        .page-header .description {
+            font-size: var(--font-size-lg);
+            color: var(--gray-600);
+            line-height: 1.6;
+        }
+        
+        /* Table of Contents */
+        .toc {
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin-bottom: var(--space-xl);
+            position: sticky;
+            top: var(--space-xl);
+        }
+        
+        .toc h3 {
+            font-size: var(--font-size-sm);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--gray-700);
+            margin-bottom: var(--space-md);
+        }
+        
+        .toc ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .toc li {
+            margin-bottom: var(--space-xs);
+        }
+        
+        .toc a {
+            display: block;
+            padding: var(--space-xs) 0;
+            color: var(--gray-600);
+            text-decoration: none;
+            font-size: var(--font-size-sm);
+            transition: color var(--transition-fast);
+        }
+        
+        .toc a:hover {
+            color: var(--primary);
+        }
+        
+        /* Content Styling */
+        .docs-content h2 {
+            font-size: var(--font-size-2xl);
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: var(--space-3xl);
+            margin-bottom: var(--space-lg);
+            padding-bottom: var(--space-sm);
+            border-bottom: 2px solid var(--gray-200);
+        }
+        
+        .docs-content h3 {
+            font-size: var(--font-size-xl);
+            font-weight: 600;
+            color: var(--gray-900);
+            margin-top: var(--space-2xl);
+            margin-bottom: var(--space-md);
+        }
+        
+        .docs-content h4 {
+            font-size: var(--font-size-lg);
+            font-weight: 600;
+            color: var(--gray-800);
+            margin-top: var(--space-xl);
+            margin-bottom: var(--space-md);
+        }
+        
+        /* Feature Detail Cards */
+        .feature-detail {
+            display: flex;
+            gap: var(--space-lg);
+            background: var(--white);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-xl);
+            margin: var(--space-xl) 0;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .feature-detail .feature-icon {
+            flex-shrink: 0;
+            width: 80px;
+            height: 80px;
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: var(--font-size-3xl);
+            color: var(--white);
+        }
+        
+        .feature-detail .feature-content {
+            flex: 1;
+        }
+        
+        .feature-detail .feature-content h3 {
+            margin-top: 0;
+            margin-bottom: var(--space-md);
+        }
+        
+        .feature-detail .feature-content ul {
+            margin: var(--space-md) 0;
+            padding-left: var(--space-lg);
+        }
+        
+        .feature-detail .feature-content li {
+            margin-bottom: var(--space-xs);
+        }
+        
+        /* Use Case Boxes */
+        .use-case {
+            background: var(--gray-50);
+            border: 1px solid var(--gray-200);
+            border-radius: var(--radius-lg);
+            padding: var(--space-lg);
+            margin: var(--space-lg) 0;
+        }
+        
+        .use-case h4 {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: var(--space-md);
+        }
+        
+        .use-case ol,
+        .use-case ul {
+            margin: var(--space-md) 0;
+            padding-left: var(--space-lg);
+        }
+        
+        .use-case li {
+            margin-bottom: var(--space-xs);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .docs-container {
+                flex-direction: column;
+            }
+            
+            .docs-sidebar {
+                width: 100%;
+                height: auto;
+                position: static;
+                border-right: none;
+                border-bottom: 1px solid var(--gray-200);
+            }
+            
+            .docs-main {
+                max-width: 100%;
+                padding: var(--space-lg);
+            }
+            
+            .feature-detail {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .feature-detail .feature-icon {
+                margin: 0 auto var(--space-lg);
+            }
+            
+            .toc {
+                position: static;
+                margin-bottom: var(--space-lg);
+            }
+        }
+        
+        /* Print Styles */
+        @media print {
+            .docs-sidebar,
+            .toc {
+                display: none;
+            }
+            
+            .docs-main {
+                max-width: none;
+                padding: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-content">
+                <a href="{{ '/' | relative_url }}" class="header-logo">
+                    <i class="fas fa-stream"></i>
+                    <span>{{ site.title }}</span>
+                </a>
+                <nav class="header-nav">
+                    <a href="{{ '/' | relative_url }}">Home</a>
+                    <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+                    <a href="{{ '/docs/features/' | relative_url }}">Features</a>
+                    <a href="{{ '/docs/examples/' | relative_url }}">Examples</a>
+                    <a href="https://github.com/minecraft-pipes" target="_blank" rel="noopener">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <div class="docs-container">
+        <!-- Sidebar -->
+        <aside class="docs-sidebar">
+            <div class="sidebar-nav">
+                <h3>Getting Started</h3>
+                <ul>
+                    <li><a href="{{ '/docs/installation/' | relative_url }}" {% if page.url contains '/installation/' %}class="active"{% endif %}>Installation</a></li>
+                    <li><a href="{{ '/docs/quick-start/' | relative_url }}" {% if page.url contains '/quick-start/' %}class="active"{% endif %}>Quick Start</a></li>
+                    <li><a href="{{ '/docs/basic-usage/' | relative_url }}" {% if page.url contains '/basic-usage/' %}class="active"{% endif %}>Basic Usage</a></li>
+                </ul>
+                
+                <h3>Features</h3>
+                <ul>
+                    <li><a href="{{ '/docs/features/' | relative_url }}" {% if page.url contains '/features/' %}class="active"{% endif %}>Overview</a></li>
+                    <li><a href="{{ '/docs/features/pipe-types/' | relative_url }}" {% if page.url contains '/pipe-types/' %}class="active"{% endif %}>Pipe Types</a></li>
+                    <li><a href="{{ '/docs/features/item-transportation/' | relative_url }}" {% if page.url contains '/item-transportation/' %}class="active"{% endif %}>Item Transportation</a></li>
+                    <li><a href="{{ '/docs/features/redstone-control/' | relative_url }}" {% if page.url contains '/redstone-control/' %}class="active"{% endif %}>Redstone Control</a></li>
+                </ul>
+                
+                <h3>Advanced</h3>
+                <ul>
+                    <li><a href="{{ '/docs/advanced/configuration/' | relative_url }}" {% if page.url contains '/configuration/' %}class="active"{% endif %}>Configuration</a></li>
+                    <li><a href="{{ '/docs/advanced/performance/' | relative_url }}" {% if page.url contains '/performance/' %}class="active"{% endif %}>Performance</a></li>
+                    <li><a href="{{ '/docs/advanced/troubleshooting/' | relative_url }}" {% if page.url contains '/troubleshooting/' %}class="active"{% endif %}>Troubleshooting</a></li>
+                </ul>
+                
+                <h3>API Reference</h3>
+                <ul>
+                    <li><a href="{{ '/docs/api/functions/' | relative_url }}" {% if page.url contains '/functions/' %}class="active"{% endif %}>Functions</a></li>
+                    <li><a href="{{ '/docs/api/commands/' | relative_url }}" {% if page.url contains '/commands/' %}class="active"{% endif %}>Commands</a></li>
+                    <li><a href="{{ '/docs/api/variables/' | relative_url }}" {% if page.url contains '/variables/' %}class="active"{% endif %}>Variables</a></li>
+                </ul>
+                
+                <h3>Examples</h3>
+                <ul>
+                    <li><a href="{{ '/docs/examples/basic-setup/' | relative_url }}" {% if page.url contains '/basic-setup/' %}class="active"{% endif %}>Basic Setup</a></li>
+                    <li><a href="{{ '/docs/examples/complex-networks/' | relative_url }}" {% if page.url contains '/complex-networks/' %}class="active"{% endif %}>Complex Networks</a></li>
+                    <li><a href="{{ '/docs/examples/redstone-automation/' | relative_url }}" {% if page.url contains '/redstone-automation/' %}class="active"{% endif %}>Redstone Automation</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="docs-main">
+            <div class="docs-content">
+                <!-- Breadcrumbs -->
+                <nav class="breadcrumbs">
+                    <a href="{{ '/' | relative_url }}">Home</a>
+                    <span class="separator">/</span>
+                    <a href="{{ '/docs/' | relative_url }}">Documentation</a>
+                    {% if page.url != '/docs/' %}
+                    <span class="separator">/</span>
+                    <span>{{ page.title }}</span>
+                    {% endif %}
+                </nav>
+
+                <!-- Page Header -->
+                <header class="page-header">
+                    <h1>{{ page.title }}</h1>
+                    {% if page.description %}
+                    <p class="description">{{ page.description }}</p>
+                    {% endif %}
+                </header>
+
+                <!-- Table of Contents -->
+                {% if page.toc %}
+                <nav class="toc">
+                    <h3>On This Page</h3>
+                    <ul id="toc-list">
+                        <!-- Generated by JavaScript -->
+                    </ul>
+                </nav>
+                {% endif %}
+
+                <!-- Page Content -->
+                <article class="page-content">
+                    {{ content }}
+                </article>
+
+                <!-- Page Footer -->
+                <footer class="page-footer">
+                    <hr>
+                    <div class="footer-content">
+                        <p>Need help? Check out our <a href="{{ '/docs/support/' | relative_url }}">Support Guide</a> or join our <a href="https://discord.gg/minecraft-pipes">Discord community</a>!</p>
+                    </div>
+                </footer>
+            </div>
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Minecraft Pipes</h3>
+                    <p>Advanced item transportation system for Minecraft</p>
+                    <div class="social-links">
+                        <a href="https://github.com/minecraft-pipes" target="_blank" rel="noopener">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://discord.gg/minecraft-pipes" target="_blank" rel="noopener">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li><a href="{{ '/docs/installation/' | relative_url }}">Installation</a></li>
+                        <li><a href="{{ '/docs/features/' | relative_url }}">Features</a></li>
+                        <li><a href="{{ '/docs/examples/' | relative_url }}">Examples</a></li>
+                        <li><a href="{{ '/docs/api/' | relative_url }}">API Reference</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <ul>
+                        <li><a href="https://github.com/minecraft-pipes/issues">Report Issues</a></li>
+                        <li><a href="https://github.com/minecraft-pipes/discussions">Discussions</a></li>
+                        <li><a href="{{ '/docs/support/' | relative_url }}">Support</a></li>
+                        <li><a href="https://github.com/minecraft-pipes">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Minecraft Pipes. Built with ❤️ for the Minecraft community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Generate Table of Contents
+        function generateTOC() {
+            const tocList = document.getElementById('toc-list');
+            if (!tocList) return;
+            
+            const headings = document.querySelectorAll('h2, h3, h4');
+            const toc = [];
+            
+            headings.forEach((heading, index) => {
+                const id = `heading-${index}`;
+                heading.id = id;
+                
+                const level = parseInt(heading.tagName.charAt(1));
+                const text = heading.textContent;
+                
+                toc.push({
+                    id: id,
+                    text: text,
+                    level: level
+                });
+            });
+            
+            tocList.innerHTML = toc.map(item => {
+                const indent = (item.level - 2) * 20;
+                return `<li style="padding-left: ${indent}px;">
+                    <a href="#${item.id}">${item.text}</a>
+                </li>`;
+            }).join('');
+        }
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            generateTOC();
+        });
+    </script>
+</body>
+</html>

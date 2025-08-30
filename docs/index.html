@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Pipes - Advanced Item Transportation System</title>
+    <meta name="description" content="Transform your Minecraft world with a comprehensive pipe system for item transportation. Inspired by classic Tekkit pipes but implemented as a modern datapack.">
+    
+    <!-- SEO -->
+    <meta name="keywords" content="minecraft, datapack, pipes, item transportation, redstone, automation">
+    <meta name="author" content="Minecraft Pipes Team">
+    <meta property="og:title" content="Minecraft Pipes - Advanced Item Transportation System">
+    <meta property="og:description" content="Transform your Minecraft world with a comprehensive pipe system for item transportation.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://minecraft-pipes.com">
+    <meta name="twitter:card" content="summary_large_image">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="assets/images/favicon.svg">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/custom.css">
+    
+    <!-- Additional CSS for home layout -->
+    <style>
+        /* Home Layout Styles */
+        .home-container {
+            min-height: 100vh;
+        }
+        
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: var(--white);
+            padding: var(--space-3xl) 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            opacity: 0.3;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+        }
+        
+        .hero h1 {
+            font-size: var(--font-size-5xl);
+            font-weight: 800;
+            margin-bottom: var(--space-lg);
+            color: var(--white);
+            text-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease-out;
+        }
+        
+        .hero p {
+            font-size: var(--font-size-xl);
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: var(--space-2xl);
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+        
+        .hero-actions {
+            display: flex;
+            gap: var(--space-lg);
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+        
+        /* Header */
+        .site-header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--gray-200);
+            position: sticky;
+            top: 0;
+            z-index: var(--z-sticky);
+        }
+        
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--space-lg) 0;
+        }
+        
+        .header-logo {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+        }
+        
+        .header-logo i {
+            font-size: var(--font-size-2xl);
+        }
+        
+        .header-nav {
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            gap: var(--space-xl);
+        }
+        
+        .header-nav a {
+            color: var(--gray-600);
+            text-decoration: none;
+            font-weight: 500;
+            padding: var(--space-sm) var(--space-md);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-fast);
+        }
+        
+        .header-nav a:hover {
+            color: var(--primary);
+            background: var(--gray-50);
+        }
+        
+        /* Main Content */
+        .main-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--space-3xl) var(--space-xl);
+        }
+        
+        /* Site Footer */
+        .site-footer {
+            background: var(--gray-900);
+            color: var(--white);
+            padding: var(--space-3xl) 0;
+            margin-top: var(--space-3xl);
+        }
+        
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-xl);
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: var(--space-3xl);
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .footer-section h3 {
+            color: var(--primary);
+            margin-bottom: var(--space-lg);
+            font-size: var(--font-size-lg);
+        }
+        
+        .footer-section p {
+            color: var(--gray-400);
+            margin-bottom: var(--space-lg);
+        }
+        
+        .footer-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        .footer-section li {
+            margin-bottom: var(--space-sm);
+        }
+        
+        .footer-section a {
+            color: var(--gray-400);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+        }
+        
+        .footer-section a:hover {
+            color: var(--primary);
+        }
+        
+        .social-links {
+            display: flex;
+            gap: var(--space-md);
+            margin-top: var(--space-lg);
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--white);
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all var(--transition-normal);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .social-links a:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+            color: var(--white);
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            padding-top: var(--space-2xl);
+            border-top: 1px solid var(--gray-700);
+            margin-top: var(--space-2xl);
+            color: var(--gray-500);
+        }
+        
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: var(--font-size-3xl);
+            }
+            
+            .hero p {
+                font-size: var(--font-size-lg);
+            }
+            
+            .hero-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .header-nav {
+                display: none;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+        
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+        
+        .float {
+            animation: float 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="site-header">
+        <div class="header-container">
+            <div class="header-content">
+                <a href="#" class="header-logo">
+                    <i class="fas fa-stream"></i>
+                    <span>Minecraft Pipes</span>
+                </a>
+                <nav class="header-nav">
+                    <a href="#home">Home</a>
+                    <a href="#features">Features</a>
+                    <a href="#installation">Installation</a>
+                    <a href="#examples">Examples</a>
+                    <a href="https://github.com/minecraft-pipes" target="_blank" rel="noopener">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1>Minecraft Pipes - Advanced Item Transportation System</h1>
+            <p>Transform your Minecraft world with a comprehensive pipe system for item transportation. Inspired by classic Tekkit pipes but implemented as a modern datapack with enhanced features and better performance.</p>
+            <div class="hero-actions">
+                <a href="#installation" class="btn btn--primary">
+                    <i class="fas fa-download"></i>
+                    Get Started
+                </a>
+                <a href="https://github.com/minecraft-pipes" class="btn btn--secondary" target="_blank" rel="noopener">
+                    <i class="fab fa-github"></i>
+                    View on GitHub
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="feature__wrapper">
+            <div class="feature__item">
+                <div class="archive__item">
+                    <div class="archive__item-body">
+                        <div class="archive__item-excerpt">
+                            <h2 class="archive__item-title">
+                                <i class="fas fa-cogs"></i> Visual Pipe System
+                            </h2>
+                            <p>See-through pipes that connect and transport items with smooth animations. Watch your items flow through beautiful, transparent pipe networks.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature__item">
+                <div class="archive__item">
+                    <div class="archive__item-body">
+                        <div class="archive__item-excerpt">
+                            <h2 class="archive__item-title">
+                                <i class="fas fa-bolt"></i> Redstone Control
+                            </h2>
+                            <p>Power your inlet pipes with redstone to control item extraction. Create complex automation systems with signal strength control.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="feature__item">
+                <div class="archive__item">
+                    <div class="archive__item-body">
+                        <div class="archive__item-excerpt">
+                            <h2 class="archive__item-title">
+                                <i class="fas fa-hammer"></i> Affordable Crafting
+                            </h2>
+                            <p>Uses common materials like glass, iron, and redstone. Multiple pipe types with different capabilities and progression system.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section id="features">
+            <h2>🚀 What is Minecraft Pipes?</h2>
+            <p><strong>Minecraft Pipes</strong> is a comprehensive datapack that brings advanced item transportation to your Minecraft world. Inspired by the classic Tekkit pipes but implemented as a modern datapack, it provides a complete solution for moving items between chests with visual feedback and redstone control.</p>
+
+            <h3>Key Features</h3>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-pipe"></i>
+                    </div>
+                    <h3>Visual Pipe System</h3>
+                    <p>Transparent, see-through pipes that automatically connect and transport items with smooth animations.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-exchange-alt"></i>
+                    </div>
+                    <h3>Item Transportation</h3>
+                    <p>Items travel through connected pipes with visual rendering, automatic routing, and multiple item support.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-redstone"></i>
+                    </div>
+                    <h3>Redstone Control</h3>
+                    <p>Power inlet pipes with redstone to control item extraction. Signal strength affects extraction speed.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-boxes"></i>
+                    </div>
+                    <h3>Chest Integration</h3>
+                    <p>Automatic detection of adjacent chests for input and output. No complex setup required.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-tools"></i>
+                    </div>
+                    <h3>Multiple Pipe Types</h3>
+                    <p>Basic pipes, inlet pipes, outlet pipes, and junctions for complex network designs.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3>Performance Optimized</h3>
+                    <p>Efficient processing for large pipe networks with minimal impact on server performance.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="installation">
+            <h2>🎮 Quick Start</h2>
+            <h3>1. Install the Datapack</h3>
+            <pre><code># Copy the dist folder to your world's datapacks directory
+# Or download the latest release from GitHub</code></pre>
+
+            <h3>2. Load in Game</h3>
+            <pre><code>/reload</code></pre>
+
+            <h3>3. Test the System</h3>
+            <pre><code>/function pipes:test_help
+/function pipes:test_setup</code></pre>
+
+            <h3>4. Start Building</h3>
+            <pre><code>/function pipes:create_pipe          # Basic pipe
+/function pipes:create_inlet_pipe    # Inlet pipe
+/function pipes:create_outlet_pipe   # Outlet pipe</code></pre>
+        </section>
+
+        <section>
+            <h2>📦 Pipe Types</h2>
+            <div class="pipe-types">
+                <div class="pipe-type">
+                    <div class="pipe-icon basic"></div>
+                    <h3>Basic Pipe</h3>
+                    <p>Transparent glass pipes that connect and transport items between other pipes.</p>
+                    <div class="recipe">
+                        <strong>Recipe:</strong> 3 glass blocks in a vertical line
+                    </div>
+                </div>
+
+                <div class="pipe-type">
+                    <div class="pipe-icon inlet"></div>
+                    <h3>Inlet Pipe</h3>
+                    <p>Red-tinted pipes that extract items from adjacent chests when powered with redstone.</p>
+                    <div class="recipe">
+                        <strong>Recipe:</strong> Glass + Redstone + Iron Ingot
+                    </div>
+                </div>
+
+                <div class="pipe-type">
+                    <div class="pipe-icon outlet"></div>
+                    <h3>Outlet Pipe</h3>
+                    <p>Blue-tinted pipes that deposit items into adjacent chests automatically.</p>
+                    <div class="recipe">
+                        <strong>Recipe:</strong> Glass + Hopper + Iron Ingot
+                    </div>
+                </div>
+
+                <div class="pipe-type">
+                    <div class="pipe-icon junction"></div>
+                    <h3>Pipe Junction</h3>
+                    <p>Yellow-tinted pipes that allow branching and complex network designs.</p>
+                    <div class="recipe">
+                        <strong>Recipe:</strong> Glass + Redstone in cross pattern
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🔧 Technical Specifications</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Feature</th>
+                        <th>Specification</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Minecraft Version</strong></td>
+                        <td>1.21+ (Pack Format 82)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Performance</strong></td>
+                        <td>Optimized for large networks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Multiplayer</strong></td>
+                        <td>Full server support</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Redstone Control</strong></td>
+                        <td>Signal strength 1-15</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Item Capacity</strong></td>
+                        <td>Up to 4 items per pipe</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Processing</strong></td>
+                        <td>Every 2-4 ticks</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Memory Usage</strong></td>
+                        <td>Minimal impact</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+        <section>
+            <h2>📚 Documentation</h2>
+            <div class="docs-grid">
+                <a href="#installation" class="docs-card">
+                    <i class="fas fa-download"></i>
+                    <h3>Installation Guide</h3>
+                    <p>Step-by-step installation instructions for single player and servers.</p>
+                </a>
+
+                <a href="#features" class="docs-card">
+                    <i class="fas fa-star"></i>
+                    <h3>Features Overview</h3>
+                    <p>Comprehensive guide to all pipe types and capabilities.</p>
+                </a>
+
+                <a href="#examples" class="docs-card">
+                    <i class="fas fa-graduation-cap"></i>
+                    <h3>Tutorials</h3>
+                    <p>Learn how to build complex pipe networks and automation systems.</p>
+                </a>
+
+                <a href="https://github.com/minecraft-pipes" class="docs-card" target="_blank" rel="noopener">
+                    <i class="fas fa-code"></i>
+                    <h3>API Reference</h3>
+                    <p>Complete reference for functions, commands, and variables.</p>
+                </a>
+
+                <a href="#examples" class="docs-card">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Examples</h3>
+                    <p>Real-world examples and use cases for inspiration.</p>
+                </a>
+
+                <a href="https://discord.gg/minecraft-pipes" class="docs-card" target="_blank" rel="noopener">
+                    <i class="fas fa-life-ring"></i>
+                    <h3>Support</h3>
+                    <p>Get help with installation, troubleshooting, and advanced usage.</p>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <h2>🤝 Community</h2>
+            <p>Join our growing community of Minecraft Pipes users and developers!</p>
+            <div class="community-links">
+                <a href="https://github.com/minecraft-pipes" class="community-link" target="_blank" rel="noopener">
+                    <i class="fab fa-github"></i>
+                    <span>GitHub</span>
+                </a>
+                <a href="https://discord.gg/minecraft-pipes" class="community-link" target="_blank" rel="noopener">
+                    <i class="fab fa-discord"></i>
+                    <span>Discord</span>
+                </a>
+                <a href="https://github.com/minecraft-pipes/issues" class="community-link" target="_blank" rel="noopener">
+                    <i class="fas fa-bug"></i>
+                    <span>Report Issues</span>
+                </a>
+                <a href="https://github.com/minecraft-pipes/discussions" class="community-link" target="_blank" rel="noopener">
+                    <i class="fas fa-comments"></i>
+                    <span>Discussions</span>
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <h2>📈 Statistics</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1000+</div>
+                    <div class="stat-label">Downloads</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">50+</div>
+                    <div class="stat-label">Stars on GitHub</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Feature Complete</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Community Support</div>
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <h2>🚀 Get Started Today</h2>
+            <p>Ready to transform your Minecraft world with advanced item transportation? Get started with Minecraft Pipes today!</p>
+            <div class="cta-buttons">
+                <a href="#installation" class="btn btn--primary btn--large">
+                    <i class="fas fa-download"></i>
+                    Download Now
+                </a>
+                <a href="#features" class="btn btn--secondary btn--large">
+                    <i class="fas fa-play"></i>
+                    Quick Start Guide
+                </a>
+                <a href="https://github.com/minecraft-pipes" class="btn btn--outline btn--large" target="_blank" rel="noopener">
+                    <i class="fab fa-github"></i>
+                    View on GitHub
+                </a>
+            </div>
+        </section>
+
+        <section>
+            <div class="newsletter-signup">
+                <h3>Stay Updated</h3>
+                <p>Get the latest updates about Minecraft Pipes, new features, and community highlights.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Enter your email address" required>
+                    <button type="submit" class="btn btn--primary">Subscribe</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Minecraft Pipes</h3>
+                    <p>Advanced item transportation system for Minecraft - inspired by classic Tekkit pipes but implemented as a modern datapack with enhanced features and better performance.</p>
+                    <div class="social-links">
+                        <a href="https://github.com/minecraft-pipes" target="_blank" rel="noopener">
+                            <i class="fab fa-github"></i>
+                        </a>
+                        <a href="https://discord.gg/minecraft-pipes" target="_blank" rel="noopener">
+                            <i class="fab fa-discord"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Documentation</h3>
+                    <ul>
+                        <li><a href="#installation">Installation</a></li>
+                        <li><a href="#features">Features</a></li>
+                        <li><a href="#examples">Examples</a></li>
+                        <li><a href="https://github.com/minecraft-pipes">API Reference</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h3>Community</h3>
+                    <ul>
+                        <li><a href="https://github.com/minecraft-pipes/issues">Report Issues</a></li>
+                        <li><a href="https://github.com/minecraft-pipes/discussions">Discussions</a></li>
+                        <li><a href="https://discord.gg/minecraft-pipes">Support</a></li>
+                        <li><a href="https://github.com/minecraft-pipes">GitHub</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2024 Minecraft Pipes. Built with ❤️ for the Minecraft community.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Custom JavaScript -->
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+        
+        // Newsletter form handling
+        document.querySelectorAll('.newsletter-form').forEach(form => {
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = this.querySelector('input[type="email"]').value;
+                if (email) {
+                    // Here you would typically send the email to your newsletter service
+                    alert('Thank you for subscribing! We\'ll keep you updated with the latest Minecraft Pipes news.');
+                    this.reset();
+                }
+            });
+        });
+        
+        // Add floating animation to certain elements
+        document.addEventListener('DOMContentLoaded', function() {
+            const featureIcons = document.querySelectorAll('.feature-icon');
+            featureIcons.forEach((icon, index) => {
+                icon.style.animationDelay = `${index * 0.2}s`;
+                icon.classList.add('float');
+            });
+        });
+    </script>
+</body>
+</html>

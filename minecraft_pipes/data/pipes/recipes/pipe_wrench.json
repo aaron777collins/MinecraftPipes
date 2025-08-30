@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting",
+  "pattern": [
+    " I ",
+    " S ",
+    " R "
+  ],
+  "key": {
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    }
+  },
+  "result": {
+    "item": "minecraft:iron_axe",
+    "count": 1,
+    "nbt": "{CustomModelData:1006,display:{Name:'{\"text\":\"Pipe Wrench\",\"color\":\"gray\",\"italic\":false}'},Enchantments:[{id:\"minecraft:unbreaking\",lvl:1}]}"
+  }
+}

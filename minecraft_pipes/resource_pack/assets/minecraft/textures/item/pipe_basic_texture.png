@@ -1,0 +1,4 @@
+# This is a placeholder for the pipe_basic_texture.png file
+# In a real implementation, this would be a 16x16 or 32x32 PNG texture
+# showing a cylindrical pipe with a transparent center and metallic rim
+# For now, we'll use the default glass texture as a fallback
