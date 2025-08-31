@@ -1,0 +1,62 @@
+name: Test Build
+
+on:
+  pull_request:
+    branches: [ main, master ]
+  push:
+    branches: [ main, master ]
+
+jobs:
+  test-build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+        
+    - name: Install MDL
+      run: |
+        pip install minecraft-datapack-language
+        
+    - name: Install zip
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y zip
+        
+    - name: Test build script
+      run: |
+        ./scripts/build.sh
+        
+    - name: Verify build outputs
+      run: |
+        echo "Checking build outputs..."
+        ls -la dist/
+        
+        if [ ! -f "dist/pipes_datapack.zip" ]; then
+          echo "❌ pipes_datapack.zip not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "dist/pipes_resource_pack.zip" ]; then
+          echo "❌ pipes_resource_pack.zip not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "dist/pipes_complete.zip" ]; then
+          echo "❌ pipes_complete.zip not found!"
+          exit 1
+        fi
+        
+        echo "✅ All build outputs verified!"
+        
+    - name: Upload test artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: test-build-outputs
+        path: dist/
+        retention-days: 7

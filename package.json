@@ -1,0 +1,36 @@
+{
+  "name": "minecraft-pipes",
+  "version": "1.0.0",
+  "description": "A Minecraft datapack and resource pack for a pipe transportation system",
+  "main": "index.js",
+  "scripts": {
+    "build": "./scripts/build.sh",
+    "build:datapack": "cd pipes && mdl build --mdl . --output ../build/pipes_datapack",
+    "build:resource": "cp -r assets build/pipes_resource_pack",
+    "test": "./scripts/build.sh && echo 'Build test completed successfully!'",
+    "clean": "rm -rf build dist",
+    "release": "git tag v$(date +%Y.%m.%d) && git push --tags"
+  },
+  "keywords": [
+    "minecraft",
+    "datapack",
+    "resource-pack",
+    "pipes",
+    "transportation",
+    "mdl"
+  ],
+  "author": "Aaron Collins",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aaron777collins/MinecraftPipes.git"
+  },
+  "bugs": {
+    "url": "https://github.com/aaron777collins/MinecraftPipes/issues"
+  },
+  "homepage": "https://github.com/aaron777collins/MinecraftPipes#readme",
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}
