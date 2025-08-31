@@ -67,6 +67,11 @@ jobs:
           exit 1
         fi
         
+        if [ ! -f "dist/SHA1SUMS.txt" ]; then
+          echo "❌ dist/SHA1SUMS.txt not found!"
+          exit 1
+        fi
+        
         echo "✅ All build outputs verified!"
         
     - name: Upload build artifacts
@@ -78,6 +83,7 @@ jobs:
           dist/pipes_resource_pack.zip
           dist/pipes_complete.zip
           dist/README.md
+          dist/SHA1SUMS.txt
         retention-days: 30
         
     - name: Get version
@@ -98,6 +104,7 @@ jobs:
           dist/pipes_resource_pack.zip
           dist/pipes_complete.zip
           dist/README.md
+          dist/SHA1SUMS.txt
         body_path: dist/README.md
         draft: false
         prerelease: false
@@ -114,6 +121,7 @@ jobs:
           dist/pipes_resource_pack.zip
           dist/pipes_complete.zip
           dist/README.md
+          dist/SHA1SUMS.txt
         body_path: dist/README.md
         draft: true
         prerelease: false

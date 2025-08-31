@@ -107,44 +107,85 @@ else
 fi
 cd ..
 
+# Generate SHA1 hashes for all zip files
+print_status "Generating SHA1 hashes..."
+echo "" > "$DIST_DIR"/SHA1SUMS.txt
+for file in "$DIST_DIR"/*.zip; do
+    if [[ -f "$file" ]]; then
+        filename=$(basename "$file")
+        if command -v sha1sum >/dev/null 2>&1; then
+            hash=$(sha1sum "$file" | cut -d' ' -f1)
+        elif command -v shasum >/dev/null 2>&1; then
+            hash=$(shasum -a 1 "$file" | cut -d' ' -f1)
+        else
+            hash="SHA1 generation not available"
+        fi
+        echo "$hash  $filename" >> "$DIST_DIR"/SHA1SUMS.txt
+    fi
+done
+
 # Create release info
 print_status "Creating release information..."
-cat > "$DIST_DIR"/README.md << 'EOF'
+cat > "$DIST_DIR"/README.md << EOF
 # Minecraft Pipes - Release Package
 
 This release contains the complete Minecraft Pipes system with both datapack and resource pack.
 
 ## 📦 Contents
 
-- `pipes_datapack.zip` - The datapack with recipes and functions
-- `pipes_resource_pack.zip` - The resource pack with custom 3D models and textures
-- `pipes_complete.zip` - Combined package with both datapack and resource pack
+- \`pipes_datapack.zip\` - The datapack with recipes and functions
+- \`pipes_resource_pack.zip\` - The resource pack with custom 3D models and textures
+- \`pipes_complete.zip\` - Combined package with both datapack and resource pack
+
+## 🔐 File Integrity
+
+SHA1 hashes for verification:
+\`\`\`
+$(cat "$DIST_DIR"/SHA1SUMS.txt)
+\`\`\`
 
 ## 🎮 Installation
 
 ### Option 1: Individual Installation
 1. **Install Datapack:**
-   - Copy `pipes_datapack.zip` to your world's `datapacks` folder
-   - Or extract and copy the `pipes_datapack` folder
+   - Copy \`pipes_datapack.zip\` to your world's \`datapacks\` folder
+   - Or extract and copy the \`pipes_datapack\` folder
 
 2. **Install Resource Pack:**
-   - Copy `pipes_resource_pack.zip` to your world's `resourcepacks` folder
-   - Or extract and copy the `pipes_resource_pack` folder
+   - Copy \`pipes_resource_pack.zip\` to your world's \`resourcepacks\` folder
+   - Or extract and copy the \`pipes_resource_pack\` folder
 
 ### Option 2: Combined Installation
-1. Extract `pipes_complete.zip`
-2. Copy `pipes_datapack` to your world's `datapacks` folder
-3. Copy `pipes_resource_pack` to your world's `resourcepacks` folder
+1. Extract \`pipes_complete.zip\`
+2. Copy \`pipes_datapack\` to your world's \`datapacks\` folder
+3. Copy \`pipes_resource_pack\` to your world's \`resourcepacks\` folder
+
+## 🖥️ Fabric Server Setup
+
+### Automatic Resource Pack Distribution
+
+Add to your \`server.properties\`:
+\`\`\`properties
+# Resource pack configuration
+resource-pack=https://github.com/aaron777collins/MinecraftPipes/releases/download/$(git describe --tags --abbrev=0 2>/dev/null || echo "latest")/pipes_resource_pack.zip
+resource-pack-sha1=$(grep "pipes_resource_pack.zip" "$DIST_DIR"/SHA1SUMS.txt | cut -d' ' -f1)
+require-resource-pack=false
+\`\`\`
+
+### Manual Installation
+1. Extract \`pipes_datapack.zip\` to \`world/datapacks/\`
+2. Extract \`pipes_resource_pack.zip\` to \`resource-packs/\` (optional)
+3. Run \`/reload\` in-game
 
 ## 🚀 Usage
 
 1. **Load the Datapack:**
-   - In-game, run: `/reload`
+   - In-game, run: \`/reload\`
    - Or restart the world
 
 2. **Enable the Resource Pack:**
    - Go to Settings → Resource Packs
-   - Enable `pipes_resource_pack`
+   - Enable \`pipes_resource_pack\`
 
 3. **Craft Items:**
    - Pipe Inlet: Iron + Glass + Hopper
@@ -160,7 +201,7 @@ This release contains the complete Minecraft Pipes system with both datapack and
 ## 🔧 Troubleshooting
 
 - If items appear as regular iron ingots, make sure the resource pack is enabled
-- If recipes don't work, ensure the datapack is loaded with `/reload`
+- If recipes don't work, ensure the datapack is loaded with \`/reload\`
 - Check the console for any error messages
 
 ## 📝 Version
@@ -177,6 +218,7 @@ echo "  📦 $DIST_DIR/pipes_datapack.zip"
 echo "  🎨 $DIST_DIR/pipes_resource_pack.zip"
 echo "  📋 $DIST_DIR/pipes_complete.zip"
 echo "  📖 $DIST_DIR/README.md"
+echo "  🔐 $DIST_DIR/SHA1SUMS.txt"
 echo ""
 
 # Show file sizes

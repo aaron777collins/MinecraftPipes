@@ -62,6 +62,11 @@ jobs:
           exit 1
         fi
         
+        if [ ! -f "dist/SHA1SUMS.txt" ]; then
+          echo "❌ dist/SHA1SUMS.txt not found!"
+          exit 1
+        fi
+        
         echo "✅ All build outputs verified!"
         
         # Show file sizes
