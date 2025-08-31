@@ -28,6 +28,10 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y zip
         
+    - name: Make build script executable
+      run: |
+        chmod +x scripts/build.sh
+        
     - name: Test build script
       run: |
         ./scripts/build.sh
@@ -37,6 +41,7 @@ jobs:
         echo "Checking build outputs..."
         ls -la dist/
         
+        # Check for required files
         if [ ! -f "dist/pipes_datapack.zip" ]; then
           echo "❌ pipes_datapack.zip not found!"
           exit 1
@@ -52,7 +57,16 @@ jobs:
           exit 1
         fi
         
+        if [ ! -f "dist/README.md" ]; then
+          echo "❌ dist/README.md not found!"
+          exit 1
+        fi
+        
         echo "✅ All build outputs verified!"
+        
+        # Show file sizes
+        echo "📦 Build artifacts:"
+        ls -lh dist/*.zip
         
     - name: Upload test artifacts
       uses: actions/upload-artifact@v4

@@ -6,6 +6,9 @@ on:
       - 'v*'  # Trigger on version tags
   workflow_dispatch:  # Allow manual triggering
 
+permissions:
+  contents: write  # Required to create releases
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,6 +16,8 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Required for git operations
       
     - name: Set up Python
       uses: actions/setup-python@v4
@@ -28,9 +33,41 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y zip
         
+    - name: Make build script executable
+      run: |
+        chmod +x scripts/build.sh
+        
     - name: Run build script
       run: |
         ./scripts/build.sh
+        
+    - name: Verify build outputs
+      run: |
+        echo "Verifying build outputs..."
+        ls -la dist/
+        
+        # Check for required files
+        if [ ! -f "dist/pipes_datapack.zip" ]; then
+          echo "❌ pipes_datapack.zip not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "dist/pipes_resource_pack.zip" ]; then
+          echo "❌ pipes_resource_pack.zip not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "dist/pipes_complete.zip" ]; then
+          echo "❌ pipes_complete.zip not found!"
+          exit 1
+        fi
+        
+        if [ ! -f "dist/README.md" ]; then
+          echo "❌ dist/README.md not found!"
+          exit 1
+        fi
+        
+        echo "✅ All build outputs verified!"
         
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
@@ -42,6 +79,15 @@ jobs:
           dist/pipes_complete.zip
           dist/README.md
         retention-days: 30
+        
+    - name: Get version
+      id: version
+      run: |
+        if [[ "${{ github.ref }}" == refs/tags/* ]]; then
+          echo "version=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+        else
+          echo "version=v${{ github.run_number }}" >> $GITHUB_OUTPUT
+        fi
         
     - name: Create Release
       if: startsWith(github.ref, 'refs/tags/')
@@ -55,6 +101,7 @@ jobs:
         body_path: dist/README.md
         draft: false
         prerelease: false
+        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
@@ -72,5 +119,6 @@ jobs:
         prerelease: false
         tag_name: v${{ github.run_number }}
         name: Build ${{ github.run_number }}
+        generate_release_notes: true
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

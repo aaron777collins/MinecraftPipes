@@ -182,8 +182,8 @@ echo ""
 # Show file sizes
 print_status "File sizes:"
 if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "cygwin" ]]; then
-    # Windows
-    powershell -Command "Get-ChildItem '$DIST_DIR/*.zip' | ForEach-Object { Write-Host ('  ' + `$_.Name + ': ' + [math]::Round(`$_.Length/1KB, 2) + ' KB') }"
+    # Windows - simplified file size display
+    powershell -Command "Get-ChildItem '$DIST_DIR/*.zip' | ForEach-Object { Write-Host ('  ' + `$_.Name + ': ' + [math]::Round(`$_.Length/1KB, 2) + ' KB') }" 2>/dev/null || echo "  File sizes available in dist/ directory"
 else
     # Unix-like
     ls -lh "$DIST_DIR"/*.zip
