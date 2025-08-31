@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "GDG",
+    "IGI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "G": "minecraft:glass_pane",
+    "D": "minecraft:dispenser"
+  },
+  "result": {
+    "id": "minecraft:iron_ingot",
+    "count": 1,
+    "nbt": "{CustomModelData:1002,display:{Name:'{\"text\":\"Pipe Outlet\",\"color\":\"green\",\"italic\":false}'}}"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "IGI",
+    "GHG",
+    "IGI"
+  ],
+  "key": {
+    "I": "minecraft:iron_ingot",
+    "G": "minecraft:glass_pane",
+    "H": "minecraft:hopper"
+  },
+  "result": {
+    "id": "minecraft:iron_ingot",
+    "count": 1,
+    "nbt": "{CustomModelData:1001,display:{Name:'{\"text\":\"Pipe Inlet\",\"color\":\"blue\",\"italic\":false}'}}"
+  }
+}
