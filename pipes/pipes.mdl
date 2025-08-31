@@ -1,5 +1,5 @@
-// pipes.mdl - Hello World Example
-pack "pipes" "A simple hello world datapack" 82;
+// pipes.mdl - Minecraft Pipes System
+pack "pipes" "A pipe transportation system for Minecraft" 82;
 
 namespace "pipes";
 
@@ -12,12 +12,70 @@ recipe "wrench" "recipes/wrench.json";
 // Simple counter variable
 var num counter = 0;
 
-function "hello" {
-    say Hello, Minecraft!;
-    tellraw @a {"text":"Welcome to my datapack!","color":"green"};
+// Main function for datapack initialization
+function "load" {
+    say Minecraft Pipes datapack loaded!;
+    tellraw @a {"text":"Minecraft Pipes system is ready!","color":"blue"};
     counter = counter + 1;
-    say Counter: $counter$;
+    say Pipes loaded: $counter$ times;
 }
 
-// Hook to run hello function when datapack loads
-on_load "pipes:hello";
+// Function to give players pipe items
+function "give_pipes" {
+    give @s minecraft:iron_ingot{display:{Name:'{"text":"Pipe Inlet","color":"blue","italic":false}'},CustomModelData:1001} 1;
+    give @s minecraft:iron_ingot{display:{Name:'{"text":"Pipe Outlet","color":"green","italic":false}'},CustomModelData:1002} 1;
+    give @s minecraft:iron_ingot{display:{Name:'{"text":"Pipe","color":"gray","italic":false}'},CustomModelData:1003} 4;
+    give @s minecraft:iron_ingot{display:{Name:'{"text":"Pipe Wrench","color":"yellow","italic":false}'},CustomModelData:1004} 1;
+    tellraw @s {"text":"You received pipe items!","color":"green"};
+}
+
+// Function to show pipe information
+function "pipe_info" {
+    tellraw @s {"text":"=== Minecraft Pipes ===","color":"gold","bold":true};
+    tellraw @s {"text":"• Pipe Inlet: Extracts items when powered","color":"blue"};
+    tellraw @s {"text":"• Pipe Outlet: Deposits items automatically","color":"green"};
+    tellraw @s {"text":"• Pipe: Connects the system","color":"gray"};
+    tellraw @s {"text":"• Pipe Wrench: Maintenance tool","color":"yellow"};
+    tellraw @s {"text":"Use /function pipes:give_pipes to get items","color":"aqua"};
+}
+
+// Function to place pipe inlet (when player right-clicks with inlet item)
+function "place_inlet" {
+    // Place a hopper block and mark it as a pipe inlet
+    setblock ~ ~ ~ minecraft:hopper{display:{Name:'{"text":"Pipe Inlet","color":"blue","italic":false}'}} replace;
+    tellraw @s {"text":"Pipe Inlet placed! Power it with redstone to extract items.","color":"blue"};
+}
+
+// Function to place pipe outlet (when player right-clicks with outlet item)
+function "place_outlet" {
+    // Place a dispenser block and mark it as a pipe outlet
+    setblock ~ ~ ~ minecraft:dispenser{display:{Name:'{"text":"Pipe Outlet","color":"green","italic":false}'}} replace;
+    tellraw @s {"text":"Pipe Outlet placed! It will deposit items automatically.","color":"green"};
+}
+
+// Function to connect pipes (when player right-clicks with pipe item)
+function "place_pipe" {
+    // Place a glass block and mark it as a pipe
+    setblock ~ ~ ~ minecraft:glass{display:{Name:'{"text":"Pipe","color":"gray","italic":false}'}} replace;
+    tellraw @s {"text":"Pipe placed! Connect inlet and outlet with pipes.","color":"gray"};
+}
+
+// Function to remove pipes (when player right-clicks with wrench)
+function "remove_pipe" {
+    // Remove the block and give feedback
+    setblock ~ ~ ~ minecraft:air replace;
+    tellraw @s {"text":"Pipe removed!","color":"yellow"};
+}
+
+// Function to test the pipe system
+function "test_pipes" {
+    tellraw @s {"text":"=== Pipe System Test ===","color":"gold","bold":true};
+    tellraw @s {"text":"1. Place a Pipe Inlet next to a chest","color":"blue"};
+    tellraw @s {"text":"2. Place a Pipe Outlet next to another chest","color":"green"};
+    tellraw @s {"text":"3. Connect them with Pipes","color":"gray"};
+    tellraw @s {"text":"4. Power the inlet with redstone","color":"red"};
+    tellraw @s {"text":"5. Watch items flow through the system!","color":"aqua"};
+}
+
+// Hook to run load function when datapack loads
+on_load "pipes:load";

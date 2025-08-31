@@ -11,6 +11,7 @@
   },
   "result": {
     "id": "minecraft:iron_ingot",
-    "count": 1
+    "count": 1,
+    "nbt": "{CustomModelData:1004,display:{Name:'{\"text\":\"Pipe Wrench\",\"color\":\"yellow\",\"italic\":false}'}}"
   }
 }
