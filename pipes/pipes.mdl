@@ -26,7 +26,7 @@ function "give_pipes" {
     give @s minecraft:iron_ingot{display:{Name:'{"text":"Pipe Outlet","color":"green","italic":false}'},CustomModelData:1002} 1;
     give @s minecraft:iron_ingot{display:{Name:'{"text":"Pipe","color":"gray","italic":false}'},CustomModelData:1003} 4;
     give @s minecraft:iron_ingot{display:{Name:'{"text":"Pipe Wrench","color":"yellow","italic":false}'},CustomModelData:1004} 1;
-    tellraw @s {"text":"You received pipe items!","color":"green"};
+    tellraw @a {"text":"You received pipe items!","color":"green"};
 }
 
 // Function to show pipe information
