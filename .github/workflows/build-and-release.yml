@@ -33,13 +33,13 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y zip
         
-    - name: Make build script executable
+    - name: Make scripts executable
       run: |
-        chmod +x scripts/build.sh
+        chmod +x scripts/*.sh
         
-    - name: Run build script
+    - name: Run build and release using CI script
       run: |
-        ./scripts/build.sh
+        ./scripts/ci.sh release
         
     - name: Verify build outputs
       run: |

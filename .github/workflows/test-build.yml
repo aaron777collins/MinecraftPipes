@@ -28,13 +28,13 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y zip
         
-    - name: Make build script executable
+    - name: Make scripts executable
       run: |
-        chmod +x scripts/build.sh
+        chmod +x scripts/*.sh
         
-    - name: Test build script
+    - name: Test build using CI script
       run: |
-        ./scripts/build.sh
+        ./scripts/ci.sh build
         
     - name: Verify build outputs
       run: |
