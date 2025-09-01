@@ -67,15 +67,15 @@ rm -rf dist
 # OPTIONAL local build (handy if you want to attach artifacts right now)
 if command -v mdl >/dev/null 2>&1; then
   echo "Building datapack locally..."
-  mdl check src/
-  mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
+  mdl check pipes/
+  mdl build --mdl pipes/ -o dist --wrapper minecraft_pipes --pack-format 82
   echo "Local build complete!"
 elif command -v python >/dev/null 2>&1; then
   echo "Installing MDL and building datapack locally..."
   python -m pip install --upgrade pip >/dev/null 2>&1 || true
   python -m pip install minecraft-datapack-language >/dev/null 2>&1 || true
-  mdl check src/
-  mdl build --mdl src/ -o dist --wrapper minecraft_pipes --pack-format 82
+  mdl check pipes/
+  mdl build --mdl pipes/ -o dist --wrapper minecraft_pipes --pack-format 82
   echo "Local build complete!"
 fi
 
