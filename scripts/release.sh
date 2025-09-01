@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# release.sh — tag-driven release (setuptools-scm). No editing pyproject.toml.
+# release.sh — Automated release with build integration
 # Usage:
 #   ./scripts/release.sh v1.2.3 "Notes..."
 #   ./scripts/release.sh patch   "Notes..."
@@ -16,9 +16,33 @@ fi
 BUMP="$1"
 NOTES="${2:-}"
 
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
+
+print_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
 # Ensure clean working tree
 if ! git diff --quiet || ! git diff --cached --quiet; then
-  echo "Error: working tree not clean. Commit or stash changes first."
+  print_error "Working tree not clean. Commit or stash changes first."
   exit 1
 fi
 
@@ -49,51 +73,57 @@ elif [[ "$BUMP" =~ ^(major|minor|patch)$ ]]; then
   read -r MAJ MIN PAT < <(parse_semver "$LATEST_TAG")
   NEW_TAG=$(bump_part "$BUMP" "$MAJ" "$MIN" "$PAT")
 else
-  echo "First arg must be vX.Y.Z or one of: major, minor, patch"
+  print_error "First arg must be vX.Y.Z or one of: major, minor, patch"
   exit 1
 fi
 
-echo "Latest tag: ${LATEST_TAG:-<none>}"
-echo "New tag:    $NEW_TAG"
+print_status "Latest tag: ${LATEST_TAG:-<none>}"
+print_status "New tag:    $NEW_TAG"
 
 # Create annotated tag and push
+print_status "Creating and pushing tag..."
 git tag -a "$NEW_TAG" -m "Release $NEW_TAG"
 git push origin "$NEW_TAG"
 git push || true
 
 # 🔥 Clean old local artifacts so we never upload stale files
-rm -rf dist
+print_status "Cleaning old build artifacts..."
+rm -rf dist build
 
-# OPTIONAL local build (handy if you want to attach artifacts right now)
-if command -v mdl >/dev/null 2>&1; then
-  echo "Building datapack locally..."
-  mdl check pipes/
-  mdl build --mdl pipes/ -o dist --wrapper minecraft_pipes --pack-format 82
-  echo "Local build complete!"
-elif command -v python >/dev/null 2>&1; then
-  echo "Installing MDL and building datapack locally..."
-  python -m pip install --upgrade pip >/dev/null 2>&1 || true
-  python -m pip install minecraft-datapack-language >/dev/null 2>&1 || true
-  mdl check pipes/
-  mdl build --mdl pipes/ -o dist --wrapper minecraft_pipes --pack-format 82
-  echo "Local build complete!"
-fi
-
-# Create GitHub Release and attach any local dist/* (CI will also attach its own)
-if command -v gh >/dev/null 2>&1; then
-  if gh release view "$NEW_TAG" >/dev/null 2>&1; then
-    echo "GitHub Release $NEW_TAG exists — uploading local assets (if any)..."
-    if ls dist/* >/dev/null 2>&1; then gh release upload "$NEW_TAG" dist/* --clobber; fi
-  else
-    [ -z "$NOTES" ] && NOTES="Automated release $NEW_TAG"
-    if ls dist/* >/dev/null 2>&1; then
-      gh release create "$NEW_TAG" dist/* --notes "$NOTES"
-    else
-      gh release create "$NEW_TAG" --notes "$NOTES"
-    fi
-  fi
+# Build the project using the improved build script
+print_status "Building project with syntax fixes..."
+if [[ -f "scripts/build.sh" ]]; then
+    bash scripts/build.sh
+    print_success "Build completed successfully!"
 else
-  echo "Note: 'gh' not installed — tag pushed. CI will create the GitHub Release."
+    print_error "Build script not found: scripts/build.sh"
+    exit 1
 fi
 
-echo "✅ Tagged and released $NEW_TAG"
+# Create GitHub Release and attach build artifacts
+if command -v gh >/dev/null 2>&1; then
+    if gh release view "$NEW_TAG" >/dev/null 2>&1; then
+        print_status "GitHub Release $NEW_TAG exists — uploading build assets..."
+        if ls dist/* >/dev/null 2>&1; then 
+            gh release upload "$NEW_TAG" dist/* --clobber
+            print_success "Assets uploaded to existing release"
+        fi
+    else
+        [ -z "$NOTES" ] && NOTES="Automated release $NEW_TAG with syntax fixes"
+        print_status "Creating new GitHub Release $NEW_TAG..."
+        if ls dist/* >/dev/null 2>&1; then
+            gh release create "$NEW_TAG" dist/* --notes "$NOTES"
+            print_success "GitHub Release created with assets"
+        else
+            gh release create "$NEW_TAG" --notes "$NOTES"
+            print_warning "GitHub Release created without assets (dist/ directory empty)"
+        fi
+    fi
+else
+    print_warning "GitHub CLI (gh) not installed — tag pushed. CI will create the GitHub Release."
+    print_status "Build artifacts are ready in dist/ directory for manual upload."
+fi
+
+print_success "✅ Release $NEW_TAG completed successfully!"
+print_status "📦 Build artifacts: dist/"
+print_status "🏷️  Git tag: $NEW_TAG"

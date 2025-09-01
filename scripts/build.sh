@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Minecraft Pipes Build Script
-# Builds both datapack and resource pack
+# Builds both datapack and resource pack with syntax fixes
 
 set -e  # Exit on any error
 
@@ -49,6 +49,24 @@ create_zip() {
     fi
 }
 
+# Function to fix MDL syntax issues
+fix_mdl_syntax() {
+    local function_file="$1"
+    print_status "Applying syntax fixes to $function_file..."
+    
+    # Fix the give_pipes function syntax (MDL bug workaround)
+    if [[ -f "$function_file" ]]; then
+        sed -i.bak 's/give @s minecraft:iron_ingot {display: {Name: '\''{"text":"Pipe Inlet","color":"blue","italic":false}'\''}, CustomModelData:1001} 1/give @s minecraft:iron_ingot{display:{Name:'\''{"text":"Pipe Inlet","color":"blue","italic":false}'\''},CustomModelData:1001} 1/g' "$function_file"
+        sed -i.bak 's/give @s minecraft:iron_ingot {display: {Name: '\''{"text":"Pipe Outlet","color":"green","italic":false}'\''}, CustomModelData:1002} 1/give @s minecraft:iron_ingot{display:{Name:'\''{"text":"Pipe Outlet","color":"green","italic":false}'\''},CustomModelData:1002} 1/g' "$function_file"
+        sed -i.bak 's/give @s minecraft:iron_ingot {display: {Name: '\''{"text":"Pipe","color":"gray","italic":false}'\''}, CustomModelData:1003} 4/give @s minecraft:iron_ingot{display:{Name:'\''{"text":"Pipe","color":"gray","italic":false}'\''},CustomModelData:1003} 4/g' "$function_file"
+        sed -i.bak 's/give @s minecraft:iron_ingot {display: {Name: '\''{"text":"Pipe Wrench","color":"yellow","italic":false}'\''}, CustomModelData:1004} 1/give @s minecraft:iron_ingot{display:{Name:'\''{"text":"Pipe Wrench","color":"yellow","italic":false}'\''},CustomModelData:1004} 1/g' "$function_file"
+        
+        # Clean up backup files
+        rm -f "$function_file.bak"
+        print_success "Syntax fixes applied to $function_file"
+    fi
+}
+
 # Check if MDL is installed
 if ! command -v mdl &> /dev/null; then
     print_error "MDL (Minecraft Datapack Language) is not installed!"
@@ -79,6 +97,9 @@ else
 fi
 
 cd ..
+
+# Apply syntax fixes to the generated function files
+fix_mdl_syntax "$BUILD_DIR/pipes_datapack/data/pipes/function/give_pipes.mcfunction"
 
 # Copy resource pack files
 print_status "Preparing resource pack..."
